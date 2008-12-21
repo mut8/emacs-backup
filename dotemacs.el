@@ -1,3 +1,12 @@
+;; Start the Emacs server (needed for synctex/skim integration below)
+(server-start)
+
+;; Auto-raise Emacs on activation (from Skim, usually)
+(defun raise-emacs-on-aqua() 
+    (shell-command "osascript -e 'tell application \"Emacs\" to activate' &"))
+(add-hook 'server-switch-hook 'raise-emacs-on-aqua)
+
+
 ;; local load path 
 (add-to-list 'load-path "~/elisp")
 (progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
@@ -20,22 +29,27 @@
 (load-file "~/elisp/custom-color-themes.el")
 (color-theme-twilighter)
 
-;;(setq my-exec-path '("/usr/texbin" "/usr/local/bin" "/Applications/Emacs.app/Contents/Resources/bin"))
-;;(map 'nil '(lambda (item) (setq exec-path (cons item exec-path))) my-exec-path)
-;;(setenv "PATH" (mapconcat 'identity exec-path path-separator))
 
-;; magit
-;; (require 'magit)
-
-;; DVC (another alternative to VC/magit)
+;; DVC (manage version control) 
 (load-file "~/elisp/dvc/dvc-load.el") 
 (require 'dvc-autoloads)
 
 ;; AUCTeX
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
-; make xelatex the default engine
-; (setq-default TeX-engine "xetex")
+
+; Synctex with Skim
+(require 'tex-site)
+(add-hook 'TeX-mode-hook
+    (lambda ()
+        (add-to-list 'TeX-output-view-style
+            '("^pdf$" "."
+              "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
+)
+
+; Make XeLaTeX the default latex engine
+(setq-default TeX-engine "")
+(setq-default LaTeX-XeTeX-command "xelatex -synctex=1")
 
 ;; ESS
 (load "~/elisp/ess/lisp/ess-site.el")
@@ -55,13 +69,14 @@
  (setq TeX-file-extensions
        '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
 
-(add-hook 'LaTeX-mode-hook
-          (function (lambda ()
-                      (add-to-list 'LaTeX-command-style
-                                   '("\\`fontspec\\'" "xelatex %S%(PDFout)"))
-                      )
-                    )     
-)
+;; (add-hook 'LaTeX-mode-hook
+;;           (function (lambda ()
+;;                       (add-to-list 'LaTeX-command-style
+;;                                    '("\\`fontspec\\'" "xelatex %S%(PDFout)"))
+;;                       )
+;;                     )     
+;; )
+
   (autoload 'reftex-mode     "reftex" "RefTeX Minor Mode" t)
   (autoload 'turn-on-reftex  "reftex" "RefTeX Minor Mode" nil)
   (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
@@ -96,12 +111,11 @@
     (global-font-lock-mode 1); Emacs
   (setq font-lock-auto-fontify t)); XEmacs
 
-;;name and path of file in title bar
-(setq frame-title-format '("%S:" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
 ;; PDF mode for latex
-'(TeX-PDF-mode t)
+(setq-default TeX-PDF-mode t)
 
+;; Make emacs aware of multi-file projects
+(setq-default TeX-master nil)
 
 ;; markdown mode
 (autoload 'markdown-mode "markdown-mode.el"
@@ -119,9 +133,18 @@
    (cons '("\\.md" . markdown-mode) auto-mode-alist)
 )
 
-;; misc
+;; Misc
 ; Make all "yes or no" prompts show "y or n" instead
 (fset 'yes-or-no-p 'y-or-n-p)
+
+; sane line wrapping at last
+(global-visual-line-mode t)
+
+; parenthesis matching by default
+(show-paren-mode t)
+
+;;name and path of file in title bar
+(setq frame-title-format '("%S:" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 ; turn on recent files menu
 (require 'recentf)
@@ -160,10 +183,10 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(TeX-PDF-mode t)
+ '(LaTeX-XeTeX-command "xelatex -synctex=1")
  '(TeX-engine (quote xetex))
- '(TeX-output-view-style (quote (("^pdf$" "." "open -a skim %o") ("^html?$" "." "safari %o"))))
- '(show-paren-mode t)
+ ;'(global-visual-line-mode t)
+ ;'(show-paren-mode t)
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify))))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
