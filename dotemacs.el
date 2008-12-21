@@ -100,6 +100,23 @@
 ;; PDF mode for latex
 '(TeX-PDF-mode t)
 
+
+;; markdown mode
+(autoload 'markdown-mode "markdown-mode.el"
+   "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+   (cons '("\\.Markdown" . markdown-mode) auto-mode-alist)
+)
+(setq auto-mode-alist
+   (cons '("\\.MarkDown" . markdown-mode) auto-mode-alist)
+)
+(setq auto-mode-alist
+   (cons '("\\.markdown" . markdown-mode) auto-mode-alist)
+)
+(setq auto-mode-alist
+   (cons '("\\.md" . markdown-mode) auto-mode-alist)
+)
+
 ;; misc
 ; Make all "yes or no" prompts show "y or n" instead
 (fset 'yes-or-no-p 'y-or-n-p)
