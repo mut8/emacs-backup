@@ -185,8 +185,6 @@
   ;; If there is more than one, they won't work right.
  '(LaTeX-XeTeX-command "xelatex -synctex=1")
  '(TeX-engine (quote xetex))
- ;'(global-visual-line-mode t)
- ;'(show-paren-mode t)
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify))))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
