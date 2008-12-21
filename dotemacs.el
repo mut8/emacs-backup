@@ -34,6 +34,8 @@
 ;; AUCTeX
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
+; make xelatex the default engine
+; (setq-default TeX-engine "xetex")
 
 ;; ESS
 (load "~/elisp/ess/lisp/ess-site.el")
@@ -158,9 +160,11 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(TeX-output-view-style (quote (("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$") "%(o?)dvips -t landscape %d -o && gv %f") ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f") ("^dvi$" ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$") "%(o?)xdvi %dS -paper a4r -s 0 %d") ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d") ("^dvi$" ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$") "%(o?)xdvi %dS -paper a5r -s 0 %d") ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d") ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d") ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d") ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d") ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d") ("^dvi$" "." "%(o?)xdvi %dS %d") ("^pdf$" "." "open -a skim %o") ("^html?$" "." "netscape %o"))))
+ '(TeX-PDF-mode t)
+ '(TeX-engine (quote xetex))
+ '(TeX-output-view-style (quote (("^pdf$" "." "open -a skim %o") ("^html?$" "." "safari %o"))))
  '(show-paren-mode t)
- '(text-mode-hook (quote (text-mode-hook-identify))))
+ '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify))))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
