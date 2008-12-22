@@ -1,5 +1,5 @@
 ;; Kieran Healy's .emacs file
-;; Used in conjunction with http://github.com/technomancy/emacs-starter-kit/tree/master
+;; Made to be used together with http://github.com/technomancy/emacs-starter-kit/tree/master
 
 ;; identity
 (setq user-full-name "Kieran Healy")
@@ -14,7 +14,8 @@
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-starter-kit"))
 (load-file "~/.emacs.d/emacs-starter-kit/init.el")
 
-;; location of several packages
+;; location of various local packages
+;; because I don't want to keep them in /Applications/Emacs.app/ or in /usr/share/local/
 (add-to-list 'load-path "~/elisp")
 (progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
 
@@ -23,7 +24,10 @@
 (load-file "~/elisp/custom-color-themes.el")
 (color-theme-twilighter)
 
-;;; ------- LATEX STUFF ---------
+;;; -----------------------------
+;;; LATEX STUFF
+;;; -----------------------------
+
 ;; AUCTeX
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
@@ -70,7 +74,7 @@
    (setq reftex-bibpath-environment-variables
       '("/Users/kjhealy/Documents/bibs/"))
 
-;; RefTex format for biblatex
+;; RefTeX formats for biblatex
 (setq reftex-cite-format 
   '((?\C-m . "\\cite[]{%l}") 
    (?t    . "\\textcite[]{%l}") 
@@ -79,13 +83,14 @@
    (?n    . "\\nocite{%l}"))) 
 (setq reftex-cite-prompt-optional-args t) 
 
+;;; -----------------------------
+;;; R STUFF   
+;;; -----------------------------
 
-;;; ------- R STUFF -------  
-
-;; ESS
+;; ESS: Emacs Speaks Statistics
 (load "~/elisp/ess/lisp/ess-site.el")
 
-;; R-noweb mode, for Sweave.
+;; R-noweb mode, for Sweave files.
  (defun Rnw-mode ()
    (require 'ess-noweb)
    (noweb-mode)
@@ -101,6 +106,10 @@
  (setq TeX-file-extensions
        '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
 
+
+;;; -----------------------------
+;;; Markdown documents
+;;; -----------------------------
 
 ;; markdown mode
 (autoload 'markdown-mode "markdown-mode.el"
@@ -118,12 +127,37 @@
    (cons '("\\.md" . markdown-mode) auto-mode-alist)
 )
 
-;; Misc things not in starter kit
+;;; -----------------------------
+;; Misc things not in starter-kit,
+;; or starter-kit overrides 
+;;; -----------------------------
 
-; sane line wrapping at last
+;; use ido mode for M-command completion
+;; as well as file/buffer completion
+(setq ido-execute-command-cache nil)
+ (defun ido-execute-command ()
+   (interactive)
+   (call-interactively
+    (intern
+     (ido-completing-read
+      "M-x "
+      (progn
+        (unless ido-execute-command-cache
+          (mapatoms (lambda (s)
+                      (when (commandp s)
+                        (setq ido-execute-command-cache
+                              (cons (format "%S" s) ido-execute-command-cache))))))
+        ido-execute-command-cache)))))
+    
+ (add-hook 'ido-setup-hook
+           (lambda ()
+             (setq ido-enable-flex-matching t)
+             (global-set-key "\M-x" 'ido-execute-command)))
+
+; Sane line wrapping for long documents and papers
 (global-visual-line-mode t)
 
-; use cocoAspell instead of ispell
+; Use cocoAspell instead of ispell
 (setq ispell-program-name "~/Library/PreferencePanes/Spelling.prefPane/Contents/MacOS/cocoAspell")
 
 ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
@@ -136,7 +170,8 @@
      ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
      ("\\\\\\([aA]lph\\|arabic\\)"	 ispell-tex-arg-end)
      ;;("\\\\author"			 ispell-tex-arg-end)
-     ;; New regexp here --- kjh
+     ;; New regexps here --- kjh
+     ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
      ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
      ("\\\\bibliographystyle"		 ispell-tex-arg-end)
      ("\\\\makebox"			 ispell-tex-arg-end 0)
@@ -157,6 +192,7 @@
 ; Base dir
 (cd "~/")
 
+;; Mostly xelatex stuff
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
