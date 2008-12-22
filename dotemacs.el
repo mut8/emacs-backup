@@ -18,13 +18,6 @@
 (add-to-list 'load-path "~/elisp")
 (progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
 
-;; no splash screen
-(setq inhibit-splash-screen t)
-
-;; Auto fill mode --- automatic line wrapping.
-;;(add-hook 'text-mode-hook
-;;  '(lambda () (auto-fill-mode 1))) 
-
 ;; Color Theme
 (require 'color-theme)
 (load-file "~/elisp/custom-color-themes.el")
