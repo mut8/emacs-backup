@@ -30,9 +30,11 @@
 (color-theme-twilighter)
 
 
-;; DVC (manage version control) 
-(load-file "~/elisp/dvc/dvc-load.el") 
-(require 'dvc-autoloads)
+;; Git managed version control
+;(load-file "~/elisp/dvc/dvc-load.el") 
+;(require 'dvc-autoloads)
+(load-file "~/elisp/magit//magit.el")
+(require 'magit)
 
 ;; AUCTeX
 (load "auctex.el" nil t t)
@@ -48,7 +50,7 @@
 )
 
 ; Make XeLaTeX the default latex engine
-(setq-default TeX-engine "")
+(setq-default TeX-engine "xetex")
 (setq-default LaTeX-XeTeX-command "xelatex -synctex=1")
 
 ;; ESS
