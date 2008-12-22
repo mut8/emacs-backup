@@ -152,6 +152,9 @@
 (require 'recentf)
 (recentf-mode 1)
 
+; directories in buffers
+(require 'dired)
+
 ; use cocoAspell instead of ispell
 (setq ispell-program-name "~/Library/PreferencePanes/Spelling.prefPane/Contents/MacOS/cocoAspell")
 
@@ -179,6 +182,9 @@
      ("program"		. "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
      ("verbatim\\*?"	. "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
 
+
+; Base dir
+(cd "~/")
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
