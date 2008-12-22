@@ -4,3 +4,6 @@
 [submodule "starter-kit"]
 	path = starter-kit
 	url = git://github.com/technomancy/emacs-starter-kit.git
+[submodule "color-custom"]
+	path = color-custom
+	url = git@github.com:kjhealy/twilight-emacs.git
