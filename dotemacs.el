@@ -8,6 +8,8 @@
 
 
 ;; local load path 
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-starter-kit"))
+(load-file "~/.emacs.d/emacs-starter-kit/init.el")
 (add-to-list 'load-path "~/elisp")
 (progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
 
@@ -25,16 +27,14 @@
 
 ;; Color Theme
 (require 'color-theme)
-(color-theme-initialize)
 (load-file "~/elisp/custom-color-themes.el")
 (color-theme-twilighter)
-
 
 ;; Git managed version control
 ;(load-file "~/elisp/dvc/dvc-load.el") 
 ;(require 'dvc-autoloads)
-(load-file "~/elisp/magit//magit.el")
-(require 'magit)
+;;(load-file "~/elisp/magit//magit.el")
+;;(require 'magit)
 
 ;; AUCTeX
 (load "auctex.el" nil t t)
@@ -106,12 +106,12 @@
 (setq reftex-cite-prompt-optional-args t) 
 
 ; put as much syntax highlighting into documents as possible
-(require 'font-lock)
+;(require 'font-lock)
 
 ; (global-font-lock-mode 3)
-(if (fboundp 'global-font-lock-mode)
-    (global-font-lock-mode 1); Emacs
-  (setq font-lock-auto-fontify t)); XEmacs
+;(if (fboundp 'global-font-lock-mode)
+;    (global-font-lock-mode 1); Emacs
+;  (setq font-lock-auto-fontify t)); XEmacs
 
 ;; PDF mode for latex
 (setq-default TeX-PDF-mode t)
@@ -137,23 +137,23 @@
 
 ;; Misc
 ; Make all "yes or no" prompts show "y or n" instead
-(fset 'yes-or-no-p 'y-or-n-p)
+;(fset 'yes-or-no-p 'y-or-n-p)
 
 ; sane line wrapping at last
 (global-visual-line-mode t)
 
 ; parenthesis matching by default
-(show-paren-mode t)
+;(show-paren-mode t)
 
 ;;name and path of file in title bar
-(setq frame-title-format '("%S:" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+;(setq frame-title-format '("%S:" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 ; turn on recent files menu
-(require 'recentf)
-(recentf-mode 1)
+;(require 'recentf)
+;(recentf-mode 1)
 
 ; directories in buffers
-(require 'dired)
+;(require 'dired)
 
 ; use cocoAspell instead of ispell
 (setq ispell-program-name "~/Library/PreferencePanes/Spelling.prefPane/Contents/MacOS/cocoAspell")
@@ -182,6 +182,9 @@
      ("program"		. "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
      ("verbatim\\*?"	. "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
 
+
+; Put the menu bar back
+(menu-bar-mode 1)
 
 ; Base dir
 (cd "~/")

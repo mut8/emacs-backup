@@ -1,3 +1,6 @@
 [submodule "magit"]
 	path = magit
 	url = git://gitorious.org/magit/mainline.git
+[submodule "starter-kit"]
+	path = starter-kit
+	url = git://github.com/technomancy/emacs-starter-kit.git
