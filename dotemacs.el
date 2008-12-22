@@ -1,46 +1,41 @@
-;; Start the Emacs server (needed for synctex/skim integration below)
-(server-start)
-
-;; Auto-raise Emacs on activation (from Skim, usually)
-(defun raise-emacs-on-aqua() 
-    (shell-command "osascript -e 'tell application \"Emacs\" to activate' &"))
-(add-hook 'server-switch-hook 'raise-emacs-on-aqua)
-
-
-;; local load path 
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-starter-kit"))
-(load-file "~/.emacs.d/emacs-starter-kit/init.el")
-(add-to-list 'load-path "~/elisp")
-(progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
-
-;; no splash screen
-(setq inhibit-splash-screen t)
+;; Kieran Healy's .emacs file
+;; Used in conjunction with http://github.com/technomancy/emacs-starter-kit/tree/master
 
 ;; identity
 (setq user-full-name "Kieran Healy")
 (setq user-mail-address "kjhealy@gmail.com")
 (setq mail-host-address "gmail.com")
 
+;; Start the Emacs server (needed for synctex/skim integration below)
+(server-start)
+
+;; local load paths
+;; starter-kit files
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-starter-kit"))
+(load-file "~/.emacs.d/emacs-starter-kit/init.el")
+
+;; location of several packages
+(add-to-list 'load-path "~/elisp")
+(progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
+
+;; no splash screen
+(setq inhibit-splash-screen t)
+
 ;; Auto fill mode --- automatic line wrapping.
-(add-hook 'text-mode-hook
-  '(lambda () (auto-fill-mode 1))) 
+;;(add-hook 'text-mode-hook
+;;  '(lambda () (auto-fill-mode 1))) 
 
 ;; Color Theme
 (require 'color-theme)
 (load-file "~/elisp/custom-color-themes.el")
 (color-theme-twilighter)
 
-;; Git managed version control
-;(load-file "~/elisp/dvc/dvc-load.el") 
-;(require 'dvc-autoloads)
-;;(load-file "~/elisp/magit//magit.el")
-;;(require 'magit)
-
+;;; ------- LATEX STUFF ---------
 ;; AUCTeX
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
 
-; Synctex with Skim
+;; Synctex with Skim
 (require 'tex-site)
 (add-hook 'TeX-mode-hook
     (lambda ()
@@ -49,36 +44,22 @@
               "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
 )
 
-; Make XeLaTeX the default latex engine
+;; Make XeLaTeX the default latex engine
 (setq-default TeX-engine "xetex")
 (setq-default LaTeX-XeTeX-command "xelatex -synctex=1")
 
-;; ESS
-(load "~/elisp/ess/lisp/ess-site.el")
+;; PDF mode for latex
+(setq-default TeX-PDF-mode t)
 
-;; R-noweb mode, for Sweave.
- (defun Rnw-mode ()
-   (require 'ess-noweb)
-   (noweb-mode)
-   (if (fboundp 'R-mode)
-       (setq noweb-default-code-mode 'R-mode)))
+;; Make emacs aware of multi-file projects
+(setq-default TeX-master nil)
 
- (add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
- (add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
+;; Auto-raise Emacs on activation (from Skim, usually)
+(defun raise-emacs-on-aqua() 
+    (shell-command "osascript -e 'tell application \"Emacs\" to activate' &"))
+(add-hook 'server-switch-hook 'raise-emacs-on-aqua)
 
- (setq reftex-file-extensions
-       '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
- (setq TeX-file-extensions
-       '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
-
-;; (add-hook 'LaTeX-mode-hook
-;;           (function (lambda ()
-;;                       (add-to-list 'LaTeX-command-style
-;;                                    '("\\`fontspec\\'" "xelatex %S%(PDFout)"))
-;;                       )
-;;                     )     
-;; )
-
+;; RefTeX
   (autoload 'reftex-mode     "reftex" "RefTeX Minor Mode" t)
   (autoload 'turn-on-reftex  "reftex" "RefTeX Minor Mode" nil)
   (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
@@ -105,19 +86,28 @@
    (?n    . "\\nocite{%l}"))) 
 (setq reftex-cite-prompt-optional-args t) 
 
-; put as much syntax highlighting into documents as possible
-;(require 'font-lock)
 
-; (global-font-lock-mode 3)
-;(if (fboundp 'global-font-lock-mode)
-;    (global-font-lock-mode 1); Emacs
-;  (setq font-lock-auto-fontify t)); XEmacs
+;;; ------- R STUFF -------  
 
-;; PDF mode for latex
-(setq-default TeX-PDF-mode t)
+;; ESS
+(load "~/elisp/ess/lisp/ess-site.el")
 
-;; Make emacs aware of multi-file projects
-(setq-default TeX-master nil)
+;; R-noweb mode, for Sweave.
+ (defun Rnw-mode ()
+   (require 'ess-noweb)
+   (noweb-mode)
+   (if (fboundp 'R-mode)
+       (setq noweb-default-code-mode 'R-mode)))
+
+ (add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
+ (add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
+
+;; Make TeX and RefTex aware of Snw and Rnw files
+ (setq reftex-file-extensions
+       '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
+ (setq TeX-file-extensions
+       '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
+
 
 ;; markdown mode
 (autoload 'markdown-mode "markdown-mode.el"
@@ -135,25 +125,10 @@
    (cons '("\\.md" . markdown-mode) auto-mode-alist)
 )
 
-;; Misc
-; Make all "yes or no" prompts show "y or n" instead
-;(fset 'yes-or-no-p 'y-or-n-p)
+;; Misc things not in starter kit
 
 ; sane line wrapping at last
 (global-visual-line-mode t)
-
-; parenthesis matching by default
-;(show-paren-mode t)
-
-;;name and path of file in title bar
-;(setq frame-title-format '("%S:" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
-; turn on recent files menu
-;(require 'recentf)
-;(recentf-mode 1)
-
-; directories in buffers
-;(require 'dired)
 
 ; use cocoAspell instead of ispell
 (setq ispell-program-name "~/Library/PreferencePanes/Spelling.prefPane/Contents/MacOS/cocoAspell")
