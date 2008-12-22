@@ -21,8 +21,8 @@
 
 ;; Color Theme
 (require 'color-theme)
-(load-file "~/elisp/custom-color-themes.el")
-(color-theme-twilighter)
+(load-file "~/elisp/color-custom/color-theme-twilight.el")
+(color-theme-twilight)
 
 ;;; -----------------------------
 ;;; LATEX STUFF
