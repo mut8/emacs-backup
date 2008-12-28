@@ -72,7 +72,14 @@
 
 ;; Make RefTex able to find my local bib files
 (setq reftex-bibpath-environment-variables
-      '("/Users/kjhealy/Documents/bibs/"))
+      '("/Users/kjhealy/Library/texmf/bibtex/bib"))
+
+;; Default bibliography
+(setq reftex-default-bibliography
+      '("/Users/kjhealy/Documents/bibs/socbib.bib"))
+
+;(setq reftex-bibpath-environment-variables
+;      '("/Users/kjhealy/Documents/bibs:"))
 
 ;; RefTeX formats for biblatex
 (setq reftex-cite-format
@@ -200,7 +207,8 @@
  ;; If there is more than one, they won't work right.
  '(LaTeX-XeTeX-command "xelatex -synctex=1")
  '(TeX-engine (quote xetex))
- '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify))))
+;; '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
