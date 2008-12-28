@@ -6,8 +6,13 @@
 (setq user-mail-address "kjhealy@gmail.com")
 (setq mail-host-address "gmail.com")
 
+;; identity for stater-kit customization file
+(setq system-name "iolar")
+(setq user-login-name "kjhealy")
+
 ;; Start the Emacs server (needed for synctex/skim integration below)
 (server-start)
+
 
 ;; local load paths
 ;; starter-kit files
