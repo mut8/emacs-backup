@@ -20,7 +20,13 @@
   (setq global-hl-line-mode nil))
 
 ;; turn off hilite in magit
-(add-hook 'magit-mode-hook 'local-hl-line-mode-off)
+(require 'magit)
+(add-hook 'magit-hook 'local-hl-line-mode-off)
+
+
+;;egg magit with more bling
+;;(require 'egg)
+
 
 ;;; -----------------------------
 ;;; LATEX STUFF
