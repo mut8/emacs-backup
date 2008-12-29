@@ -100,7 +100,7 @@
 ;;; -----------------------------
 
 ;; ESS: Emacs Speaks Statistics
-(load "~/elisp/ess/lisp/ess-site.el")
+(load "~/elisp/vendor/ess/lisp/ess-site.el")
 
 ;; R-noweb mode, for Sweave files.
 (defun Rnw-mode ()
