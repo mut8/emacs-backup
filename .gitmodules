@@ -7,3 +7,6 @@
 [submodule "color-custom"]
 	path = color-custom
 	url = git@github.com:kjhealy/twilight-emacs.git
+[submodule "vendor/egg"]
+	path = vendor/egg
+	url = git://github.com/bogolisk/egg.git
