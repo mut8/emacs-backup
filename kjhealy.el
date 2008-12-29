@@ -3,10 +3,16 @@
 
 ;; Color Theme
 (require 'color-theme)
-(load-file "~/elisp/color-custom/color-theme-twilight.el")
-(color-theme-twilight)
+;;(load-file "~/elisp/color-custom/color-theme-twilight.el")
+;;(color-theme-twilight)
 ;;(load-file "~/elisp/color-custom/color-theme-tango2.el")
 ;;(color-theme-tango-2)
+
+;; global hi-line
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#3D3D3D")
+(set-face-foreground 'highlight nil) 
+
 
 ;;; -----------------------------
 ;;; LATEX STUFF
@@ -15,6 +21,15 @@
 ;; AUCTeX
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
+
+;; Turn off hl-line when writing latex
+(defun local-hl-line-mode-off ()
+  (interactive)
+  (make-local-variable 'global-hl-line-mode)
+  (setq global-hl-line-mode nil))
+ 
+(add-hook 'TeX-mode-hook 'local-hl-line-mode-off)
+
 
 ;; Synctex with Skim
 (require 'tex-site)
@@ -96,7 +111,6 @@
       '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
 (setq TeX-file-extensions
       '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
-
 
 ;;; -----------------------------
 ;;; Markdown documents
