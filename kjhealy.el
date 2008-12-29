@@ -11,8 +11,16 @@
 ;; global hi-line
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#3D3D3D")
-(set-face-foreground 'highlight nil) 
+(set-face-foreground 'highlight nil)
 
+;; fn to turn off hilite in specific modes 
+(defun local-hl-line-mode-off ()
+  (interactive)
+  (make-local-variable 'global-hl-line-mode)
+  (setq global-hl-line-mode nil))
+
+;; turn off hilite in magit
+(add-hook 'magit-mode-hook 'local-hl-line-mode-off)
 
 ;;; -----------------------------
 ;;; LATEX STUFF
@@ -22,12 +30,7 @@
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
 
-;; Turn off hl-line when writing latex
-(defun local-hl-line-mode-off ()
-  (interactive)
-  (make-local-variable 'global-hl-line-mode)
-  (setq global-hl-line-mode nil))
- 
+;; Turn off hl-line when writing latex 
 (add-hook 'TeX-mode-hook 'local-hl-line-mode-off)
 
 
