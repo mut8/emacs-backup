@@ -21,6 +21,6 @@
 (progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
 
 ;; starter-kit files and all further customizations
-(load-file "~/.emacs.d/init.el")
+(load-file "~/elisp/init.el")
 
 
