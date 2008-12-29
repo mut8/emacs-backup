@@ -16,10 +16,10 @@
 
 ;; local load paths
 ;; starter-kit files
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-starter-kit"))
-(load-file "~/.emacs.d/emacs-starter-kit/init.el")
+;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-starter-kit"))
+;; (load-file "~/.emacs.d/emacs-starter-kit/init.el")
 
-;; location of various local packages
+;; location of various local packages (in elisp/vendor)
 ;; because I don't want to keep them in /Applications/Emacs.app/ or in /usr/share/local/
 (add-to-list 'load-path "~/elisp")
 (progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
