@@ -8,7 +8,7 @@
  '(
 ; frame width and height
     (width             . 100)
-    (height            . 48)
+    (height            . 50)
   )
 )
 
