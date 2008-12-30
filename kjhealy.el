@@ -5,8 +5,8 @@
 (require 'color-theme)
 ;;(load-file "~/elisp/color-custom/color-theme-twilight.el")
 ;;(color-theme-twilight)
-;;(load-file "~/elisp/color-custom/color-theme-tango2.el")
-;;(color-theme-tango-2)
+(load-file "~/elisp/color-custom/color-theme-blackboard-kjh.el")
+(color-theme-blackboardkjh)
 
 ;; global hi-line
 (global-hl-line-mode 1)
