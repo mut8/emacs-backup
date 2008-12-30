@@ -17,7 +17,7 @@
 (defun local-hl-line-mode-off ()
   (interactive)
   (make-local-variable 'global-hl-line-mode)
-  (setq global-hl-line-mode nil))
+  (setq global-hl-line-mode 0))
 
 ;; turn off hilite in magit
 (require 'magit)
