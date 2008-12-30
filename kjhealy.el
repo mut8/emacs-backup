@@ -8,11 +8,6 @@
 (load-file "~/elisp/color-custom/color-theme-blackboard-kjh.el")
 (color-theme-blackboardkjh)
 
-;; global hi-line
-(global-hl-line-mode 1)
-(set-face-background 'hl-line "#262626")
-(set-face-foreground 'highlight nil)
-
 ;; require maxframe package to conveniently maxmimize the window with M-x mf
 (require 'maxframe)
 (global-set-key (kbd "C-c m") 'x-maximize-frame)
@@ -23,16 +18,22 @@
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 
-;; fn to turn off hilite in specific modes 
-(defun local-hl-line-mode-off ()
-  (interactive)
-  (make-local-variable 'global-hl-line-mode)
-  (setq global-hl-line-mode 0))
+;; global highlighted line
+;;(global-hl-line-mode 1)
+;;(set-face-background 'hl-line "#262626")
+;;(set-face-foreground 'highlight nil)
 
-;; turn off hilite in magit
-(require 'magit)
-(add-hook 'magit-hook 'local-hl-line-mode-off)
+(require 'highline)
+(highline-mode 1)
+ ;; To customize the background color
+(set-face-background 'highline-face "#262626")
 
+;; fn to turn off highline in specific modes
+(defun highline-mode-off () (highline-mode 0))
+;; Turn off local highlighting for LaTeX, Magit, eshell
+(add-hook 'magit-mode-hook #'highline-mode-off)
+(add-hook 'eshell-mode-hook #'highline-mode-off)
+(add-hook 'TeX-mode-hook #'highline-mode-off)
 
 ;;egg magit with more bling
 ;;(require 'egg)
