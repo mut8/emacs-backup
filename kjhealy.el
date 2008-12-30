@@ -10,7 +10,7 @@
 
 ;; global hi-line
 (global-hl-line-mode 1)
-(set-face-background 'hl-line "#3D3D3D")
+(set-face-background 'hl-line "#262626")
 (set-face-foreground 'highlight nil)
 
 ;; fn to turn off hilite in specific modes 
