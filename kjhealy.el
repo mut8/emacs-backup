@@ -1,10 +1,17 @@
 ;; Kieran Healy's .emacs file
 ;; Made to be used together with http://github.com/technomancy/emacs-starter-kit/tree/master
 
+;; location of various local packages (in elisp/vendor)
+;; because I don't want to keep them in /Applications/Emacs.app/ or in
+;; /usr/share/local/
+(if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+        (let* ((my-lisp-dir "~/elisp/")
+              (default-directory my-lisp-dir))
+           (setq load-path (cons my-lisp-dir load-path))
+           (normal-top-level-add-subdirs-to-load-path)))
+
 ;; Color Theme
 (require 'color-theme)
-;;(load-file "~/elisp/color-custom/color-theme-twilight.el")
-;;(color-theme-twilight)
 (load-file "~/elisp/color-custom/color-theme-blackboard-kjh.el")
 (color-theme-blackboardkjh)
 
@@ -106,7 +113,7 @@
 
 ;; CDLaTex minor mode: tab-trigger environments, paired paren
 ;; insertion, etc
-(load-file "~/elisp/vendor/cdlatex/cdlatex.el")
+
 (autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
 (autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
 (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)   ; with AUCTeX LaTeX
@@ -121,10 +128,12 @@
 ;;; -----------------------------
 
 ;; ESS: Emacs Speaks Statistics
-(load "~/elisp/vendor/ess/lisp/ess-site.el")
+(load "~/elisp/vendor/ess/lisp/ess-site.el") 
+
 
 ;; use cdlatex in ESS just for paired insertions
 (add-hook 'ess-mode-hook 'turn-on-cdlatex) ; with ESS (for pairing)
+(add-hook 'inferior-ess-mode-hook 'turn-on-cdlatex) ; with iESS[R] (for pairing)
 
 ;; R-noweb mode, for Sweave files.
 (defun Rnw-mode ()

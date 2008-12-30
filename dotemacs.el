@@ -24,11 +24,6 @@
 ;; Start the Emacs server (needed for synctex/skim integration below)
 (server-start)
 
-;; location of various local packages (in elisp/vendor)
-;; because I don't want to keep them in /Applications/Emacs.app/ or in /usr/share/local/
-(add-to-list 'load-path "~/elisp")
-(progn (cd "~/elisp") (normal-top-level-add-subdirs-to-load-path))
-
 ;; starter-kit files and all further customizations
 (load-file "~/elisp/init.el")
 
