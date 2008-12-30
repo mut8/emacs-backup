@@ -18,11 +18,6 @@
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 
-;; global highlighted line
-;;(global-hl-line-mode 1)
-;;(set-face-background 'hl-line "#262626")
-;;(set-face-foreground 'highlight nil)
-
 (require 'highline)
 (highline-mode 1)
  ;; To customize the background color
