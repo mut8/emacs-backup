@@ -3,6 +3,15 @@
 ;; http://github.com/technomancy/emacs-starter-kit/tree/master
 ;; dotemacs.el should be ln -s ~/elisp/dotemacs.el ~/.emacs
 
+;; window size
+(setq default-frame-alist
+ '(
+; frame width and height
+    (width             . 100)
+    (height            . 48)
+  )
+)
+
 ;; identity
 (setq user-full-name "Kieran Healy")
 (setq user-mail-address "kjhealy@gmail.com")
