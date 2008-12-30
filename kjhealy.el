@@ -43,7 +43,7 @@
 (load "preview-latex.el" nil t t)
 
 ;; Turn off hl-line when writing latex 
-(add-hook 'TeX-mode-hook 'local-hl-line-mode-off)
+;;(add-hook 'TeX-mode-hook 'local-hl-line-mode-off)
 
 
 ;; Synctex with Skim
@@ -104,12 +104,27 @@
         (?n    . "\\nocite{%l}")))
 (setq reftex-cite-prompt-optional-args t)
 
+;; CDLaTex minor mode: tab-trigger environments, paired paren
+;; insertion, etc
+(load-file "~/elisp/vendor/cdlatex/cdlatex.el")
+(autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
+(autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
+(add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)   ; with AUCTeX LaTeX
+                                        ; mode
+;; (setq cdlatex-paired-parens
+;;        '("$[{(")) ; set which characters are autopaired SET IN
+;; CUSTOM.EL don't know why it's not working here.
+
+
 ;;; -----------------------------
 ;;; R STUFF
 ;;; -----------------------------
 
 ;; ESS: Emacs Speaks Statistics
 (load "~/elisp/vendor/ess/lisp/ess-site.el")
+
+;; use cdlatex in ESS just for paired insertions
+(add-hook 'ess-mode-hook 'turn-on-cdlatex) ; with ESS (for pairing)
 
 ;; R-noweb mode, for Sweave files.
 (defun Rnw-mode ()
@@ -211,21 +226,4 @@
 
                                         ; Base dir
 (cd "~/")
-
-;; Mostly xelatex stuff
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(LaTeX-XeTeX-command "xelatex -synctex=1")
- '(TeX-engine (quote xetex))
-;; '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
- )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
