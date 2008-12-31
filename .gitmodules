@@ -1,6 +1,3 @@
-[submodule "vendor/egg"]
-	path = vendor/egg
-	url = git://github.com/bogolisk/egg.git
 [submodule "vendor/maxframe"]
 	path = vendor/maxframe
 	url = git://github.com/rmm5t/maxframe-el.git
