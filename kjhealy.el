@@ -37,9 +37,6 @@
 (add-hook 'eshell-mode-hook #'highline-mode-off)
 ;;(add-hook 'TeX-mode-hook #'highline-mode-off)
 
-;;egg magit with more bling (a bit too much, so we turned it off)
-;;(require 'egg)
-
 
 ;;; -----------------------------
 ;;; LATEX STUFF
