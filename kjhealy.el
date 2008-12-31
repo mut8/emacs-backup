@@ -35,7 +35,7 @@
 ;; Turn off local highlighting for LaTeX, Magit, eshell
 (add-hook 'magit-mode-hook #'highline-mode-off)
 (add-hook 'eshell-mode-hook #'highline-mode-off)
-(add-hook 'TeX-mode-hook #'highline-mode-off)
+;;(add-hook 'TeX-mode-hook #'highline-mode-off)
 
 ;;egg magit with more bling (a bit too much, so we turned it off)
 ;;(require 'egg)
@@ -201,6 +201,10 @@
             (setq ido-enable-flex-matching t)
             (global-set-key "\M-x" 'ido-execute-command)))
 
+(add-hook 'ido-setup-hook 
+          (lambda () 
+            (define-key ido-completion-map [tab] 'ido-complete)))
+
                                         ; Sane line wrapping for long documents and papers
 (global-visual-line-mode t)
 
@@ -233,9 +237,28 @@
          ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
 
 
-                                        ; Put the menu bar back
+;; Enable skeleton mode in ESS for paired insertion
+(require 'skeleton)
+(dolist (hook '(ess-mode-hook
+                inferior-ess-mode-hook))
+  (add-hook hook (lambda ()
+              (make-local-variable 'skeleton-pair)
+              (make-local-variable 'skeleton-pair-on-word)
+              (make-local-variable 'skeleton-pair-filter-function)
+              (make-local-variable 'skeleton-pair-alist)
+              (setq skeleton-pair-on-word t
+                    skeleton-pair t)
+              (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
+              (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+              (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
+              (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
+              (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)))
+  )
+
+
+;; Put the menu bar back
 (menu-bar-mode 1)
 
-                                        ; Base dir
+;; Base dir
 (cd "~/")
 
