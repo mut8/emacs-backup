@@ -55,15 +55,20 @@
                            "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
           )
 
-;; Make XeLaTeX the default latex engine
-(setq-default TeX-engine "xetex")
-(setq-default LaTeX-XeTeX-command "xelatex -synctex=1")
 
-;; PDF mode for latex
-(setq-default TeX-PDF-mode t)
-
-;; Make emacs aware of multi-file projects
-(setq-default TeX-master nil)
+;; Make XeLaTeX the default latex engine // Doesn't work. Set in
+;; custom below instead.
+;; (add-hook 'TeX-mode-hook
+;;           (function (lambda ()
+;;                       ;; PDF mode for latex
+;;                       (setq-default TeX-PDF-mode t)
+;;                       (setq TeX-engine "xetex")
+;;                       (setq LaTeX-XeTeX-command "xelatex -synctex=1")
+;;                       ;; Make emacs aware of multi-file projects
+;;                       (setq-default TeX-master nil)
+;;               )
+;;             )
+;;   )
 
 ;; Auto-raise Emacs on activation (from Skim, usually)
 (defun raise-emacs-on-aqua()
@@ -92,10 +97,7 @@
 (setq reftex-default-bibliography
       '("/Users/kjhealy/Documents/bibs/socbib.bib"))
 
-;(setq reftex-bibpath-environment-variables
-;      '("/Users/kjhealy/Documents/bibs:"))
-
-;; RefTeX formats for biblatex
+;; RefTeX formats for biblatex (not natbib)
 (setq reftex-cite-format
       '((?\C-m . "\\cite[]{%l}")
         (?t    . "\\textcite[]{%l}")
@@ -106,15 +108,17 @@
 
 ;; CDLaTex minor mode: tab-trigger environments, paired paren
 ;; insertion, etc
-
 (autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
 (autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
 (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)   ; with AUCTeX LaTeX
                                         ; mode
-;; (setq cdlatex-paired-parens
-;;        '("$[{(")) ; set which characters are autopaired SET IN
-;; CUSTOM.EL don't know why it's not working here.
 
+;; set which characters are autopaired // Doesn't work. Set in custom, below.
+;; (add-hook 'cdlatex-mode-hook
+;;   (function (lambda ()
+;;               (setq cdlatex-paired-parens
+;;                     '("$[{("))
+;;             )))
 
 ;;; -----------------------------
 ;;; R STUFF
@@ -123,7 +127,7 @@
 ;; ESS: Emacs Speaks Statistics
 (load "~/elisp/vendor/ess/lisp/ess-site.el") 
 
-;; roxygen more for generating Rd and packages
+;; roxygen more for generating Rd and packxfages
 (require 'ess-roxygen)
 
 ;; R-noweb mode, for Sweave files.
@@ -262,4 +266,15 @@
 
 ;; Base dir
 (cd "~/")
+
+;; custom variables kludge. Why can't I get these to work via setq?
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+  '(LaTeX-XeTeX-command "xelatex -synctex=1")
+  '(TeX-engine (quote xetex))
+  '(cdlatex-paired-parens "$[{(")
+ )
 
