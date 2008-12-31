@@ -130,11 +130,6 @@
 ;; ESS: Emacs Speaks Statistics
 (load "~/elisp/vendor/ess/lisp/ess-site.el") 
 
-
-;; use cdlatex in ESS just for paired insertions
-(add-hook 'ess-mode-hook 'turn-on-cdlatex) ; with ESS (for pairing)
-(add-hook 'inferior-ess-mode-hook 'turn-on-cdlatex) ; with iESS[R] (for pairing)
-
 ;; roxygen more for generating Rd and packages
 (require 'ess-roxygen)
 
