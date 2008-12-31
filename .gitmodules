@@ -1,12 +1,3 @@
-[submodule "magit"]
-	path = magit
-	url = git://gitorious.org/magit/mainline.git
-[submodule "starter-kit"]
-	path = starter-kit
-	url = git://github.com/technomancy/emacs-starter-kit.git
-[submodule "color-custom"]
-	path = color-custom
-	url = git@github.com:kjhealy/twilight-emacs.git
 [submodule "vendor/egg"]
 	path = vendor/egg
 	url = git://github.com/bogolisk/egg.git
