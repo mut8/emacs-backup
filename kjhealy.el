@@ -55,17 +55,19 @@
                            "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
           )
 
+;; PDF mode for latex
+(setq-default TeX-PDF-mode t)
+
+;; Make emacs aware of multi-file projects
+(setq-default TeX-master nil)
+
 
 ;; Make XeLaTeX the default latex engine // Doesn't work. Set in
 ;; custom below instead.
 ;; (add-hook 'TeX-mode-hook
 ;;           (function (lambda ()
-;;                       ;; PDF mode for latex
-;;                       (setq-default TeX-PDF-mode t)
 ;;                       (setq TeX-engine "xetex")
 ;;                       (setq LaTeX-XeTeX-command "xelatex -synctex=1")
-;;                       ;; Make emacs aware of multi-file projects
-;;                       (setq-default TeX-master nil)
 ;;               )
 ;;             )
 ;;   )
