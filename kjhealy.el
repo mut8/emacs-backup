@@ -46,10 +46,6 @@
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
 
-;; Turn off hl-line when writing latex 
-;;(add-hook 'TeX-mode-hook 'local-hl-line-mode-off)
-
-
 ;; Synctex with Skim
 (require 'tex-site)
 (add-hook 'TeX-mode-hook
