@@ -135,6 +135,9 @@
 (add-hook 'ess-mode-hook 'turn-on-cdlatex) ; with ESS (for pairing)
 (add-hook 'inferior-ess-mode-hook 'turn-on-cdlatex) ; with iESS[R] (for pairing)
 
+;; roxygen more for generating Rd and packages
+(require 'ess-roxygen)
+
 ;; R-noweb mode, for Sweave files.
 (defun Rnw-mode ()
   (require 'ess-noweb)
