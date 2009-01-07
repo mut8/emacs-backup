@@ -269,6 +269,8 @@
 ;; Ergonomic Keybindings for Emacs: http://xahlee.org/emacs/ergonomic_emacs_keybinding.html
 (load-file "~/elisp/vendor/ergonomic_keybinding_qwerty.el")
 
+;; Tweak to ergo keybindings for commenting regions of text
+(global-set-key (kbd "M-'") 'comment-or-uncomment-region-or-line)
 
 ;; Base dir
 (cd "~/")
