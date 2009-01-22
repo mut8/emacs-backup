@@ -13,3 +13,5 @@ oddmuse/*
 .newsrc-dribble
 .nnmail-cache
 /#.newsrc-dribble#
+.svn
+.DS_Store
