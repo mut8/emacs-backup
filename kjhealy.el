@@ -110,10 +110,10 @@
 
 ;; CDLaTex minor mode: tab-trigger environments, paired paren
 ;; insertion, etc
-(autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
-(autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
-(add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)   ; with AUCTeX LaTeX
-                                        ; mode
+;; (autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
+;; (autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)   ; with AUCTeX LaTeX
+;;                                         ; mode
 
 ;; set which characters are autopaired // Doesn't work. Set in custom, below.
 ;; (add-hook 'cdlatex-mode-hook
@@ -283,6 +283,6 @@
   ;; If there is more than one, they won't work right.
   '(LaTeX-XeTeX-command "xelatex -synctex=1")
   '(TeX-engine (quote xetex))
-  '(cdlatex-paired-parens "$[{(")
+  ;; '(cdlatex-paired-parens "$[{(")
  )
 
