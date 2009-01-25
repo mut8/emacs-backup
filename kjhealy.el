@@ -250,6 +250,11 @@
   )
 
 
+;;; prefer auto-fill to visual line wrap in ESS mode
+(add-hook 'ess-mode-hook 'turn-on-auto-fill)
+(add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
+
+
 ;; Page down/up move the point, not the screen.
 ;; In practice, this means that they can move the
 ;; point to the beginning or end of the buffer.
