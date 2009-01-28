@@ -32,8 +32,12 @@
 
 ;; fn to turn off highline in specific modes
 (defun highline-mode-off () (highline-mode 0))
-;; Turn off local highlighting for LaTeX, Magit, eshell
-(add-hook 'magit-mode-hook #'highline-mode-off)
+
+;; or on
+(defun highline-mode-on () (highline-mode 1))
+
+;; Turn off local highlighting for eshell
+;; (add-hook 'magit-mode-hook #'highline-mode-off)
 (add-hook 'eshell-mode-hook #'highline-mode-off)
 ;;(add-hook 'TeX-mode-hook #'highline-mode-off)
 
@@ -107,6 +111,8 @@
         (?o    . "\\citepr[]{%l}")
         (?n    . "\\nocite{%l}")))
 (setq reftex-cite-prompt-optional-args t)
+
+(add-hook 'LaTeX-mode-hook 'highline-mode-on)
 
 ;; CDLaTex minor mode: tab-trigger environments, paired paren
 ;; insertion, etc
@@ -253,6 +259,10 @@
 ;;; prefer auto-fill to visual line wrap in ESS mode
 (add-hook 'ess-mode-hook 'turn-on-auto-fill)
 (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
+
+;; highline in ess
+(add-hook 'ess-mode-hook 'highline-mode-on)
+(add-hook 'inferior-ess-mode-hook 'highline-mode-on)
 
 
 ;; Page down/up move the point, not the screen.
