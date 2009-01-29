@@ -12,8 +12,8 @@
 
 ;; Color Theme
 (require 'color-theme)
-(load-file "~/elisp/color-custom/color-theme-blackboard-kjh.el")
-(color-theme-blackboardkjh)
+(load-file "~/elisp/color-custom/color-theme-twilight.el")
+(color-theme-twilight)
 
 ;; require maxframe package to conveniently maxmimize the window with M-x mf
 (require 'maxframe)
