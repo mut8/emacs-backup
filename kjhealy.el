@@ -287,6 +287,12 @@
 ;; Tweak to ergo keybindings for commenting regions of text
 (global-set-key (kbd "M-'") 'comment-or-uncomment-region)
 
+;;
+;; Run the VC command before running xelatex
+(fset 'run-vc-then-xelatex
+   [?\M-! ?v ?c return ?\C-c ?\C-c return])
+(global-set-key (kbd "C-c c") 'run-vc-then-xelatex)
+
 ;; Base dir
 (cd "~/")
 
