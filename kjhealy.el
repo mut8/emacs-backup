@@ -199,16 +199,15 @@
 (add-hook 'ido-setup-hook
           (lambda ()
             (setq ido-enable-flex-matching t)
-            (global-set-key "\M-x" 'ido-execute-command)))
-
-(add-hook 'ido-setup-hook 
-          (lambda () 
+            (global-set-key "\M-x" 'ido-execute-command)
             (define-key ido-completion-map [tab] 'ido-complete)))
 
-                                        ; Sane line wrapping for long documents and papers
+(setq ido-work-directory-list '("~/" "~/Desktop" "~/Documents"))
+
+;; Sane line wrapping for long documents and papers
 (global-visual-line-mode t)
 
-                                        ; Use cocoAspell instead of ispell
+;; Use cocoAspell instead of ispell
 (setq ispell-program-name "~/Library/PreferencePanes/Spelling.prefPane/Contents/MacOS/cocoAspell")
 
 ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
