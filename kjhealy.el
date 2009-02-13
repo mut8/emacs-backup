@@ -15,6 +15,9 @@
 (load-file "~/elisp/color-custom/color-theme-twilight.el")
 (color-theme-twilight)
 
+;; Highlight current line (twilight theme builds in support for this)
+(global-hl-line-mode 1)
+
 ;; require maxframe package to conveniently maxmimize the window with M-x mf
 (require 'maxframe)
 (global-set-key (kbd "C-c m") 'x-maximize-frame)
@@ -24,23 +27,6 @@
 (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
-
-(require 'highline)
-(highline-mode 1)
- ;; To customize the background color
-(set-face-background 'highline-face "#262626")
-
-;; fn to turn off highline in specific modes
-(defun highline-mode-off () (highline-mode 0))
-
-;; or on
-(defun highline-mode-on () (highline-mode 1))
-
-;; Turn off local highlighting for eshell
-;; (add-hook 'magit-mode-hook #'highline-mode-off)
-(add-hook 'eshell-mode-hook #'highline-mode-off)
-;;(add-hook 'TeX-mode-hook #'highline-mode-off)
-
 
 ;;; -----------------------------
 ;;; LATEX STUFF
@@ -111,8 +97,6 @@
         (?o    . "\\citepr[]{%l}")
         (?n    . "\\nocite{%l}")))
 (setq reftex-cite-prompt-optional-args t)
-
-(add-hook 'LaTeX-mode-hook 'highline-mode-on)
 
 ;; CDLaTex minor mode: tab-trigger environments, paired paren
 ;; insertion, etc
@@ -265,11 +249,6 @@
 ;;; prefer auto-fill to visual line wrap in ESS mode
 (add-hook 'ess-mode-hook 'turn-on-auto-fill)
 (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
-
-;; highline in ess
-(add-hook 'ess-mode-hook 'highline-mode-on)
-(add-hook 'inferior-ess-mode-hook 'highline-mode-on)
-
 
 ;; Page down/up move the point, not the screen.
 ;; In practice, this means that they can move the
