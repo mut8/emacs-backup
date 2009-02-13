@@ -238,22 +238,29 @@
 
 ;; Enable skeleton mode in ESS for paired insertion
 (require 'skeleton)
-(dolist (hook '(ess-mode-hook
-                inferior-ess-mode-hook))
-  (add-hook hook (lambda ()
-              (make-local-variable 'skeleton-pair)
-              (make-local-variable 'skeleton-pair-on-word)
-              (make-local-variable 'skeleton-pair-filter-function)
-              (make-local-variable 'skeleton-pair-alist)
-              (setq skeleton-pair-on-word t
-                    skeleton-pair t)
-              (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-              (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-              (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-              (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-              (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)))
-  )
+(setq skeleton-pair t)
+(defvar my-skeleton-pair-alist
+  '((?\) . ?\()
+    (?\] . ?\[)
+    (?} . ?{)
+    (?" . ?")))
 
+(defun my-skeleton-pair-end (arg)
+  "Skip the char if it is an ending, otherwise insert it."
+  (interactive "*p")
+  (let ((char last-command-char))
+    (if (and (assq char my-skeleton-pair-alist)
+             (eq char (following-char)))
+        (forward-char)
+      (self-insert-command (prefix-numeric-value arg)))))
+
+(dolist (pair my-skeleton-pair-alist)
+  (global-set-key (char-to-string (first pair))
+                  'my-skeleton-pair-end)
+  ;; If the char for begin and end is the same,
+  ;; use the original skeleton
+  (global-set-key (char-to-string (rest pair))
+                  'skeleton-pair-insert-maybe))
 
 ;;; prefer auto-fill to visual line wrap in ESS mode
 (add-hook 'ess-mode-hook 'turn-on-auto-fill)
