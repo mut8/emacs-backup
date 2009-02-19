@@ -10,6 +10,9 @@
            (setq load-path (cons my-lisp-dir load-path))
            (normal-top-level-add-subdirs-to-load-path)))
 
+;; magit
+(require 'magit)
+
 ;; Color Theme
 (require 'color-theme)
 (load-file "~/elisp/color-custom/color-theme-twilight.el")
