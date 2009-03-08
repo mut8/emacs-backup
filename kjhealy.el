@@ -320,8 +320,24 @@
 (add-to-list 'load-path
              "~/elisp/vendor/ecb")
 
-(require 'ecb)    
+(require 'ecb)
+(require 'ecb-autoloads)
 
+;; make ecb git-aware
+(defun ecb-vc-dir-managed-by-git (directory)
+    (let* ((cannon (file-truename directory))
+           (gitdir (concat cannon "/.git/")))
+      (if (eq cannon "/")
+          nil
+        (cond ((and (ecb-file-exists-p gitdir)
+                    (locate-library "vc-git"))
+               'git)
+              (t
+               (ecb-vc-dir-managed-by-git (concat cannon "/../")))))))
+
+;; r-tags support.
+;; http://dsarkar.fhcrc.org/rtags/rtags.html
+(visit-tags-table "~/rtags/TAGS")
 
 ;; Base dir
 (cd "~/")
