@@ -322,6 +322,10 @@
 
 (require 'ecb)
 (require 'ecb-autoloads)
+;; r-tags support.
+;; http://dsarkar.fhcrc.org/rtags/rtags.html
+(visit-tags-table "~/rtags/TAGS")
+
 
 ;; make ecb git-aware
 (defun ecb-vc-dir-managed-by-git (directory)
@@ -335,9 +339,6 @@
               (t
                (ecb-vc-dir-managed-by-git (concat cannon "/../")))))))
 
-;; r-tags support.
-;; http://dsarkar.fhcrc.org/rtags/rtags.html
-(visit-tags-table "~/rtags/TAGS")
 
 ;; Base dir
 (cd "~/")
