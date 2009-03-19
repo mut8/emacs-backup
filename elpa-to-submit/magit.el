@@ -36,12 +36,7 @@
 
 ;;; TODO
 
-;; For 0.7:
-;;
-;; - Make it possible to ignore commits etc for Wazzup.
-;;
-;; Later:
-;;
+>>>>>>> technomancy/master:elpa-to-submit/magit.el
 ;; - Good email integration.
 ;; - Showing tags.
 ;; - Visiting from staged hunks doesn't always work since the line
@@ -101,6 +96,7 @@ Setting this to nil will make it do nothing, setting it to t will arrange things
 
 (defcustom magit-process-popup-time -1
   "Popup the process buffer if a command takes longer than this many seconds."
+<<<<<<< HEAD:elpa-to-submit/magit.el
   :group 'magit
   :type '(choice (const :tag "Never" -1)
 		 (const :tag "Immediately" 0)
@@ -109,6 +105,16 @@ Setting this to nil will make it do nothing, setting it to t will arrange things
 (defcustom magit-log-edit-confirm-cancellation nil
   "Require acknowledgement before cancelling the log edit buffer."
   :group 'magit
+=======
+  :group 'magit
+  :type '(choice (const :tag "Never" -1)
+		 (const :tag "Immediately" 0)
+		 (integer :tag "After this many seconds")))
+
+(defcustom magit-log-edit-confirm-cancellation nil
+  "Require acknowledgement before cancelling the log edit buffer."
+  :group 'magit
+>>>>>>> technomancy/master:elpa-to-submit/magit.el
   :type 'boolean)
 
 (defface magit-header
@@ -265,6 +271,15 @@ Many Magit faces inherit from this one by default."
 	(nreverse (if (equal (car rev) "")
 		      (cdr rev)
 		    rev))))))
+<<<<<<< HEAD:elpa-to-submit/magit.el
+=======
+
+(defun magit-write-file-lines (file lines)
+  (with-temp-buffer
+    (dolist (l lines)
+      (insert l "\n"))
+    (write-file file)))
+>>>>>>> technomancy/master:elpa-to-submit/magit.el
 
 (defun magit-concat-with-delim (delim seqs)
   (cond ((null seqs)
@@ -2682,12 +2697,28 @@ Prefix arg means justify as well."
 
 ;;; Wazzup
 
+<<<<<<< HEAD:elpa-to-submit/magit.el
 (defun magit-wazzup-ignore (branch edit)
   (let ((ignore-file ".git/info/wazzup-exclude"))
     (if edit
 	(setq branch (read-string "Branch to ignore for wazzup: " branch)))
     (append-to-file (concat branch "\n") nil ignore-file)
     (magit-need-refresh)))
+=======
+(defun magit-wazzup-toggle-ignore (branch edit)
+  (let ((ignore-file ".git/info/wazzup-exclude"))
+    (if edit
+	(setq branch (read-string "Branch to ignore for wazzup: " branch)))
+    (let ((ignored (magit-file-lines ignore-file)))
+      (cond ((member branch ignored)
+	     (when (or (not edit)
+		       (y-or-n-p "Branch %s is already ignored. Unignore?"))
+	       (setq ignored (delete branch ignored))))
+	    (t
+	     (setq ignored (append ignored (list branch)))))
+      (magit-write-file-lines ignore-file ignored)
+      (magit-need-refresh))))
+>>>>>>> technomancy/master:elpa-to-submit/magit.el
 
 (defun magit-refresh-wazzup-buffer (head all)
   (magit-create-buffer-sections
@@ -2749,7 +2780,11 @@ Prefix arg means justify as well."
     ((untracked file)
      (magit-ignore-file info current-prefix-arg nil))
     ((wazzup)
+<<<<<<< HEAD:elpa-to-submit/magit.el
      (magit-wazzup-ignore info current-prefix-arg))))
+=======
+     (magit-wazzup-toggle-ignore info current-prefix-arg))))
+>>>>>>> technomancy/master:elpa-to-submit/magit.el
 
 (defun magit-ignore-item-locally ()
   (interactive)
