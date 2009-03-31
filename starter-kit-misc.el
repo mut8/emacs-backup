@@ -68,8 +68,9 @@
 (set-default 'indicate-empty-lines t)
 (set-default 'imenu-auto-rescan t)
 
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(add-hook 'text-mode-hook 'turn-on-flyspell)
+;; Turn off auto fill for regular text modes -- use visual line mode instead
+;; (add-hook 'text-mode-hook 'turn-on-auto-fill) 
+;; (add-hook 'text-mode-hook 'turn-on-flyspell)
 
 (defvar coding-hook nil
   "Hook that gets run on activation of any programming mode.")
