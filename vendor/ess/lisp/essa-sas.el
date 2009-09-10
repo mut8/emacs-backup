@@ -1,9 +1,9 @@
 ;;; essa-sas.el -- clean-room implementation of many SAS-mode features
 
-;; Copyright (C) 1997--2005 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Author: Rodney A. Sparapani <rsparapa@mcw.edu>
+;; Original Author: Rodney A. Sparapani
 ;; Maintainer: ESS-core@stat.math.ethz.ch
 ;; Created: 17 November 1999
 ;; Keywords: SAS
@@ -663,7 +663,7 @@ current buffer if nil."
 
 	      (if revert
 		  (if (and (> ess-sas-log-max 0) (string-equal suffix "log")
-			   (> (nth 7 (file-attributes ess-sas-temp-file))
+			   (> (ess-num-or-zero (nth 7 (file-attributes ess-sas-temp-file))) 
 			      ess-sas-log-max))
 		      (progn
 			(insert-file-contents ess-sas-temp-file nil 0
@@ -719,23 +719,29 @@ current buffer if nil."
     "\\|WARNING: RUN statement ignored due to previous errors."
     "\\|WARNING: Values exist outside the axis range"
     "\\|Bus Error In Task\\|Segmentation Violation In Task"))
-	(ess-sas-save-point nil) (ess-sas-pop-mark nil))
+	(ess-sas-save-point nil)); (ess-sas-pop-mark nil))
 
   (if (ess-sas-goto "log" 'revert) (progn
 	(setq ess-sas-save-point (point))
 	(goto-char (point-min)))
     (setq ess-sas-save-point (point)))
 
+;(if (number-char-or-marker-p ess-sas-save-point) (progn
 (if ess-tmp-no-error-check (goto-char ess-sas-save-point)
   (if (or (search-forward-regexp ess-sas-error nil t)
 	(and (goto-char (point-min))
 	    (search-forward-regexp ess-sas-error nil t)))
-	(if (and (boundp 'zmacs-regions) zmacs-regions)
-	    (progn
-		(if ess-sas-pop-mark (pop-mark)
-		    (setq ess-sas-pop-mark t))
-		(push-mark (match-beginning 0) t)
-		(zmacs-activate-region)))
+		t
+; this feature never worked quite right (and was XEmacs only to boot)
+; after highlighting an error message, moving point would cause an unwanted
+; highlighting between point and mark; why god, why?!?
+;
+;	(if (and (boundp 'zmacs-regions) zmacs-regions)
+;	    (progn
+;		(if ess-sas-pop-mark (pop-mark)
+;		    (setq ess-sas-pop-mark t))
+;		(push-mark (match-beginning 0) t)
+;		(zmacs-activate-region)))
 	(goto-char ess-sas-save-point)))))
 
 (defun ess-sas-goto-lst ()
@@ -882,7 +888,8 @@ optional argument is non-nil, then set-buffer rather than switch."
 
         (while (replace-regexp "\\\\fs[0-9]+" (concat "\\\\fs" ess-tmp-font-size)) nil)
 
-        (save-buffer)))
+        (save-buffer)
+	(kill-buffer (current-buffer))))
 
 (defun ess-sas-rtf-us-landscape ()
 "Creates an MS RTF US landscape file from the current buffer."
@@ -894,7 +901,8 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert (concat "{\\*\\pgdsctbl\n"
 "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
 "\\landscape\\paperh12240\\paperw15840\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
-    (save-buffer))
+    (save-buffer)
+    (kill-buffer (current-buffer)))
 
 (defun ess-sas-rtf-a4-landscape ()
 "Creates an MS RTF A4 landscape file from the current buffer."
@@ -906,7 +914,8 @@ optional argument is non-nil, then set-buffer rather than switch."
     (insert (concat "{\\*\\pgdsctbl\n"
 "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
 "\\landscape\\paperh11905\\paperw16837\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn16837\\pghsxn11905\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"))
-    (save-buffer))
+    (save-buffer)
+    (kill-buffer (current-buffer)))
 ))
     (error nil)) ;)
 
@@ -1115,18 +1124,25 @@ Keep in mind that the maximum command line length in MS-DOS is
 (defun ess-sas-toggle-sas-log-mode ()
   "Toggle SAS-log-mode for .log files."
   (interactive)
-  (ess-sas-goto-log t)
+  
+  (ess-sas-goto-log)
+  (kill-buffer nil)  
 
-  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
+;  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) (progn
+;      (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
+;      (setq buffer-read-only nil)
+;      (ess-transcript-minor-mode 0)
+;      (font-lock-mode 0))
+;      (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist))
+;      (setq buffer-read-only t)
+;      (ess-transcript-minor-mode 1)
+;      (font-lock-mode 1)
+;      (font-lock-fontify-buffer))
+
+  (if (equal (cdr (assoc "\\.[lL][oO][gG]\\'" auto-mode-alist)) 'SAS-log-mode) 
       (setq auto-mode-alist (delete '("\\.[lL][oO][gG]\\'" . SAS-log-mode) auto-mode-alist))
-      (setq buffer-read-only nil)
-      (ess-transcript-minor-mode 0)
-      (font-lock-mode 0))
-      (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist))
-      (setq buffer-read-only t)
-      (ess-transcript-minor-mode 1)
-      (font-lock-mode 1)
-      (font-lock-fontify-buffer)))
+      (setq auto-mode-alist (append '(("\\.[lL][oO][gG]\\'" . SAS-log-mode)) auto-mode-alist)))
+  (ess-sas-goto-log))
 
 (defun ess-sas-versions-create ()
   "Generate the `M-x SASV' functions for starting other versions of SAS.

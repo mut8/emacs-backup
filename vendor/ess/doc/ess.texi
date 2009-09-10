@@ -392,6 +392,7 @@ unnecessary prompts.
 @section New features in ESS
 
 @include newfeat.texi
+@include onewfeat.texi
 
 @comment  node-name,  next,  previous,  up
 @node Credits, Latest version, New features, Introduction
@@ -470,7 +471,10 @@ on your system.
 @c FIXME: the following contains @node s  *and* is also included by readme.texi
 @c -----  which does *not* include 'requires.texi'
 @c         ==> *must* give node pointer problems!
-@include inst_tar.texi
+@c @include inst_tar.texi
+
+@include unixlike.texi
+@include windows.texi
 
 @node Requirements, , Microsoft Windows installation, Installation
 @comment node-name,  next,  previous,  up
@@ -2759,6 +2763,18 @@ some.name <- function
 
 with the function name starting in column 0.  Windows users may need to
 change the single quotes to double quotes.
+
+R version 2.9.0 introduced a front-end script for finding R tags, which
+calls the @samp{rtags()} function).  By default, this script will
+recursively search the directories for relevant tags in R/C/Rd files.
+To use this script from the command line, try the following to get
+started:
+
+@example
+R CMD rtags --help
+@end example
+
+
 
 @comment  node-name,  next,  previous,  up
 @node Rdired, , TAGS, Miscellaneous

@@ -1,11 +1,11 @@
 ;;; essl-sas.el --- SAS customization
 
-;; Copyright (C) 1997--2008 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2009 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
-;; Original Authors: Richard M. Heiberger <rmh@astro.ocis.temple.edu>,
-;;          A.J. Rossini <rossini@u.washington.edu>,
-;;          Rodney Sparapani <rsparap@mcw.edu>
+;; Original Authors: Richard M. Heiberger,
+;;          A.J. Rossini,
+;;          Rodney Sparapani
 ;; Created: 20 Aug 1997
 ;; Maintainers: ESS-core <ESS-core@stat.math.ethz.ch>
 
@@ -200,8 +200,8 @@ number."
   :group 'ess-sas
   :type  'string)
 
-(defcustom ess-sas-run-make-regexp nil
-  "If you do not want to run make-regexp, then set to nil."
+(defcustom ess-sas-run-regexp-opt t
+  "If you do not want to run regexp-opt, then set to nil."
   :group 'ess-sas
   :type '(choice (const nil) string))
 
@@ -246,124 +246,312 @@ number."
 
 
 (defvar SAS-mode-font-lock-keywords
-  (if ess-sas-run-make-regexp
+  (if ess-sas-run-regexp-opt
       (list
-       ;; SAS comments
-       (cons "^[ \t]*%?\\*.*;"		font-lock-comment-face)
-       (cons ";[ \t]*%?\\*.*;"		font-lock-comment-face)
-       (list "/\\*\\([^*/]\\)*\\*/"      0  font-lock-comment-face t)
+     ;; .log NOTE: messages
+     (cons "^NOTE: .*$"                          font-lock-comment-face)
+     (cons "^      [^ ].*[.]$"                   font-lock-comment-face)
+     (cons "^      [a-z].*[a-z][ ]?$"            font-lock-comment-face)
+     (cons "^      Engine:[ ]+V.+$"              font-lock-comment-face)
+     (cons "^      Physical Name:[ ]+.+$"        font-lock-comment-face)
+     (cons "^      \\(cpu\\|real\\) time[ ]+[0-9].*$"
+                                                 font-lock-comment-face)
+     (cons "^      decimal may be shifted by the"
+                                                 font-lock-comment-face)
+     (cons "^NOTE: The infile "                  font-lock-comment-face) 
+     (cons "^NOTE: 1 record was read from the infile " 
+				                 font-lock-comment-face) 
+     (cons "^NOTE: [1-9][0-9]* records were read from the infile " 
+				                 font-lock-comment-face) 
+     (cons "^      Filename=.*,$"                font-lock-comment-face)
+     (cons "^      File Name=.*,$"               font-lock-comment-face)
+     (cons "^      File $"                       font-lock-comment-face)
+     (cons "^      Name=.*,$"                    font-lock-comment-face)
+     (cons "^      File List=("                  font-lock-comment-face)
+     (cons "^      List=("                       font-lock-comment-face)
+     (cons "^      Owner Name=.*,$"              font-lock-comment-face)
+     (cons "^      Access Permission=.*,$"       font-lock-comment-face)
+     (cons "^      Last Modified=.*,?$"          font-lock-comment-face)
+     (cons "^      File Size (bytes)=[0-9]+$"    font-lock-comment-face)
+     (cons "^      Pipe command="                font-lock-comment-face)
+     (cons "^NOTE: The file "                    font-lock-comment-face) 
+     (cons "^NOTE: 1 record was written to the file " 
+				                 font-lock-comment-face) 
+     (cons "^NOTE: [1-9][0-9]* records were written to the file " 
+				                 font-lock-comment-face) 
+     (cons "^NOTE: PROC LOGISTIC is modeling the probability that"
+                                                 font-lock-comment-face) 
+     (cons "^NOTE: PROC GENMOD is modeling the probability that"
+                                                 font-lock-comment-face) 
+     (cons "^1[ ]+The SAS System.*$"             font-lock-comment-face)
+     (cons "^\014.*$"                            font-lock-comment-face)
+     (cons "[*][*][*] ANNOTATE macros are now available [*][*][*]"
+						 font-lock-comment-face)
+     (cons "For further information on ANNOTATE macros, enter,"     
+						 font-lock-comment-face)
+     (cons "\\(or \\)?%HELPANO.*$" 
+						 font-lock-comment-face)
+     (cons "^Local Variables:$"                  font-lock-comment-face)
+     (cons "^End:$"                              font-lock-comment-face)
+     (cons "^MPRINT([_A-Z0-9]+)"                 font-lock-comment-face)
+   
+     ;; .log ERROR: messages
+     (cons "^ERROR\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"   
+                                                 font-lock-keyword-face)
+     ;       ERROR:
+     (cons "^       [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"  
+                                                 font-lock-keyword-face)
+     ;       ERROR #-###:
+     (cons "^             [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+                                                 font-lock-keyword-face)
+     ;       ERROR ##-###:
+     (cons "^              [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$" 
+						 font-lock-keyword-face)
+     ;       ERROR ###-###:
+     (cons "^               [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$" 
+						 font-lock-keyword-face)
+     (cons "^              a format name."       font-lock-keyword-face)
+     (cons "^       where a numeric operand is required. The condition was: "
+                                                 font-lock-keyword-face)
+     (cons "[ ][_]+$"                            font-lock-keyword-face)
 
-       ;; SAS execution blocks, DATA/RUN, PROC/RUN, %MACRO/%MEND
-       (cons "\\<\\(data\\|run\\|%macro\\|%mend\\)\\>" font-lock-constant-face)
-       (cons "\\<proc[ \t]+[a-z][a-z_0-9]+"            font-lock-constant-face)
+     ;; .log WARNING: messages 
+     (cons "^WARNING\\( [0-9]+-[1-9][0-9][0-9]\\)?: .*$"  
+                                                 font-lock-function-name-face)
+     ;       WARNING:
+     (cons "^         [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+                                                 font-lock-function-name-face)
+     ;       WARNING #-###:
+     (cons "^               [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+                                                 font-lock-function-name-face)
+     ;       WARNING ##-###:
+     (cons "^                [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+                                                 font-lock-function-name-face)
+     ;       WARNING ###-###:
+     (cons "^                 [^ ].*\\([.][ ]?\\|[,a-z][ ]\\)$"
+                                                 font-lock-function-name-face)
 
-       ;; SAS statements
+     ;; SAS comments
+     ;; /* */ style handled by grammar above
+     (cons "\\(^[0-9]*\\|[:;!]\\)[ \t]*%?\\*[^;/][^;]*;" 
+					         font-lock-comment-face)
+    
+     ; these over-rides need to come before the more general declarations
+     (cons "\\<and("      font-lock-function-name-face)
+     (cons "\\<data="     font-lock-keyword-face)
+     (cons "\\<in:("      font-lock-function-name-face)
+     (cons "\\<index("    font-lock-function-name-face)
+     (cons "\\<input("    font-lock-function-name-face)
+     (cons "\\<libname("  font-lock-function-name-face)
+     (cons "\\<not("      font-lock-function-name-face)
+     (cons "\\<or("       font-lock-function-name-face)
+     (cons "\\<put("      font-lock-function-name-face)
+     (cons "\\<sum("      font-lock-function-name-face)
 
-       (cons (concat
-	      "\\<"
-	      "%?do[ \t]*" (make-regexp '("over" "%?until" "%?while") t) "?"
-	      "\\>")
-	     font-lock-keyword-face)
+    ; other idiosyncratic keywords
+     ;(cons "key="      font-lock-keyword-face)
+     ;(cons "/unique"   font-lock-keyword-face)
 
-       (cons (concat
-	      "\\<"
-	      (make-regexp
+       ;; SAS execution blocks: DATA, %MACRO/%MEND, %DO/%END, etc.
+       (cons (regexp-opt '(
+		 "data" ;"proc" 
+		"%macro" "%mend"
+		 "%do" "%to" "%by" "%end" 
+		 "%goto" "%go to" 
+		 "%if" "%then" "%else"
+		 "%global" "%inc" "%include" "%input" "%local" "%let" "%put" "%sysexec"
+	    ) 'words) font-lock-constant-face)
+
+       ;; SAS execution blocks that must be followed by a semi-colon
+       (cons (concat "\\<"
+	      (regexp-opt
 	       '(
-		 "abort" "array" "attrib" "by" "delete" "display" "dm"
-		 "drop" "error" "file" "filename" "footnote\\(10?\\|[2-9]\\)?"
-		 "format"
-		 "%go[ \t]*to" "%if" "%then" "%else"
-		 "go[ \t]*to" "if" "then" "else"
-		 "infile" "informat" "input" "%input" "keep" "label"
-		 "length" "libname" "link"
-		 "merge" "missing" "modify" "note" "options" "goptions" "output"
-		 "otherwise" "put" "%put" "rename" "retain" "select" "when" "set"
-		 "skip" "title\\(10?\\|[2-9]\\)?" "where" "window" "update" "out"
-		 "change" "class" "exchange" "exclude" "freq" "id" "index"
-		 "model" "plot" "save" "sum" "tables?" "var" "weight" "with"
-		 "manova" "repeated" "value" "random" "means" "lsmeans"
-		 ;; SAS macro statements not handled above
-		 "%global" "%include" "%local" "%let" "%sysexec"
-		 ) t) "\\>")
-	     font-lock-keyword-face)
-
+		 "run;" "quit;" "endsas;"
+		 "cards;" "cards4;" "datalines;" "datalines4;" "lines;" "lines4;"
+		 )))
+	     font-lock-constant-face)
+           
        ;; SAS statements that must be followed by a semi-colon
-       (cons (concat
-	      "\\<"
-	      (make-regexp
+       (cons (concat "\\<"
+	      (regexp-opt
 	       '(
-		 "cards4?" "end" "%end" "endsas" "list" "lostcard" "page"
-		 "return" "stop"
-		 ) t) "\\>" "[ \t]*;")
+		 "end;" "list;" "lostcard;" "page;" "return;" "stop;"
+		 )))
+	     font-lock-keyword-face)
+
+       ;; SAS statements that must be followed by an equal sign
+       (cons (concat "\\<"
+	      (regexp-opt
+	       '(
+		 "compress=" "in=" "out=" "sortedby="
+		 )))
+	     font-lock-keyword-face)
+     
+;;;    ;; SAS procedure names
+       (cons (concat "\\<proc[ ]+"
+		(regexp-opt '(
+		    ;; SAS base and SAS/Graph 
+		    "append"
+		    "calendar" "catalog" "chart" "cimport" "cport" "compare" "contents" "copy" "corr" 		    
+		    "datasets" "dbcstab" "display"
+		    "explode" "export"
+		    "format" "forms" "freq" "fsbrowse" "fsedit" "fsletter" "fslist" "fsview"		    		     
+		    "ganno" "gchart" "gcontour" "gdevice" "geocode" "gfont" "gimport" "ginside"
+		    "gkeymap" "gmap" "goptions" "gplot" "gprint" "gproject" "greduce" "gremove" 
+		    "greplay" "gslide" "gtestit" "g3d" "g3grid" 
+		    "iml" "import" "insight"
+		    "mapimport" "means"
+		    "options"
+		    "plot" "pmenu" "print" "printto"
+		    "rank" "registry" "report"
+		    "sort" "sql" "standard" "summary"
+		    "tabulate" "template" "timeplot" "transpose" "trantab"
+		    "univariate"
+
+		   ;;SAS/Stat and SAS/ETS
+		    "aceclus" "anova" "arima" "autoreg"
+		    "bgenmod" "blifereg" "boxplot" "bphreg"		    		    
+		    "calis" "cancorr" "candisc" "catmod" "citibase" "cluster" "computab" "corresp"
+		    "discrim"
+		    "expand"
+		    "factor" "fastclus" "forecast"
+		    "gam" "genmod" "glimmix" "glm" "glmmod" "glmpower" "glmselect"
+		    "inbreed"
+		    "kde" "krige2d"
+		    "lattice" "lifereg" "lifetest" "loess" "logistic"
+		    "mds" "mixed" "modeclus" "model" "mortgage" "multtest"
+		    "nested" "nlin" "nlmixed" "npar1way"
+		    "orthoreg"
+		    "pdlreg" "phreg" "plan" "pls" "power" "princomp" "prinqual" "probit"
+		    "reg" "rsreg"
+		    "score" "sim2d" "simlin" "spectra" "statespace" "stdize" "stepdisc" 
+		    "surveymeans" "surveyreg" "surveyselect" "syslin"
+		    "tphreg" "tpspline" "transreg" "tree" "ttest"
+		    "varclus" "varcomp" "variogram"
+		    "x11"
+		) 'words)) font-lock-constant-face)   
+
+;       (cons (concat
+;	      "\\<"
+;	      "do[ \t]*" (regexp-opt '("over" "until" "while") t) "?"
+;	      "\\>")
+;	     font-lock-keyword-face)
+;
+       ;; SAS statements
+       (cons (concat ;"\\<"
+	      (regexp-opt
+	       '(
+		 "do" "to" "by" "go" "goto"
+		"abort" "and" "array" "attrib" 
+		"bayes" "between" 
+		"change" "class" "contains"
+		"delete" "display" "dm" "drop"
+		"else" "error" "exchange" "exclude" 
+		"file" "filename" "format" "freq"
+		 "footnote" "footnote1" "footnote2" "footnote3" "footnote4" "footnote5" 
+		 "footnote6" "footnote7" "footnote8" "footnote9" "footnote10"
+		"ge" "goptions" "gt"
+		"hazardratio"
+		"id" "if" "index" "infile" "informat" "input" ; "is" rarely used, but common false pos.
+		"keep" 
+		"label" "le" "length" "libname" "like" "link" "lsmeans" "lt"
+		"manova" "means" "merge" "missing" "model" "modify" 
+		"ne" "not" "note" "null" 
+		"ods" "options" "or" "output" "otherwise" 
+		"pageby" "plot" "put" 
+		"random" "rename" "repeated" "retain"
+		"same" "save" "select" "set" "skip" "sum" "sumby"
+		"table" "tables" "then"
+		 "title" "title1" "title2" "title3" "title4" "title5" 
+		 "title6" "title7" "title8" "title9" "title10"
+		"update"
+		"value" "var"
+		"weight" "where" "window" "with" 
+		"x"
+		 ) 'words)) ;"\\>")
 	     font-lock-keyword-face)
 
        ;; SAS/GRAPH statements not handled above
-       (cons (concat
-	      "\\<"
-	      (make-regexp
-	       '("axis" "legend" "pattern" "symbol") t) "\\([1-9][0-9]?\\)?"
-	      "\\>")
+       (cons (concat "\\<"
+	      (regexp-opt
+	       '("axis" "legend" "pattern" "symbol")) "\\([1-9][0-9]?\\)?"
+		"\\>")
 	     font-lock-keyword-face)
 
        ;; SAS functions and SAS macro functions
-       (cons "%[a-z_][a-z_0-9]*[ \t]*[(;]"
-	     font-lock-function-name-face)
-       (cons "\\<call[ \t]+[a-z_][a-z_0-9]*[ \t]*("
-	     font-lock-function-name-face)
+       (cons "%[a-z_][a-z_0-9]*[(;]"                  font-lock-function-name-face)
+       ;(cons "\\<call[ \t]+[a-z]+("                   font-lock-function-name-face)
 
-       (cons (concat
-	      "\\<"
-	      (make-regexp
+       (cons (concat ;"\\<"
+	      (regexp-opt
 	       '(
-		 "abs" "arcos" "arsin" "atan" "betainv" "byte" "ceil" "cinv"
-		 "collate" "compress" "cosh?" "css" "cv"
+		 "abs" "arcos" "arsin" "atan" 
+		"betainv" "byte" 
+		"call execute" "call label" "call module" "call modulei"
+		"call poke" "call ranbin" "call rancau" "call ranexp"
+		"call rangam" "call rannor" "call ranpoi" "call rantbl"
+		"call rantri" "call ranuni" "call rxchange" "call rxfree"
+		"call rxsubstr" "call set" "call symput" "call system"
+		"cdf" "ceil" "cinv" "collate" "compress" "convx" "convxp" "cos" "cosh" "css" "cv"
 		 "daccdb" "daccdbsl" "daccsl" "daccsyd" "dacctab"
-		 "depdb" "depdbsl" "depsl" "depsyd" "deptab"
-		 "date" "datejul" "datepart" "datetime" "day" "hms" "dhms" "dif"
-		 "digamma" "dim" "erfc?" "exp" "finv"
-		 "fipnamel?" "fipstate" "floor" "fuzz" "gaminv" "gamma"
-		 "hbound" "hour" "indexc?" "input" "int" "intck" "intnx" "intrr"
-		 "irr" "juldate" "kurtosis" "lag" "lbound" "left" "length"
-		 "lgamma" "log" "log10" "log2" "max" "mdy" "mean" "min" "minute"
-		 "mod" "month" "mort" "n" "netpv" "nmiss" "normal" "npv"
-;;;) t) "\\>" "[ \t]*(")
-;;;      font-lock-function-name-face)
-;;;
-;;;    (cons (concat "\\<"
-;;;(make-regexp '(
-		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr"
-		 "probit" "probnegb" "probnorm" "probt"
-		 "ordinal" "poisson" "put" "qtr" "range" "rank" "repeat"
-		 "ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi"
-		 "rantbl" "rantri" "ranuni"
-		 "reverse" "right" "round" "saving" "scan" "second" "sign" "sinh?"
-		 "sqrt" "std" "stderr" "stfips" "stnamel?" "substr" "sum"
-		 "symget" "tanh?" "time" "timepart" "tinv" "today" "translate"
-		 "trigamma" "trim" "trunc" "uniform" "upcase" "uss" "var"
-		 "verify" "weekday" "year" "yyq"
-		 "zipfips" "zipnamel?" "zipstate"
-;;;) t) "\\>" "[ \t]*(")
-;;;      font-lock-function-name-face)
-;;;
-;;;
+		 "depdb" "depdbsl" "depsl" "depsyd" "deptab" 
+		"date" "datejul" "datepart" "datetime" "day" "dhms" "dif" "digamma" "dim" 
+		"erf" "erfc" "exp" 
+		"finv" "fipname" "fipnamel" "fipstate" "floor" "fuzz" 
+		"gaminv" "gamma"
+		 "hbound" "hms" "hour" 
+		"in" "index" "indexc" "input" "int" "intck" "intnx" "intrr" "irr" 
+		"juldate" 
+		"kurtosis" 
+		"lag" "lbound" "left" "length" "lgamma" "log" "log10" "log2" 
+		"max" "mdy" "mean" "min" "minute" "mod" "month" "mort" 
+		"n" "netpv" "nmiss" "normal" "npv" 
+		"ordinal"
+		 "probbeta" "probbnml" "probchi" "probf" "probgam" "probhypr" "probit" "probnegb" "probnorm" "probt"
+		 "poisson" "put" 
+		"qtr" 
+		"range" "rank" "repeat" "reverse" "right" "round" "rxmatch" "rxparse"
+		"ranbin" "rancau" "ranexp" "rangam" "rannor" "ranpoi" "rantbl" "rantri" "ranuni"
+		"saving" "scan" "second" "sign" "sin" "sinh" "sqrt" 
+		"std" "stderr" "stfips" "stname" "stnamel" "substr" "sum" "symget" 
+		"tan" "tanh" "time" "timepart" "tinv" "today" "translate" "trigamma" "trim" "trunc" 
+		"uniform" "until" "upcase" "uss" 
+		"var" "verify" 
+		"weekday" "when" "while" 
+		"year" "yyq"
+		 "zipfips" "zipname" "zipnamel" "zipstate"
+
 ;;;    ;; SAS functions introduced in Technical Report P-222
+		 "airy" 
+		"band" "blshift" "brshift" "bnot" "bor" "bxor"
+		 "cnonct" "compbl"
+		"dairy" "dequote"
+		"fnonct"  
+		 "ibessel" "indexw" "inputc" "inputn" 
+		"jbessel" 
+		"lowcase"
+		 "putc" "putn" 
+		"quote" 
+		"resolve" 
+		"soundex" "sysprod"
+		"tnonct" "tranwrd" "trimn"
+
 ;;;    ;; SCL functions that are known to work with SAS macro function %sysfunc
-;;;    (cons (concat "\\<"
-;;;(make-regexp '(
-		 "airy" "band" "blshift" "brshift" "bnot" "bor" "bxor"
-		 "cnonct" "fnonct" "tnonct" "compbl" "dairy" "dequote"
-		 "ibessel" "jbessel"
-		 "indexw" "inputc" "inputn"  "lowcase"
-		 "putc" "putn" "quote" "resolve" "soundex" "sysprod"
-		 "tranwrd" "trimn"
-		 "%sysfunc" "attrc" "attrn" "cexist" "close" "dclose" "dnum"
-		 "dopen" "dread" "exist" "fclose" "fetchobs" "fileexist"
-		 "finfo" "fopen" "fput" "fwrite" "getoption"
-		 "getvarc" "getvarn" "libname" "libref" "open" "optgetn" "optsetn"
-		 "pathname" "sysmsg" "varfmt" "varlabel" "varnum" "vartype"
-		 ) t) "\\>" "[ \t]*(")
+		 "attrc" "attrn" 
+		"cexist" "close" 
+		"dclose" "dnum" "dopen" "dread" 
+		"exist" 
+		"fclose" "fetchobs" "fileexist" "finfo" "fopen" "fput" "fwrite" 
+		"getoption" "getvarc" "getvarn" 
+		"libname" "libref" 
+		"open" "optgetn" "optsetn"
+		 "pathname" 
+		"sysmsg" 
+		"varfmt" "varlabel" "varnum" "vartype"
+		 ) 'words) ;"\\>" 
+		"("); "[ \t]*(")
 	     font-lock-function-name-face)
-       )
+         )
     (list
      ;; .log NOTE: messages
      (cons "^NOTE: .*$"                         font-lock-constant-face)
@@ -403,7 +591,8 @@ number."
 		   "\\|g?\\(chart\\|p\\(lot\\|rint\\)\\)"
 		   "\\|g\\(anno\\|contour\\|device\\|font\\|\\(key\\)?map\\|options\\|project"
 		   "\\|re\\(duce\\|move\\|play\\)\\|slide\\|testit\\|3\\(d\\|grid\\)\\)"
-		   "\\|[cg]?import\\|i\\(ml\\|nsight\\)\\|means\\|options\\|p\\(menu\\|rintto\\)"
+		   "\\|\\(map\\|[cg]\\)?import\\|i\\(ml\\|nsight\\)"
+		   "\\|means\\|options\\|p\\(menu\\|rintto\\)"
 		   "\\|r\\(ank\\|e\\(gistry\\|port\\)\\)"
 		   "\\|s\\(ort\\|ql\\|tandard\\|ummary\\)"
 		   "\\|t\\(abulate\\|emplate\\|imeplot\\|ran\\(spose\\|tab\\)\\)\\|univariate"

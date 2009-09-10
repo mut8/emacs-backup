@@ -21,15 +21,15 @@ PREFIX=$(DESTDIR)
 #
 ## GNU Emacs
 EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
-LISPDIR=/Applications/Emacs.app/Contents/Resources/site-lisp
+LISPDIR=$(PREFIX)/share/emacs/site-lisp
 INFODIR=$(PREFIX)/info
 ETCDIR =$(PREFIX)/share/emacs/etc/ess
 
 ## XEmacs
 #EMACS=xemacs
-#LISPDIR=$(PREFIX)/lib/xemacs/xemacs-packages/lisp/ess
-#INFODIR=$(PREFIX)/lib/xemacs/xemacs-packages/info
-#ETCDIR =$(PREFIX)/lib/xemacs/xemacs-packages/etc/ess
+#LISPDIR=$(PREFIX)/share/xemacs/site-packages/lisp/ess
+#INFODIR=$(PREFIX)/share/xemacs/site-packages/info
+#ETCDIR =$(PREFIX)/share/xemacs/site-packages/etc/ess
 #
 ## the following command is the same for recent versions of both Emacs and XEmacs
 EMACSBATCH = $(EMACS) -batch -no-site-file -no-init-file
@@ -74,6 +74,7 @@ DOCDIR=$(PREFIX)/share/doc/ess
 ## GNUTAR          the name of GNU tar to support the z option
 ## SVN_URL         repository URL
 ## UPLOAD_DIR      Martin's upload directory
+## ESS_HOMEPAGE    Martin's svn co https://svn.r-project.org/ESS-web/trunk
 ##
 ESSVERSION=$(shell cat ./VERSION 2> /dev/null || cat ../VERSION)
 ESSDIR=ess-$(ESSVERSION)
@@ -81,5 +82,6 @@ ESSVERSIONTAG=ESS-$(shell sed 's/\./-/g' VERSION)
 GNUTAR=tar
 SVN_URL = https://svn.R-project.org/ESS
 UPLOAD_DIR = /u/maechler/emacs/ess-WWW/downloads/ess
+ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc

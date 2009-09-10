@@ -230,7 +230,18 @@ Better logic needed!  (see 2 uses, in this file).")
 ;  (define-key sas-mode-local-map "\C-c\C-x" 'ess-sas-goto-log)
 ;  (define-key sas-mode-local-map "\C-c\C-y" 'ess-sas-goto-lst)
 
-  (use-local-map sas-mode-local-map))
+  (use-local-map sas-mode-local-map)
+
+  (set (make-local-variable 'font-lock-defaults)
+       ;; KEYWORDS KEYWORDS-ONLY CASE-FOLD .....
+       '(SAS-mode-font-lock-keywords nil t))
+  ;;                                    ^^ this  *should* set
+  ;; font-lock-keywords-case-fold-search, but it fails for Emacs 22.[23]
+  ;; hence :
+  (setq font-lock-keywords-case-fold-search t)
+)
+
+
 
 ;; rmh Jul 10 2003
 (defun ess-electric-run-semicolon (arg)
