@@ -94,12 +94,31 @@
 
 ;; RefTeX formats for biblatex (not natbib)
 (setq reftex-cite-format
-      '((?\C-m . "\\cite[]{%l}")
-        (?t    . "\\textcite[]{%l}")
-        (?p    . "\\parencite[]{%l}")
-        (?o    . "\\citepr[]{%l}")
-        (?n    . "\\nocite{%l}")))
-(setq reftex-cite-prompt-optional-args t)
+     '(
+       (?\C-m . "\\cite[]{%l}")
+       (?t . "\\textcite{%l}")
+       (?a . "\\autocite[]{%l}")
+       (?p . "\\parencite{%l}")
+       (?f . "\\footcite[][]{%l}")
+       (?F . "\\fullcite[]{%l}")
+       (?x . "[]{%l}")
+       (?X . "{%l}")
+       ))
+
+(setq font-latex-match-reference-keywords
+'(("cite" "[{")
+  ("cites" "[{}]")
+        ("footcite" "[{")
+        ("footcites" "[{")
+        ("parencite" "[{")
+        ("textcite" "[{")
+        ("fullcite" "[{") 
+        ("citetitle" "[{") 
+        ("citetitles" "[{") 
+        ("headlessfullcite" "[{")))
+
+(setq reftex-cite-prompt-optional-args nil)
+(setq reftex-cite-cleanup-optional-args t)
 
 ;; CDLaTex minor mode: tab-trigger environments, paired paren
 ;; insertion, etc
