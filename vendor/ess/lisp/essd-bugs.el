@@ -1,9 +1,9 @@
-;;; essd-bugs.el -- ESS[BUGS] dialects
+;;; essd-bugs.el -- ESS[BUGS] dialect
 
-;; Copyright (C) 2006 Rodney Sparapani
+;; Copyright (C) 2008-2009 Rodney Sparapani
 
-;; Original Author: Rodney Sparapani <rsparapa@mcw.edu>
-;; Created: 16 August 2006
+;; Original Author: Rodney Sparapani
+;; Created: 13 March 2008
 ;; Maintainers: ESS-help <ess-help@stat.math.ethz.ch>
 
 ;; This file is part of ESS
@@ -303,6 +303,8 @@
    (setq font-lock-auto-fontify t)
    (make-local-variable 'font-lock-defaults)
    (setq font-lock-defaults '(ess-bugs-font-lock-keywords nil t))
+   ;; SJE: Basic comment functionality.
+   (setq comment-start "#")
    (run-hooks 'ess-bugs-mode-hook)
 
    (if (not (w32-shell-dos-semantics))

@@ -6,21 +6,20 @@ include ./Makeconf
 ## This is the default target, i.e. 'make' and 'make all' are the same.
 
 all install clean distclean:
-	@for D in lisp doc etc; do cd $$D; $(MAKE) $@; cd ..; done
+	cd etc; $(MAKE) $@
+	cd lisp; $(MAKE) $@
+	cd doc; $(MAKE) $@
+#bad dog@for D in lisp doc etc; do cd $$D; $(MAKE) $@; cd ..; done
 
 ## the rest of the targets are for ESS developer's use only :
 
 ## --- PRE-release ---
 
-dist: VERSION RPM.spec
-	cd doc;  $(MAKE) docs; cd ..
-	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
-	$(MAKE) cleanup-dist
-	svn cleanup
-	@echo "** Committing VERSION, README, ANNOUNCE, info etc **"
-	svn commit -m "Updating toplevel files for new version" \
-		VERSION README ANNOUNCE RPM.spec
-	svn commit -m "Updating ess-version, info & html for new version" lisp/ess-cust.el doc/info doc/html
+# new target to create .tgz and .zip files only
+# run in the foreground so you can accept the certificate
+# for real men
+# GNUTAR=gtar make downloads
+downloads:
 	@echo "**********************************************************"
 	@echo "** Making distribution of ESS for release $(ESSVERSION),"
 	@echo "** from $(ESSDIR)"
@@ -56,6 +55,17 @@ dist: VERSION RPM.spec
 #	cp doc/info/ess.info info; mv lisp ess; mkdir lisp; mv ess lisp; \
 #	$(GNUTAR) hcvofz ../$(ESSDIR)-xemacs-pkg.tgz etc info lisp; \
 #	zip -r ../$(ESSDIR)-xemacs-pkg.zip etc info lisp; cd ..
+
+dist: VERSION RPM.spec downloads
+	cd doc;  $(MAKE) docs; cd ..
+	cd lisp; $(MAKE) dist; grep 'ess-version' ess-cust.el; cd ..
+	$(MAKE) cleanup-dist
+	svn cleanup
+	@echo "** Committing VERSION, README, ANNOUNCE, info etc **"
+	svn commit -m "Updating toplevel files for new version" \
+		VERSION README ANNOUNCE RPM.spec
+	svn commit -m "Updating ess-version, info & html for new version" lisp/ess-cust.el doc/info doc/html
+	$(MAKE) downloads
 	$(MAKE) cleanup-dist
 	touch $@
 
@@ -87,7 +97,7 @@ ChangeLog: VERSION
 	@rm ChangeLog.old
 	svn commit -m 'Version $(ESSVERSION)' ChangeLog
 
-rel: ChangeLog dist tag
+rel: ChangeLog dist tag homepage
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
 	@echo "** Placing .tgz and .zip files **"
 	cp -p $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
@@ -99,6 +109,9 @@ rel: ChangeLog dist tag
 tag:
 	@echo "** Tagging the release **"
 	svn cp -m'release tagging' $(SVN_URL)/trunk $(SVN_URL)/tags/$(ESSVERSIONTAG)
+homepage:
+	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
+	cd $(ESS_HOMEPAGE); ./update-VERSION $(ESSVERSION)
 
 ## TODO (when MM has GPG set up properly): add this to 'rel'
 .PHONY: buildrpm

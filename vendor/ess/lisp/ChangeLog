@@ -1,3 +1,253 @@
+2009-06-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-eval-linewise): keep deactivate-mark local
+
+2009-06-05  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords):
+	missed an abbreviated keyword
+
+2009-06-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-utils.el (ess-change-directory): New function.
+
+2009-06-04  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-utils.el (ess-num-or-zero):
+	added (ess-num-or-zero arg)
+	If arg is a number, then return that number, otherwise return 0
+
+	* essa-sas.el (ess-sas-goto): fix the long-time
+	bug of generating an error in (ess-sas-goto "log")
+	when .log does not exist
+
+2009-06-03  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords):
+	adding a few more rare NOTES
+
+	* ess-mode.el (ess-mode): turn off annoying
+	message by default, pass nil to turn it back on
+	(ess-set-style something nil)
+
+2009-06-02  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): kill a
+	false positive bug for ERRORs/WARNINGs
+
+2009-06-01  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): in:
+	needs to be a special case for some reason
+
+2009-05-28  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): last tweak to
+	comment statement identification (very optimistic)
+
+	* essa-sas.el (ess-sas-goto-log): no longer highlighting error messages
+ this feature never worked quite right (and was XEmacs only which is worse)
+ after highlighting an error message, moving point would cause an unwanted
+ highlighting between point and mark; why god, why?!?
+
+2009-05-27  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords):
+	get MPRINT right in the case where it is
+	followed by a comment and add Pipe command=
+	and fix functions finally
+
+2009-05-26  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): make call
+	functions explicit, correct a few omissions, add RX
+	functions...  note that not all functions are yet on
+	the list as there are LOTS of functions
+	also, fixing a bug... int( should only be matched
+	at the beginning of a word, however, it seems to
+	also be finding MPRINT(.  there must be a bug
+	in the font-locking code somewhere
+
+2009-05-22  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-bugs.el, essd-bugs.el, essd-jags.el, essl-sas.el,
+	essa-sas.el: update headers/copyrights
+
+	* essl-sas.el (SAS-mode-font-lock-keywords):
+	fine-tuning ERRORs/WARNINGs
+
+2009-05-21  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): a few
+	minor changes, ERRORs/NOTEs/WARNINGs
+
+2009-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): fix
+	error messages that go to two lines and kill a
+	long-running bug biting adjacent comments
+	/* comment type 1 */ followed by
+	* comment type 2 ;
+	migration complete! (should have done it 9 years ago)
+	there are certainly going to be some special/missed
+	cases of false positives/negatives
+	(bug reports and patches welcome!)
+
+2009-05-19  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): more
+	alphabetizing, re-arranging, etc.  99.95%
+
+2009-05-18  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-toggle-sas-log-mode): really,
+	really fixed now (3rd times a charm)
+
+2009-05-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-eldoc.el/ess-roxygen.el/ess-toolbar.el:
+	added GPLv2 or later header, etc.
+
+	* essl-sas.el (SAS-mode-font-lock-keywords):
+	a few fixes for functions and a missed NOTE
+
+2009-05-14  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords):
+	major overhaul complete (99.9%)
+	PROCs now highlighted
+	most keywords recognized (however, some
+	dataset options are still needed)
+	NOTEs and WARNINGs better detected in .log
+
+	(ess-sas-run-regexp-opt): the new font-locking
+	is better in many ways than the old font-locking
+	so the default is now to use it; set this
+	variable to nil to use the old font-lock code
+
+	* essa-sas.el (ess-sas-toggle-sas-log-mode):
+	still trying to get this right, first kill
+	.log buffer, then re-open (see below)
+
+2009-05-13  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): a
+	few more keywords, a bug-fix and some comment
+	re-organization, 99.5%
+
+2009-05-12  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): even
+	more fixes
+
+2009-05-11  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): more
+	simplification/alphabetization; 99% complete
+
+2009-05-08  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-font-lock.el (ess-font-lock-rmh, etc.): modify
+	so they work on XEmacs
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): more fixes
+	and some alphabetizing (seriously, let's keep these in
+	order, otherwise, it is very difficult to maintain)
+	95% of the hand-coded regexps now handled by regexp-opt,
+
+2009-05-04  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-toggle-sas-log-mode): to re-font-lock,
+	reverting may not be enough; killing buffer and re-opening is
+	necessary in some circumstances
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): 3/4's of the way
+	there.  regexp-opt code updated to a reasonable fax of the
+	font-lock code it replaced.
+
+2009-04-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (ess-sas-run-regexp-opt): the long overdue change
+	from make-regexp to regexp-opt is under way.  Setting
+	ess-sas-run-regexp-opt to something other than nil will result
+	in the old make-regexp code to be used by regexp-opt.  This is
+	a half-step in the right direction.  The regexp-opt code will
+	be easier to maintain than the hand-coded regexps.  However,
+	this means that the font-locking will revert to what it was
+	circa 2001-2 :o(  Over time, this code will be upgraded so
+	that the font-locking will be up-to-date with what is
+	currently available and incorporate the changes necessary for
+	v. 9.2 and beyond.
+
+2009-04-01  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-sas.el (SAS-mode-font-lock-keywords): add PROC MAPIMPORT
+
+2009-03-16  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-toolbar.el (ess-make-toolbar-emacs): For Emacs 23, images
+	need to be on image-load-path.  This variable is set at bottom of
+	the file.
+
+2009-03-13  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-bugs.el (ess-bugs-mode): Set comment-start to provide basic
+	comment functionality.
+
+2009-03-05  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-rtf-portrait, ess-sas-rtf-us-landscape,
+	ess-sas-rtf-a4-landscape): after creation, close rtf buffer,
+	avoids an annoying confirmation question about visiting buffer
+
+2009-02-26  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-bugs.el (ess-bugs-hot-arrow):
+	Substitute <- for = key press
+
+2009-01-30  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-r-args.el (tooltip-show-at-point): New function.
+	Contributed by Erik Iverson <iverson@biostat.wisc.edu>.
+	(ess-r-args-show): Use tooltip-show-at-point.
+
+2009-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-mode.el (ess-mode): use run-mode-hooks only in newer Emacsen
+
+2009-01-08  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* essddr.el (Rd-keywords): new + shuffling + comment
+
+	* essd-sas.el (SAS-mode): activate a bug fix;
+	BTW, it's for 22.3 and 22.2
+
+2009-01-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essd-sas.el (SAS-mode): fix a bug in GNU Emacs 22.3.1
+	which erroneously performs font-lock on lowercase only
+
+2008-12-17  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-site.el: we no longer should be encouraging
+	users to edit this file (except possibly in extraordinary
+	circumstances in 2 places).  Therefore, I have removed
+	all but 2 references to uncommenting of code.  However,
+	the examples are instructive so they remain, but the
+	wording does not suggest uncommenting.  This is only a half-step
+	in the direction that we want to go.
+
+2008-12-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essd-jags.el (ess-jags-switch-to-suffix, ess-jags-na-bug):
+	adding 2 new local variables:  ess-jags-burnin and
+	ess-jags-update.  ESS[BUGS] has similar variables, but
+	the modern defaults are an order of magnitude bigger, so
+	it seemed like creating new variables was warranted
+	also, the "log" of the run is now .jog (like BUGS which
+	is .bog); .out created too many problems since the BOA
+	output files have that extension as well
+
 2008-12-11  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* noweb-mode.el (noweb-indent-line): update chunk vector first:

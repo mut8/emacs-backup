@@ -129,19 +129,24 @@ All Rd mode abbrevs start with a grave accent (`).")
   (modify-syntax-entry ?\] "_" Rd-mode-parse-syntax-table))
 
 (defvar Rd-section-names
-  '("arguments" "alias" "author" "concept" "describe" "description"
+  '("Rdversion" "arguments" "alias" "author" "concept" "describe" "description"
     "details" "docType" "encoding" "enumerate" "examples" "format"
     "itemize" "keyword" "name" "note" "preformatted" "references"
     "seealso" "section" "source" "synopsis" "tabular" "title" "usage"
     "value"))
 
 (defvar Rd-keywords
-  '("Alpha" "Gamma" "R" "S3method" "S4method" "acronym" "alpha" "beta"
+  '(
+    ;; the next two lines: only valid in R <= 2.8.1
+    "Alpha" "Gamma" "alpha" "beta" "epsilon" "lambda" "mu" "pi" "sigma"
+    "ge" "le" "left" "right"
+    ;;
+    "R" "S3method" "S4method" "acronym"
     "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
-    "dontshow" "dots" "email" "emph" "env" "epsilon" "eqn" "file" "ge"
-    "item" "kbd" "lambda" "ldots" "le" "left" "linkS4class" "link" "method" "mu"
-    "option" "pi" "pkg" "right" "sQuote" "samp" "sigma" "strong" "tab"
-    "url" "var"))
+    "dontshow" "dots" "email" "emph" "env" "eqn" "file"
+    "item" "kbd" "ldots" "linkS4class" "link" "method"
+    "option" "pkg" "sQuote" "samp" "strong" "tab" "url" "var" ;;maybe? "verb"
+    ))
 
 ;; Need to fix Rd-bold-face problem.
 ;;
