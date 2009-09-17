@@ -1,0 +1,23 @@
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(LaTeX-XeTeX-command "xelatex -synctex=1")
+ '(TeX-engine (quote xetex))
+ '(aquamacs-additional-fontsets nil t)
+ '(aquamacs-customization-version-id 172 t)
+ '(default-frame-alist (quote ((tool-bar-lines . 0) (height . 50) (width . 100) (menu-bar-lines . 1) (background-color . "#1E1E1E") (background-mode . dark) (border-color . "#1E1E1E") (cursor-color . "#A7A7A7") (foreground-color . "#F8F8F8") (mouse-color . "sienna1"))))
+ '(ecb-layout-window-sizes (quote (("left8" (0.32663316582914576 . 0.2857142857142857) (0.32663316582914576 . 0.22448979591836735) (0.32663316582914576 . 0.2857142857142857) (0.32663316582914576 . 0.1836734693877551)))))
+ '(ecb-options-version "2.32")
+ '(ecb-source-path (quote ("~/Documents/projects")))
+ '(ecb-vc-enable-support t)
+ '(ecb-vc-supported-backends (quote ((ecb-vc-dir-managed-by-CVS . ecb-vc-state) (ecb-vc-dir-managed-by-RCS . ecb-vc-state) (ecb-vc-dir-managed-by-SCCS . ecb-vc-state) (ecb-vc-dir-managed-by-SVN . ecb-vc-state) (ecb-vc-dir-managed-by-git . ecb-vc-state))))
+ '(global-hl-line-mode t)
+ '(transient-mark-mode t))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
