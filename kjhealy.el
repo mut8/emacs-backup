@@ -346,19 +346,6 @@
 (visit-tags-table "~/rtags/TAGS")
 
 
-;; make ecb git-aware
-(defun ecb-vc-dir-managed-by-git (directory)
-    (let* ((cannon (file-truename directory))
-           (gitdir (concat cannon "/.git/")))
-      (if (eq cannon "/")
-          nil
-        (cond ((and (ecb-file-exists-p gitdir)
-                    (locate-library "vc-git"))
-               'git)
-              (t
-               (ecb-vc-dir-managed-by-git (concat cannon "/../")))))))
-
-
 ;; Base dir
 (cd "~/")
 
