@@ -32,6 +32,14 @@
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 
 ;;; -----------------------------
+;;; Windmove
+;;; -----------------------------
+
+;; If you don't set this, you keep getting elisp errors when you try
+;; to wrap around. 
+(setq windmove-wrap-around t)
+
+;;; -----------------------------
 ;;; LATEX STUFF
 ;;; -----------------------------
 
