@@ -13,8 +13,14 @@
 ;; magit
 (require 'magit)
 
-;; Color Theme
+;; Color Theme from vendor directory
+(add-to-list 'load-path "~/elisp/vendor/color-theme/")
 (require 'color-theme)
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize))
+ )
+
 (load-file "~/elisp/color-custom/color-theme-twilight.el")
 (color-theme-twilight)
 
