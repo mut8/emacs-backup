@@ -25,7 +25,12 @@
 (color-theme-twilight)
 
 ;; Highlight current line (twilight theme builds in support for this)
-(global-hl-line-mode 1)
+;;(global-hl-line-mode 1)
+(require 'highline)
+(highline-mode 1)
+
+;; To customize the background color
+(set-face-background 'highline-face "#2D2D2D")
 
 ;; require maxframe package to conveniently maxmimize the window with M-x mf
 (require 'maxframe)
