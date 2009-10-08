@@ -161,7 +161,8 @@
 (load "~/elisp/vendor/ess/lisp/ess-site.el") 
 
 ;; Use shift-enter to split window & launch R (if not running), execute highlighted
-;; region (if R running & area highlighted), or execute current line.
+;; region (if R running & area highlighted), or execute current line
+;; (and move to next line, skipping comments). Nice. 
 ;; See http://www.emacswiki.org/emacs/EmacsSpeaksStatistics,
 ;; FelipeCsaszar. Adapted to spilit vertically instead of
 ;; horizontally. 
