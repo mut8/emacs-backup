@@ -310,7 +310,7 @@
 ;; yasnippet
 (require 'yasnippet)
 (yas/initialize)
-(yas/load-directory "~/elisp/vendor/yasnippet/snippets")
+(yas/load-directory "~/elisp/vendor/snippets")
 
 ;; Tweak to ergo keybindings for commenting regions of text
 (global-set-key (kbd "M-'") 'comment-or-uncomment-region)
