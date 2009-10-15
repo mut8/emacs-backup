@@ -9,7 +9,6 @@
                                    'css-mode
                                    'gist
                                    'nxml-mode
-                                   'paredit
                                    'yasnippet-bundle)
   "Libraries that should be installed by default.")
 
