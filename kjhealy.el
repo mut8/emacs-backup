@@ -363,11 +363,19 @@
 
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
+;; Local
 (load-file "~/elisp/vendor/cedet/common/cedet.el")
+;; Included in 64 bit 23.1
+;;(load-file "/Applications/Emacs64.app/Contents/Resources/lisp/cedet/cedet.elc")
+
+
+(global-ede-mode 1)                      ; Enable the Project management system
+(semantic-load-enable-code-helpers)      ; Enable prototype help and smart completion 
+(global-srecode-minor-mode 1)            ; Enable template insertion menu
 
 
 ;; Enable EDE (Project Management) features
-(global-ede-mode 1)
+;; (global-ede-mode 1)
 
 ;; Enable EDE for a pre-existing C++ project
 ;; (ede-cpp-root-project "NAME" :file "~/myproject/Makefile")
@@ -377,11 +385,11 @@
 ;; Select one of the following:
 
 ;; * This enables the database and idle reparse engines
-(semantic-load-enable-minimum-features)
+;;(semantic-load-enable-minimum-features)
 
 ;; * This enables some tools useful for coding, such as summary mode
 ;;   imenu support, and the semantic navigator
-(semantic-load-enable-code-helpers)
+;; (semantic-load-enable-code-helpers)
 
 ;; * This enables even more coding tools such as intellisense mode
 ;;   decoration mode, and stickyfunc mode (plus regular code helpers)
@@ -395,8 +403,8 @@
 ;; (global-srecode-minor-mode 1)  
 
 ;; Load ECB
-(add-to-list 'load-path
-             "~/elisp/vendor/ecb")
+(add-to-list 'load-path 
+	"~/elisp/vendor/ecb")
 
 (require 'ecb)
 (require 'ecb-autoloads)
