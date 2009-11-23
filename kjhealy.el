@@ -364,18 +364,17 @@
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
 ;; Local
-;; (load-file "~/elisp/vendor/cedet/common/cedet.el")
-;; Included in 64 bit 23.1
+(load-file "~/elisp/vendor/cedet/common/cedet.el")
+;; Included in current Emacs CVS but it doesn't work with ECB yet. So just use the released Emacs for now.
 ;;(load-file "/Applications/Emacs64.app/Contents/Resources/lisp/cedet/cedet.elc")
 
 
 (global-ede-mode 1)    ; Enable the Project management system
-(semantic-mode 1)      ; Enable prototype help and smart completion 
-
+(global-srecode-minor-mode 1)            ; Enable template insertion menu
 
 ;; * This enables some tools useful for coding, such as summary mode
 ;;   imenu support, and the semantic navigator
-;;(semantic-load-enable-code-helpers)
+(semantic-load-enable-code-helpers)
 
 ;; * This enables even more coding tools such as intellisense mode
 ;;   decoration mode, and stickyfunc mode (plus regular code helpers)
@@ -389,11 +388,11 @@
 ;; (global-srecode-minor-mode 1)  
 
 ;; Load ECB
-;;(add-to-list 'load-path 
-;;	"~/elisp/vendor/ecb")
+(add-to-list 'load-path 
+	"~/elisp/vendor/ecb")
 
-;;(require 'ecb)
-;;(require 'ecb-autoloads)
+(require 'ecb)
+(require 'ecb-autoloads)
 
 ;; r-tags support.
 ;; http://dsarkar.fhcrc.org/rtags/rtags.html
