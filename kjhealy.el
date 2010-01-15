@@ -49,8 +49,8 @@
 (set-face-background 'highline-face "#2D2D2D")
 
 ;; require maxframe package to conveniently maxmimize the window with M-x mf
-(require 'maxframe)
-(global-set-key (kbd "C-c m") 'x-maximize-frame)
+;;(require 'maxframe)
+;;(global-set-key (kbd "C-c m") 'x-maximize-frame)
 
 ;; resizing 'windows' (i.e., inside the frame)
 (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
