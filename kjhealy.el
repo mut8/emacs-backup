@@ -15,7 +15,16 @@
            (setq load-path (cons my-lisp-dir load-path))
            (normal-top-level-add-subdirs-to-load-path)))
 
-;; magit
+;; window size
+(setq default-frame-alist
+ '(
+; frame width and height
+    (width             . 100)
+    (height            . 50)
+  )
+)
+
+;; magit (git version control helper)
 (require 'magit)
 
 ;; Color Theme from vendor directory
