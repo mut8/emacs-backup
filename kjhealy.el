@@ -1,7 +1,15 @@
 ;; Emacs customizations and social-science addons.
 ;; Made to be used together with http://github.com/technomancy/emacs-starter-kit/tree/master
 
-;; NOTE: You will need to change the values for the location of 
+;; NOTES:
+;; 1. You should change the name of this file to the value of
+;; user-login-name OR system-name, so that it will be picked up by
+;; init.el and loaded properly. To find  the current value of these
+;; variables on your system, do C-h-v system-name [RET] and C-h-v
+;; user-login-name [RET]. So, for example, on my system user-login-name is
+;; 'kjhealy' and this file is named kjhealy.el.
+;;
+;;  2. You will need to change the values for the location of 
 ;; bibtex databases specified below. Search for 'kjhealy' in this file
 ;; to find the paths that need to be updated.
 
