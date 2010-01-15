@@ -14,14 +14,14 @@
 (require 'magit)
 
 ;; Color Theme from vendor directory
-(add-to-list 'load-path "~/elisp/vendor/color-theme/")
+(add-to-list 'load-path "~/.emacs.d/vendor/color-theme/")
 (require 'color-theme)
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize))
  )
 
-(load-file "~/elisp/color-custom/color-theme-twilight.el")
+(load-file "~/.emacs.d/color-custom/color-theme-twilight.el")
 (color-theme-twilight)
 
 ;; Highlight current line (twilight theme builds in support for this)
