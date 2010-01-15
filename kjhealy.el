@@ -1,7 +1,12 @@
-;; Kieran Healy's .emacs file
+;; Emacs customizations and social-science addons.
 ;; Made to be used together with http://github.com/technomancy/emacs-starter-kit/tree/master
 
-;; location of various local packages (in elisp/vendor)
+;; NOTE: You will need to change the values for the location of 
+;; bibtex databases specified below. Search for 'kjhealy' in this file
+;; to find the paths that need to be updated.
+
+
+;; location of various local packages (in .emacs.d/vendor)
 ;; because I don't want to keep them in /Applications/Emacs.app/ or in
 ;; /usr/share/local/
 (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
@@ -14,13 +19,7 @@
 (require 'magit)
 
 ;; Color Theme from vendor directory
-(add-to-list 'load-path "~/.emacs.d/vendor/color-theme/")
 (require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize))
- )
-
 (load-file "~/.emacs.d/color-custom/color-theme-twilight.el")
 (color-theme-twilight)
 
@@ -158,7 +157,8 @@
 ;;; -----------------------------
 
 ;; ESS: Emacs Speaks Statistics
-(load "~/elisp/vendor/ess/lisp/ess-site.el") 
+;;; (load "~/.emacs.d/vendor/ess/lisp/ess-site.el") 
+ (require 'ess-site)
 
 ;; Use shift-enter to split window & launch R (if not running), execute highlighted
 ;; region (if R running & area highlighted), or execute current line
@@ -350,7 +350,7 @@
 ;; yasnippet
 (require 'yasnippet)
 (yas/initialize)
-(yas/load-directory "~/elisp/vendor/snippets")
+(yas/load-directory "~/.emacs.d/vendor/snippets")
 
 ;; Tweak to ergo keybindings for commenting regions of text
 (global-set-key (kbd "M-'") 'comment-or-uncomment-region)
@@ -364,7 +364,7 @@
 ;; Load CEDET.
 ;; See cedet/common/cedet.info for configuration details.
 ;; Local
-(load-file "~/elisp/vendor/cedet/common/cedet.el")
+(load-file "~/.emacs.d/vendor/cedet/common/cedet.el")
 ;; Included in current Emacs CVS but it doesn't work with ECB yet. So just use the released Emacs for now.
 ;;(load-file "/Applications/Emacs64.app/Contents/Resources/lisp/cedet/cedet.elc")
 
@@ -388,9 +388,6 @@
 ;; (global-srecode-minor-mode 1)  
 
 ;; Load ECB
-(add-to-list 'load-path 
-	"~/elisp/vendor/ecb")
-
 (require 'ecb)
 (require 'ecb-autoloads)
 
