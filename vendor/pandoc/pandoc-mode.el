@@ -110,13 +110,14 @@ list, not if it appears higher on the list."
     no-wrap             table-of-contents css
     email-obfuscation   include-before-body
     include-in-header   custom-header title-prefix
-    include-after-body)
+    include-after-body  xetex)
   "List of switches accepted by the pandoc binary. Switches that
   need special treatment (--read, --write and --output) are not
   in this list.")
 
 (defvar pandoc-binary-switches
   '(("gladTeX" . gladtex)
+    ("XeTeX" . xetex)
     ("Incremental" . incremental)
     ("No Wrap" . no-wrap)
     ("Number Sections" . number-sections)
@@ -155,6 +156,7 @@ list, not if it appears higher on the list."
     (email-obfuscation)            ; nil (="none"), "javascript" or "references"
 
     (gladtex)                      ; NIL, T
+    (xetex)                        ; NIL, T
     (incremental)                  ; NIL, T
     (no-wrap)                      ; NIL, T
     (number-sections)              ; NIL, T
