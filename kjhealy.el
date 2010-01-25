@@ -13,7 +13,6 @@
 ;; bibtex databases specified below. Search for 'kjhealy' in this file
 ;; to find the paths that need to be updated.
 
-
 ;; location of various local packages (in .emacs.d/vendor)
 ;; because I don't want to keep them in /Applications/Emacs.app/ or in
 ;; /usr/share/local/
@@ -172,6 +171,11 @@
 ;;;--------------------------------------------------------------------------------
 ;;; Pandoc Mode
 ;;;--------------------------------------------------------------------------------
+
+;; Make Emacs see where pandoc is installed (Emacs can't access the
+;; bash $PATH directly
+(setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
+
 (load "pandoc-mode")
 (add-hook 'markdown-mode-hook 'conditionally-turn-on-pandoc)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
