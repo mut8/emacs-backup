@@ -177,7 +177,7 @@
 (setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
 
 (load "pandoc-mode")
-(add-hook 'markdown-mode-hook 'conditionally-turn-on-pandoc)
+(add-hook 'markdown-mode-hook 'turn-on-pandoc)
 (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
 
 ;;; -----------------------------
