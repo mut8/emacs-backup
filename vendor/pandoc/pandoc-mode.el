@@ -1,6 +1,6 @@
-;; pandoc-mode.el v0.1.6
+;; pandoc-mode.el
 ;;
-;; Copyright (c) 2009 Joost Kremers
+;; Copyright (c) 2009-2010 Joost Kremers
 ;; All rights reserved.
 ;;
 ;; Redistribution and use in source and binary forms, with or without
@@ -107,17 +107,17 @@ list, not if it appears higher on the list."
     latexmathml         mimetex
     gladtex             number-sections
     incremental         sanitize-html
-    no-wrap             table-of-contents css
-    email-obfuscation   include-before-body
-    include-in-header   custom-header title-prefix
-    include-after-body  xetex)
+    no-wrap             table-of-contents
+    css                 email-obfuscation
+    include-before-body include-after-body
+    include-in-header   custom-header
+    title-prefix)
   "List of switches accepted by the pandoc binary. Switches that
   need special treatment (--read, --write and --output) are not
   in this list.")
 
 (defvar pandoc-binary-switches
   '(("gladTeX" . gladtex)
-    ("XeTeX" . xetex)
     ("Incremental" . incremental)
     ("No Wrap" . no-wrap)
     ("Number Sections" . number-sections)
@@ -156,7 +156,6 @@ list, not if it appears higher on the list."
     (email-obfuscation)            ; nil (="none"), "javascript" or "references"
 
     (gladtex)                      ; NIL, T
-    (xetex)                        ; NIL, T
     (incremental)                  ; NIL, T
     (no-wrap)                      ; NIL, T
     (number-sections)              ; NIL, T
@@ -329,10 +328,10 @@ not support output to stdout for odt."
 		  (let ((@@-beg (match-beginning 0))
 			(@@-end (match-end 0)))
 		    (cond
-		     ((eq (char-after) ?{) ; if there is an argument
-		      ;; note: point is on the left brace, while scan-lists
-		      ;; returns the position *after* the right brace, so we
-		      ;; need to adjust to get the actual argument.
+		     ((eq (char-after) ?{) ; if there is an argument.
+		      ;; note: point is on the left brace, and scan-lists
+		      ;; returns the position *after* the right brace. we need
+		      ;; to adjust both values to get the actual argument.
 		      (let* ((arg-beg (1+ (point)))
 			     (arg-end (1- (scan-lists (point) 1 0)))
 			     (text (buffer-substring-no-properties arg-beg arg-end)))
@@ -340,8 +339,10 @@ not support output to stdout for odt."
 			(delete-region @@-beg (1+ arg-end))
 			(insert (funcall (cdr directive) text)))
 		      (goto-char @@-beg))
-		     ((looking-at "[a-zA-Z0-9]") t) ; this means we're actually
-					; dealing with a different directive
+		     ;; check if the next character is not a letter or number.
+		     ;; if it is, we're actually on a different directive.
+		     ((looking-at "[a-zA-Z0-9]") t)
+		     ;; otherwise there is no argument.
 		     (t (goto-char @@-beg)
 			(delete-region @@-beg @@-end) ; else there is no argument
 			(insert (funcall (cdr directive)))
@@ -472,17 +473,17 @@ asking."
 	     (not (y-or-n-p (format "%s file `%s' already exists. Overwrite? "
 				    (capitalize (symbol-name type))
 				    (file-name-nondirectory settings-file)))))
-	(message "%s file not written." (capitalize (symbol-name type))))
-    (with-temp-buffer
-      (insert (format "# pandoc-mode %s file for %s #\n"
-		      type
-		      (file-name-nondirectory filename))
-	      (format "# saved on %s #\n\n" (format-time-string "%Y.%m.%d %H:%M")))
-      (pandoc-insert-options options)
-      (let ((make-backup-files nil))
-	(write-region (point-min) (point-max) settings-file))
-      (message "%s file written to `%s'." (capitalize (symbol-name type)) (file-name-nondirectory settings-file)))
-    (setq pandoc-settings-modified-flag nil)))
+	(message "%s file not written." (capitalize (symbol-name type)))
+      (with-temp-buffer
+	(insert (format "# pandoc-mode %s file for %s #\n"
+			type
+			(file-name-nondirectory filename))
+		(format "# saved on %s #\n\n" (format-time-string "%Y.%m.%d %H:%M")))
+	(pandoc-insert-options options)
+	(let ((make-backup-files nil))
+	  (write-region (point-min) (point-max) settings-file))
+	(message "%s file written to `%s'." (capitalize (symbol-name type)) (file-name-nondirectory settings-file)))
+      (setq pandoc-settings-modified-flag nil))))
 
 (defun pandoc-insert-options (options)
   "Insert OPTIONS in the current buffer.
@@ -697,9 +698,8 @@ If called with the prefix argument C-u - (or M--), no jsMath will be used."
 (defun pandoc-set-mimetex (prefix)
   "Render TeX math using the MimeTeX CGI script.
 If called with the prefix argument C-u - (or M--), MimeTeX is not
-used. file is unset. If called with any other prefix argument,
-the MimeTeX CGI script will assumed to be in
-/cgi-bin/mimetex.cgi."
+used. If called with any other prefix argument, the MimeTeX CGI
+script will assumed to be in /cgi-bin/mimetex.cgi."
   (interactive "P")
   (pandoc-set 'mimetex
 	      (cond
