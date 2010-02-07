@@ -51,6 +51,9 @@
 ;;(require 'maxframe)
 ;;(global-set-key (kbd "C-c m") 'x-maximize-frame)
 
+;; Fullscreen toggle -- Only works with patched emacs build at git://github.com/typester/emacs.git
+(global-set-key (kbd "C-c m") 'ns-toggle-fullscreen)
+
 ;; resizing 'windows' (i.e., inside the frame)
 (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
 (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
