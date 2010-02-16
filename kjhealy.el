@@ -191,6 +191,7 @@
 ;;; (load "~/.emacs.d/vendor/ess/lisp/ess-site.el") 
  (require 'ess-site)
 
+;; ----------------------------------------------------------------------
 ;; Use shift-enter to split window & launch R (if not running), execute highlighted
 ;; region (if R running & area highlighted), or execute current line
 ;; (and move to next line, skipping comments). Nice. 
@@ -230,8 +231,9 @@
 	       (local-set-key [C-up] 'comint-previous-input)
 	       (local-set-key [C-down] 'comint-next-input)))
   (require 'ess-site)
+;; ----------------------------------------------------------------------
 
-
+;; ----------------------------------------------------------------------
 ;; ess-R-object-tooltip.el
 ;; from: http://blogisticreflections.wordpress.com/2009/10/01/r-object-tooltips-in-ess/
 ;; I have defined a function, ess-R-object-tooltip, that when
@@ -291,6 +293,7 @@
 ;; default key map
 (define-key ess-mode-map "\C-c\C-g" 'ess-R-object-tooltip)
 (provide 'ess-R-object-tooltip)
+;; ----------------------------------------------------------------------
 
 ;; roxygen more for generating Rd and packxfages
 (require 'ess-roxygen)
