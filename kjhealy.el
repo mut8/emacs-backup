@@ -489,7 +489,7 @@
 
 ;; r-tags support.
 ;; http://dsarkar.fhcrc.org/rtags/rtags.html
-(visit-tags-table "~/rtags/TAGS")
+;; (visit-tags-table "~/rtags/TAGS")
 
 
 ;; Base dir
