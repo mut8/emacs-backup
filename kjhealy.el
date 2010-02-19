@@ -1,5 +1,5 @@
 ;; Emacs customizations and social-science addons.
-;; Made to be used together with http://github.com/technomancy/emacs-starter-kit/tree/master
+;; 
 
 ;; NOTES:
 ;; 1. You should change the name of this file to the value of
@@ -21,7 +21,6 @@
               (default-directory my-lisp-dir))
            (setq load-path (cons my-lisp-dir load-path))
            (normal-top-level-add-subdirs-to-load-path)))
-
 ;; window size
 (setq default-frame-alist
  '(
@@ -31,21 +30,13 @@
   )
 )
 
-;; magit (git version control helper)
-(require 'magit)
-
 ;; Color Theme from vendor directory
 (require 'color-theme)
-(load-file "~/.emacs.d/color-custom/color-theme-twilight.el")
+(load-file "~/.emacs.d/color-themes/color-theme-twilight.el")
 (color-theme-twilight)
 
 ;; Highlight current line (twilight theme builds in support for this)
-;;(global-hl-line-mode 1)
-(require 'highline)
-(highline-mode 1)
-
-;; To customize the background color
-(set-face-background 'highline-face "#2D2D2D")
+(global-hl-line-mode 1)
 
 ;; require maxframe package to conveniently maxmimize the window with M-x mf
 ;;(require 'maxframe)
@@ -73,11 +64,10 @@
 ;;; -----------------------------
 
 ;; AUCTeX
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
+;;(load "auctex.el" nil t t)
+;;(load "preview-latex.el" nil t t)
 
 ;; Synctex with Skim
-(require 'tex-site)
 (add-hook 'TeX-mode-hook
           (lambda ()
             (add-to-list 'TeX-output-view-style
@@ -188,7 +178,6 @@
 ;;; -----------------------------
 
 ;; ESS: Emacs Speaks Statistics
-;;; (load "~/.emacs.d/vendor/ess/lisp/ess-site.el") 
  (require 'ess-site)
 
 ;; ----------------------------------------------------------------------
@@ -296,7 +285,7 @@
 ;; ----------------------------------------------------------------------
 
 ;; roxygen more for generating Rd and packxfages
-(require 'ess-roxygen)
+;; (require 'ess-roxygen)
 
 ;; R-noweb mode, for Sweave files.
 (defun Rnw-mode ()
@@ -443,9 +432,9 @@
 (menu-bar-mode 1)
 
 ;; yasnippet
-(require 'yasnippet)
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/vendor/snippets")
+;; (require 'yasnippet)
+;; (yas/initialize)
+;;  (yas/load-directory "~/.emacs.d/vendor/snippets")
 
 ;; Tweak to ergo keybindings for commenting regions of text
 (global-set-key (kbd "M-'") 'comment-or-uncomment-region)
