@@ -1,3 +1,12 @@
-[submodule "vendor/maxframe"]
-	path = vendor/maxframe
-	url = git://github.com/rmm5t/maxframe-el.git
+[submodule "src/org"]
+	path = src/org
+	url = git://repo.or.cz/org-mode.git
+[submodule "src/magit"]
+	path = src/magit
+	url = git://gitorious.org/magit/mainline.git
+[submodule "snippets/text-mode/org-mode"]
+	path = snippets/text-mode/org-mode
+	url = git://github.com/eschulte/yasnippet-org-mode.git
+[submodule "src/auctex"]
+	path = src/auctex
+	url = git://github.com/eschulte/auctex.git
