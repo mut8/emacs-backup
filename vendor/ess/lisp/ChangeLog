@@ -1,3 +1,47 @@
+2009-12-07  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-ddeclient-p): fix blunder; add
+	(ess-force-buffer-current) for now.
+
+2009-12-04  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-inf.el (ess-load-file): use microsoft-p instead of
+	(ess-ddeclient-p) as that fails to start R automagically.
+
+2009-12-01  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-graph-view-viewer-default): kodakimg
+	went the way of the dodo
+
+2009-11-30  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-rtf-portrait): oops, 11 is
+	too big, but 10.5 is just right; also, refresh the
+	file before making an RTF out of it
+
+2009-10-28  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (ess-microsoft-p): add 'help_type = "text"' to
+	post-run-hook in the microsoft case.
+
+2009-10-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-cust.el (inferior-ess-r-help-command): use .help.ESS() now
+
+	* essd-r.el (R): define .help.ESS(), R-version dependently
+
+2009-10-09  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-rtf-portrait): boost portrait font
+	point size to 11
+
+2009-10-07  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essa-sas.el (ess-sas-rtf-font-name): now you can
+	specify the font that MS RTF are created with; previously,
+	these were created with courier, however, this font is
+	thin and hard to read with MS Office and OpenOffice
+
 2009-10-06  Stephen Eglen  <stephen@gnu.org>
 
 	* ess-cust.el (inferior-ess-r-help-command): New variable to allow
@@ -29,7 +73,7 @@
 
 2009-06-16  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-trns.el (ess-transcript-send-command-and-move): 
+	* ess-trns.el (ess-transcript-send-command-and-move):
 	patch supplied by tyler.smith@mail.mcgill.ca
 	see the related discussion at
 	https://stat.ethz.ch/pipermail/ess-bugs/2008q1/000489.html

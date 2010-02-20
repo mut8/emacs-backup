@@ -124,6 +124,11 @@ or `ess-sas-data-view-insight'."
   :group 'ess-sas
   :type  'integer)
 
+(defcustom ess-sas-rtf-font-name "Lucida Sans Typewriter"
+  "*Name of font to create MS RTF with"
+  :group 'ess-sas
+  :type  'string)
+
 (defcustom ess-sas-shell-buffer "*shell*"
   "*Name that you want to use for the shell buffer; buffer-local."
   :group 'ess-sas
@@ -194,7 +199,7 @@ should set this variable to 'sh regardless of their local shell
 (make-variable-buffer-local 'ess-sas-submit-method)
 
 (defcustom ess-sas-graph-view-viewer-default
-  (if ess-microsoft-p "kodakimg"
+  (if ess-microsoft-p "explorer"
     (if (equal ess-sas-submit-method 'sh) "sdtimage"))
   "*Default graphics image file viewer."
   :group 'ess-sas
@@ -873,9 +878,10 @@ optional argument is non-nil, then set-buffer rather than switch."
 "Creates an MS RTF portrait file from the current buffer."
     (interactive)
     (ess-sas-file-path)
+    (ess-revert-wisely)
 
     (if (equal ess-tmp-font-size nil)
-	(setq ess-tmp-font-size "18"))
+	(setq ess-tmp-font-size "21"))
 
     (let
 	((ess-temp-rtf-file (replace-in-string ess-sas-file-path "[.][^.]*$" ".rtf")))
@@ -883,7 +889,7 @@ optional argument is non-nil, then set-buffer rather than switch."
 	(rtf-export ess-temp-rtf-file)
 	(ess-sas-goto "rtf" t)
 	(goto-char (point-min))
-	(replace-regexp "\\\\fmodern .*;" "\\\\fmodern courier;" )
+	(replace-regexp "\\\\fmodern .*;" (concat "\\\\fmodern " ess-sas-rtf-font-name ";"))
 	(goto-line 2)
 	(insert "\\margl720\\margr720\\margt720\\margb720\n")
         (goto-char (point-min))

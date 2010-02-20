@@ -1,5 +1,5 @@
 ESS -- Emacs Speaks Statistics
-This is ess.info, produced by makeinfo version 4.12 from ess.texi.
+This is ess.info, produced by makeinfo version 4.13 from ess.texi.
 
 ******************************
 
@@ -14,7 +14,7 @@ File: ess.info,  Node: Top,  Next: Introduction,  Prev: (dir),  Up: (dir)
 ESS: Emacs Speaks Statistics
 ****************************
 
-ESS version 5.5
+ESS version 5.7.1
 
      by  A.J. Rossini,
          R.M. Heiberger,
@@ -205,6 +205,16 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
 
 1.2 New features in ESS
 =======================
+
+     Changes/New Features in 5.7:
+        * ESS[R]: loading a source file (`C-c C-l') now works in
+          Windows, similarly to other platforms;  (further; it had
+          accidentally been broken in ESS 5.6 on all platforms)
+
+     Changes/New Features in 5.6:
+        * ESS[R]: help() calls have to differ from old default, with
+          newer  versions of R; currently via .help.ESS <-
+          function(...) hack.
 
      Changes/New Features in 5.4:
         * ESS[SAS]: The long overdue change from `make-regexp' to
@@ -2540,43 +2550,45 @@ wish to always call R with certain arguments, set the variable
 `inferior-R-args' accordingly.
 
    If you have other versions of R or S-Plus available on the system,
-ESS is also able to start those versions.  How this works depend on
-which OS you are using:
+ESS is also able to start those versions.  How this exactly works
+depend on which OS you are using, as described in the following
+paragraphs.  The general principle, regardless of OS, is that ESS
+searches the paths listed in the variable `exec-path' for R binaries.
+If ESS cannot find your R binaries, on Unix you can change the unix
+environment variable `PATH', as this variable is used to set
+`exec-path'.
 
    R on Unix systems: If you have "R-1.8.1" on your `exec-path', it can
 be started using `M-x R-1.8.1'.  By default, ESS will find versions of
 R beginning "R-1" or "R-2".  If your versions of R are called other
 names, consider renaming them with a symbolic link or change the
-variable `ess-r-versions'.  To see which defuns have been created for
-starting different versions of R, type `M-x R-' and then hit [Tab].
-You will then see if any defuns for particular versions of R have been
-created.  These other versions of R can also be started from the
-"ESS->Start Process->Other" menu.
+variable `ess-r-versions'.  To see which functions have been created
+for starting different versions of R, type `M-x R-' and then hit [Tab].
+These other versions of R can also be started from the "ESS->Start
+Process->Other" menu.
 
    R on Windows systems: If you have "rw1081" on your `exec-path', it
 can be started using `M-x rw1081'.  By default, ESS will find versions
 of R located in directories parallel to the version of R in your
 `PATH'.  If your versions of R are called other names, you will need to
-change the variable `ess-rterm-versions'.  To see which defuns have
+change the variable `ess-rterm-versions'.  To see which functions have
 been created for starting different versions of R, type `M-x rw' and
-then hit [Tab].  You will then see if any defuns for particular
-versions of R have been created.  These other versions of R can also be
-started from the "ESS->Start Process->Other" menu.
+then hit [Tab].  These other versions of R can also be started from the
+"ESS->Start Process->Other" menu.
 
    Once ESS has found these extra versions of R, it will then create a
-new defun, called `M-x R-newest', which will call the newest version of
-R that it found.  (ESS examines the date in the first line of
+new function, called `M-x R-newest', which will call the newest version
+of R that it found.  (ESS examines the date in the first line of
 information from `R --version' to determine which is newest.)
 
    S on Unix systems: If you have "Splus7" on your `exec-path', it can
 be started using `M-x Splus7'.  By default, ESS will find all
 executables beginning "Splus" on your path.  If your versions of S are
 called other names, consider renaming them with a symbolic link or
-change the variable `ess-s-versions'.  To see which defuns have been
+change the variable `ess-s-versions'.  To see which functions have been
 created for starting different versions of Splus, type `M-x Splus' and
-then hit [Tab].  You will then see if any defuns for particular
-versions of Splus have been created.  These other versions of Splus can
-also be started from the "ESS->Start Process->Other" menu.
+then hit [Tab].  These other versions of Splus can also be started from
+the "ESS->Start Process->Other" menu.
 
    A second mechanim is also available for running other versions of
 Splus.  The variable `ess-s-versions-list' is a list of lists; each
@@ -2600,13 +2612,12 @@ is loaded.
 you have an older version of S-Plus (S-Plus 6.1 for example) on your
 system, ir can be started inside an emacs buffer with `M-x splus61'.  By
 default, ESS will find versions of S-Plus located in the installation
-directories that Insightful uses by default.  If your versions of
-S-Plus are anywhere else, you will need to change the variable
-`ess-SHOME-versions'.  To see which defuns have been created for
+directories that Insightful uses by default.  If your versions of S-Plus
+are anywhere else, you will need to change the variable
+`ess-SHOME-versions'.  To see which functions have been created for
 starting different versions of S-Plus, type `M-x spl' and then hit
-[Tab].  You will then see if any defuns for particular versions of
-S-Plus have been created.  These other versions of S-Plus can also be
-started from the "ESS->Start Process->Other" menu.
+[Tab].  These other versions of S-Plus can also be started from the
+"ESS->Start Process->Other" menu.
 
 
 File: ess.info,  Node: ESS-help--assistance with viewing help,  Next: Philosophies for using ESS(S),  Prev: iESS(S)--Inferior ESS processes,  Up: ESS for the S family
@@ -4910,96 +4921,96 @@ Variable and command index
 
 Tag Table:
 Node: Top278
-Node: Introduction2102
-Node: Features5084
-Node: New features8505
-Node: Credits43794
-Node: Latest version47175
-Node: Manual48959
-Node: Installation51501
-Node: Unix installation51979
-Node: Microsoft Windows installation56080
-Node: Requirements65521
-Node: Interactive ESS66030
-Node: Starting up66884
-Node: Multiple ESS processes67695
-Node: ESS processes on Remote Computers68730
-Node: S+elsewhere and ESS-elsewhere71880
-Node: Customizing startup74643
-Node: Entering commands77323
-Node: Command-line editing78622
-Node: Completion79906
-Node: Completion details82675
-Ref: Completion details-Footnote-184081
-Node: Transcript84361
-Node: Last command86136
-Node: Process buffer motion87626
-Node: Transcript resubmit89147
-Node: Saving transcripts91756
-Node: Command History93802
-Node: History expansion96426
-Node: Hot keys99634
-Node: Statistical Process running in ESS?103101
-Node: Emacsclient104406
-Node: Other105213
-Node: Transcript Mode106259
-Node: Resubmit107415
-Node: Clean108499
-Node: ESS for the S family109218
-Node: ESS(S)--Editing files109625
-Node: iESS(S)--Inferior ESS processes110677
-Node: ESS-help--assistance with viewing help116370
-Node: Philosophies for using ESS(S)116700
-Node: Scenarios for use (possibilities--based on actual usage)117836
-Node: Customization Examples and Solutions to Problems122527
-Node: Editing124147
-Node: Edit buffer125334
-Node: Loading127368
-Node: Error Checking128419
-Node: Evaluating code129465
-Node: Indenting132900
-Node: Other edit buffer commands136151
-Node: Source Files138068
-Node: Source Directories142598
-Node: Editing R documentation files145737
-Node: Help149586
-Node: ESS for SAS153916
-Node: ESS(SAS)--Design philosophy154638
-Node: ESS(SAS)--Editing files155592
-Node: ESS(SAS)--TAB key157452
-Node: ESS(SAS)--Batch SAS processes158750
-Node: ESS(SAS)--Function keys for batch processing163774
-Node: iESS(SAS)--Interactive SAS processes173365
-Node: iESS(SAS)--Common problems177115
-Node: ESS(SAS)--Graphics178647
-Node: ESS(SAS)--Windows179430
-Node: ESS for BUGS180009
-Node: ESS(BUGS)--Model files181029
-Node: ESS(BUGS)--Command files184199
-Node: ESS(BUGS)--Log files185515
-Node: ESS for JAGS186065
-Node: ESS(JAGS)--Model files187044
-Node: ESS(JAGS)--Command files189475
-Node: ESS(JAGS)--Log files190251
-Node: Miscellaneous190547
-Node: Highlighting191193
-Node: Parens192608
-Node: Graphics193196
-Node: printer193712
-Node: X11194485
-Node: winjava195016
-Node: Imenu195429
-Node: Toolbar196277
-Node: TAGS196692
-Node: Rdired197979
-Node: Mailing lists/bug reports199235
-Node: Bugs199500
-Node: Reporting Bugs201163
-Node: Mailing Lists201976
-Node: Help with emacs202741
-Node: Customization203295
-Node: Key Index204060
-Node: Concept Index204215
-Node: Variable and command index212305
+Node: Introduction2104
+Node: Features5086
+Node: New features8507
+Node: Credits44220
+Node: Latest version47601
+Node: Manual49385
+Node: Installation51927
+Node: Unix installation52405
+Node: Microsoft Windows installation56506
+Node: Requirements65947
+Node: Interactive ESS66456
+Node: Starting up67310
+Node: Multiple ESS processes68121
+Node: ESS processes on Remote Computers69156
+Node: S+elsewhere and ESS-elsewhere72306
+Node: Customizing startup75069
+Node: Entering commands77749
+Node: Command-line editing79048
+Node: Completion80332
+Node: Completion details83101
+Ref: Completion details-Footnote-184507
+Node: Transcript84787
+Node: Last command86562
+Node: Process buffer motion88052
+Node: Transcript resubmit89573
+Node: Saving transcripts92182
+Node: Command History94228
+Node: History expansion96852
+Node: Hot keys100060
+Node: Statistical Process running in ESS?103527
+Node: Emacsclient104832
+Node: Other105639
+Node: Transcript Mode106685
+Node: Resubmit107841
+Node: Clean108925
+Node: ESS for the S family109644
+Node: ESS(S)--Editing files110051
+Node: iESS(S)--Inferior ESS processes111103
+Node: ESS-help--assistance with viewing help116794
+Node: Philosophies for using ESS(S)117124
+Node: Scenarios for use (possibilities--based on actual usage)118260
+Node: Customization Examples and Solutions to Problems122951
+Node: Editing124571
+Node: Edit buffer125758
+Node: Loading127792
+Node: Error Checking128843
+Node: Evaluating code129889
+Node: Indenting133324
+Node: Other edit buffer commands136575
+Node: Source Files138492
+Node: Source Directories143022
+Node: Editing R documentation files146161
+Node: Help150010
+Node: ESS for SAS154340
+Node: ESS(SAS)--Design philosophy155062
+Node: ESS(SAS)--Editing files156016
+Node: ESS(SAS)--TAB key157876
+Node: ESS(SAS)--Batch SAS processes159174
+Node: ESS(SAS)--Function keys for batch processing164198
+Node: iESS(SAS)--Interactive SAS processes173789
+Node: iESS(SAS)--Common problems177539
+Node: ESS(SAS)--Graphics179071
+Node: ESS(SAS)--Windows179854
+Node: ESS for BUGS180433
+Node: ESS(BUGS)--Model files181453
+Node: ESS(BUGS)--Command files184623
+Node: ESS(BUGS)--Log files185939
+Node: ESS for JAGS186489
+Node: ESS(JAGS)--Model files187468
+Node: ESS(JAGS)--Command files189899
+Node: ESS(JAGS)--Log files190675
+Node: Miscellaneous190971
+Node: Highlighting191617
+Node: Parens193032
+Node: Graphics193620
+Node: printer194136
+Node: X11194909
+Node: winjava195440
+Node: Imenu195853
+Node: Toolbar196701
+Node: TAGS197116
+Node: Rdired198403
+Node: Mailing lists/bug reports199659
+Node: Bugs199924
+Node: Reporting Bugs201587
+Node: Mailing Lists202400
+Node: Help with emacs203165
+Node: Customization203719
+Node: Key Index204484
+Node: Concept Index204639
+Node: Variable and command index212729
 
 End Tag Table
