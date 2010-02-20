@@ -47,10 +47,6 @@
 ;; To customize the background color
 (set-face-background 'highline-face "#2D2D2D")
 
-;; require maxframe package to conveniently maxmimize the window with M-x mf
-;;(require 'maxframe)
-;;(global-set-key (kbd "C-c m") 'x-maximize-frame)
-
 ;; Fullscreen toggle -- Only works with patched emacs build at git://github.com/typester/emacs.git
 (global-set-key (kbd "C-c m") 'ns-toggle-fullscreen)
 
