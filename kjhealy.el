@@ -30,6 +30,10 @@
   )
 )
 
+;; recent file menu
+(require 'recentf)
+(recentf-mode 1)
+
 ;; Color Theme from vendor directory
 (require 'color-theme)
 (load-file "~/.emacs.d/color-themes/color-theme-twilight.el")
