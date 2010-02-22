@@ -30,9 +30,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
            (setq load-path (cons my-lisp-dir load-path))
            (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
-
 ** Miscellaneous Settings and starter-kit overrides
-
 *** Window size
 #+srcname: window_size
 #+begin_src emacs-lisp
@@ -84,10 +82,9 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 (setq windmove-wrap-around t)
 #+end_src
 
-
 ** LaTeX Customizations and settings
-   AUCTeX, Syntex, XeLaTeX, RefTeX.
-
+   AUCTeX, SyncTeX, XeLaTeX, RefTeX.
+*** SyncTeX, PDF mode, Skim
 #+srcname: local-loadpath
 #+begin_src emacs-lisp
    ;; Synctex with Skim
@@ -178,7 +175,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 #+end_src
 
 *** Custom vc command
-    Run the VC command before running xelatex with C-c c (instead of
+    Run the vc shellscript before running xelatex with C-c c (instead of
     C-c C-c for regular compile)
 #+srcname: vc-command
 #+begin_src emacs-lisp
@@ -189,18 +186,6 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     [?\M-! ?v ?c return ?\C-c ?\C-c return])
     (global-set-key (kbd "C-c c") 'run-vc-then-xelatex)
 #+end_src
-
-** Pandoc Mode
- Make Emacs see where pandoc is installed (Emacs can't access the bash
- $PATH directly.
-#+src-name: pandoc_mode
-#+begin_src emacs-lisp
- (setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
- (load "pandoc-mode")
- (add-hook 'markdown-mode-hook 'turn-on-pandoc)
- (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
-#+end_src
-
 ** R and ESS
    Load ESS: Emacs Speaks Statistics, and several further tweaks for
  R. 
@@ -339,8 +324,18 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
       '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
 #+end_src
 
+** Pandoc 
+ Make Emacs see where pandoc is installed. (Emacs can't access the bash
+ $PATH directly.)
+#+src-name: pandoc_mode
+#+begin_src emacs-lisp
+ (setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
+ (load "pandoc-mode")
+ (add-hook 'markdown-mode-hook 'turn-on-pandoc)
+ (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+#+end_src
 
-** Markdown documents
+** Markdown 
 #+srcname: markdown-mode
 #+begin_src emacs-lisp
    (autoload 'markdown-mode "markdown-mode.el"
@@ -413,35 +408,44 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 #+end_src
 
 *** Spelling
-    Use cocoAspell instead of ispell
+    Use cocoAspell instead of ispell. Turned off here because it loads
+    too late. I had to put it in a separate org file of its own.
 #+srcname: spelling-mode
-#+begin_src emacs-lisp
-    (setq ispell-program-name "~/Library/PreferencePanes/Spelling.prefPane/Contents/MacOS/cocoAspell")
+#+begin_src emacs-lisp :tangle no
+ (setq ispell-program-name "aspell"
+      ispell-dictionary "english"
+      ispell-dictionary-alist
+      (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
+                       ("-B" "-d" "english" "--dict-dir"
+                        "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
+                       nil iso-8859-1)))
+        `((nil ,@default)
+          ("english" ,@default))))
 
-    ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
-    (setq ispell-tex-skip-alists
-    '((;;("%\\[" . "%\\]") ; AMStex block comment...
-    ;; All the standard LaTeX keywords from L. Lamport's guide:
-    ;; \cite, \hspace, \hspace*, \hyphenation, \include, \includeonly, \input,
-    ;; \label, \nocite, \rule (in ispell - rest included here)
-    ("\\\\addcontentsline"              ispell-tex-arg-end 2)
-    ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
-    ("\\\\\\([aA]lph\\|arabic\\)"   ispell-tex-arg-end)
-    ;;("\\\\author"                         ispell-tex-arg-end)
-    ;; New regexps here --- kjh
-    ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
-    ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
-    ("\\\\bibliographystyle"                ispell-tex-arg-end)
-    ("\\\\makebox"                  ispell-tex-arg-end 0)
-    ("\\\\e?psfig"                  ispell-tex-arg-end)
-    ("\\\\document\\(class\\|style\\)" .
-    "\\\\begin[ \t\n]*{[ \t\n]*document[ \t\n]*}"))
-    (;; delimited with \begin.  In ispell: displaymath, eqnarray, eqnarray*,
-    ;; equation, minipage, picture, tabular, tabular* (ispell)
-    ("\\(figure\\|table\\)\\*?"     ispell-tex-arg-end 0)
-    ("list"                                 ispell-tex-arg-end 2)
-    ("program"             . "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
-    ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
+    ;; ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
+    ;; (setq ispell-tex-skip-alists
+    ;; '((;;("%\\[" . "%\\]") ; AMStex block comment...
+    ;; ;; All the standard LaTeX keywords from L. Lamport's guide:
+    ;; ;; \cite, \hspace, \hspace*, \hyphenation, \include, \includeonly, \input,
+    ;; ;; \label, \nocite, \rule (in ispell - rest included here)
+    ;; ("\\\\addcontentsline"              ispell-tex-arg-end 2)
+    ;; ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
+    ;; ("\\\\\\([aA]lph\\|arabic\\)"   ispell-tex-arg-end)
+    ;; ;;("\\\\author"                         ispell-tex-arg-end)
+    ;; ;; New regexps here --- kjh
+    ;; ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
+    ;; ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
+    ;; ("\\\\bibliographystyle"                ispell-tex-arg-end)
+    ;; ("\\\\makebox"                  ispell-tex-arg-end 0)
+    ;; ("\\\\e?psfig"                  ispell-tex-arg-end)
+    ;; ("\\\\document\\(class\\|style\\)" .
+    ;; "\\\\begin[ \t\n]*{[ \t\n]*document[ \t\n]*}"))
+    ;; (;; delimited with \begin.  In ispell: displaymath, eqnarray, eqnarray*,
+    ;; ;; equation, minipage, picture, tabular, tabular* (ispell)
+    ;; ("\\(figure\\|table\\)\\*?"     ispell-tex-arg-end 0)
+    ;; ("list"                                 ispell-tex-arg-end 2)
+    ;; ("program"             . "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
+    ;; ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
 #+end_src
 
 *** Skeleton mode
@@ -455,7 +459,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (?\] . ?\[)
     (?} . ?{)
     (?" . ?")))
-
+    
     (defun my-skeleton-pair-end (arg)
     "Skip the char if it is an ending, otherwise insert it."
     (interactive "*p")
@@ -473,8 +477,6 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (global-set-key (char-to-string (rest pair))
     'skeleton-pair-insert-maybe))
 #+end_src
-
-
 ** Final Custom elements
 #+srcname: final-custom
 #+begin_src emacs-lisp
