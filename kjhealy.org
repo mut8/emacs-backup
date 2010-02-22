@@ -1,5 +1,5 @@
-#+TITLE: Starter Kit kjhealy customizations
 #+OPTIONS: toc:nil num:nil ^:nil
+#+TITLE: Starter Kit kjhealy customizations
 
 This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]]. 
 
@@ -354,6 +354,13 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
    )
 #+end_src
 
+** Orgmode Mobile
+   MobileMe iDisk. 
+#+srcname: orgmode-mobile
+#+being_src emacs-lisp
+   (setq org-directory "~/Documents/org")
+   (setq org-mobile-directory "/Volumes/kjhealy-1/org/")
+#+end_src
 ** Misc things not in starter-kit, or starter-kit overrides
 *** ido-mode
     Use ido mode for M-command completion as well as file/buffer
