@@ -360,6 +360,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 #+begin_src emacs-lisp
    (setq org-directory "~/Documents/org")
    (setq org-mobile-directory "/Volumes/kjhealy-1/org/")
+   (setq org-mobile-inbox-for-pull "~/Documents/org/from-mobile.org")
 #+end_src
 ** Misc things not in starter-kit, or starter-kit overrides
 *** ido-mode
