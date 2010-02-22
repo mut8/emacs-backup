@@ -19,4 +19,5 @@ kjhealy.org initiates it too late.
                        nil iso-8859-1)))
         `((nil ,@default)
           ("english" ,@default))))
+(setq flyspell-issue-message-flag nil)
 #+end_src
