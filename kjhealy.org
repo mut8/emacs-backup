@@ -356,8 +356,8 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 
 ** Orgmode Mobile
    MobileMe iDisk. 
-#+srcname: orgmode-mobile
-#+being_src emacs-lisp
+#+src-name: orgmode-mobile
+#+begin_src emacs-lisp
    (setq org-directory "~/Documents/org")
    (setq org-mobile-directory "/Volumes/kjhealy-1/org/")
 #+end_src
