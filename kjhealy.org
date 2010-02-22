@@ -393,6 +393,10 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (add-hook 'ess-mode-hook 'turn-on-auto-fill)
     (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
 
+    ;;; but turn off auto-fill in tex and markdown
+    (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
+    (add-hook 'latex-mode-hook 'turn-off-auto-fill)
+
     ;; Page down/up move the point, not the screen.
     ;; In practice, this means that they can move the
     ;; point to the beginning or end of the buffer.
