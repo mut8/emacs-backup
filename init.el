@@ -20,6 +20,7 @@
 			  (or load-path nil))))
   ;; load up Org-mode and Org-babel
   (setq org-replace-disputed-keys t)
+  (setq org-return-follows-link t)
   (require 'org-install)
   (require 'org-babel-init))
 

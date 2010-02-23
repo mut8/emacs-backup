@@ -19,6 +19,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 (require 'org-install)
 (if window-system (require 'org-mouse))
 (setq org-disputed-keys t)
+(setq org-completion-use-ido t)
 #+end_src
 
 ** Org-Mode Hook
