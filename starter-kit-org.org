@@ -18,6 +18,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+begin_src emacs-lisp
 (require 'org-install)
 (if window-system (require 'org-mouse))
+(setq org-disputed-keys t)
 #+end_src
 
 ** Org-Mode Hook
