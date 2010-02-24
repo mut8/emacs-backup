@@ -59,7 +59,12 @@
      (ido-subdir ((t (:foreground "#CF6A4C"))))
      (ido-first-match ((t (:foreground "#8F9D6A"))))
      (ido-only-match ((t (:foreground "#8F9D6A"))))
-     (mumamo-background-chunk-submode ((t (:background "#222222"))))     
+     (mumamo-background-chunk-submode ((t (:background "#222222"))))
+
+     (icicle-Completions-instruction-1 ((t (:background "#1E1E1E" :foreground "#5F5A60"))))
+     (icicle-Completions-instruction-2 ((t (:background "#1E1E1E" :foreground "#8F9D6A"))))
+     (icicle-whitespace-highlight ((t (:backround "#CBCBCB"))))
+     (icicle-multi-command-completion ((t (:background "#CBCBCB" :foreground "#282828"))))
 
      (font-lock-string-face ((t (:foreground "#8F9D6A"))))
      (font-lock-type-face ((t (:foreground "#9B703F"))))
