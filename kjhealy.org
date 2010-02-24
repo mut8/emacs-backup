@@ -389,9 +389,89 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (global-set-key "\M-x" 'ido-execute-command)
     (define-key ido-completion-map [tab] 'ido-complete)))
 
-    (setq ido-work-directory-list '("~/" "~/Desktop" "~/Documents"))
-#+end_src
+    (defvar ido-enable-replace-completing-read t
+      "If t, use ido-completing-read instead of completing-read if possible.
+    
+    Set it to nil using let in around-advice for functions where the
+    original completing-read is required.  For example, if a function
+    foo absolutely must use the original completing-read, define some
+    advice like this:
+    
+    (defadvice foo (around original-completing-read-only activate)
+      (let (ido-enable-replace-completing-read) ad-do-it))")
+    
+    ;; Replace completing-read wherever possible, unless directed otherwise
+    (defadvice completing-read
+      (around use-ido-when-possible activate)
+      (if (or (not ido-enable-replace-completing-read) ; Manual override disable ido
+              (boundp 'ido-cur-list)) ; Avoid infinite loop from ido calling this
+          ad-do-it
+        (let ((allcomp (all-completions "" collection predicate)))
+          (if allcomp
+              (setq ad-return-value
+                    (ido-completing-read prompt
+                                   allcomp
+                                   nil require-match initial-input hist def))
+            ad-do-it))))
 
+    (setq ido-work-directory-list '("~/" "~/Desktop" "~/Documents"))
+
+    ;; ido-mode and imenu
+    (defun ido-goto-symbol (&optional symbol-list)
+      "Refresh imenu and jump to a place in the buffer using Ido."
+      (interactive)
+      (unless (featurep 'imenu)
+        (require 'imenu nil t))
+      (cond
+       ((not symbol-list)
+        (let ((ido-mode ido-mode)
+              (ido-enable-flex-matching
+               (if (boundp 'ido-enable-flex-matching)
+                   ido-enable-flex-matching t))
+              name-and-pos symbol-names position)
+          (unless ido-mode
+            (ido-mode 1)
+            (setq ido-enable-flex-matching t))
+          (while (progn
+                   (imenu--cleanup)
+                   (setq imenu--index-alist nil)
+                   (ido-goto-symbol (imenu--make-index-alist))
+                   (setq selected-symbol
+                         (ido-completing-read "Symbol? " symbol-names))
+                   (string= (car imenu--rescan-item) selected-symbol)))
+          (setq position (cdr (assoc selected-symbol name-and-pos)))
+          (cond
+           ((overlayp position)
+            (goto-char (overlay-start position)))
+           (t
+            (goto-char position)))))
+       ((listp symbol-list)
+        (dolist (symbol symbol-list)
+          (let (name position)
+            (cond
+             ((and (listp symbol) (imenu--subalist-p symbol))
+              (ido-goto-symbol symbol))
+             ((listp symbol)
+              (setq name (car symbol))
+              (setq position (cdr symbol)))
+             ((stringp symbol)
+              (setq name symbol)
+              (setq position
+                    (get-text-property 1 'org-imenu-marker symbol))))
+            (unless (or (null position) (null name)
+                        (string= (car imenu--rescan-item) name))
+              (add-to-list 'symbol-names name)
+              (add-to-list 'name-and-pos (cons name position))))))))
+    (global-set-key "\C-ci" 'ido-goto-symbol) ; or any key you see fit
+#+end_src
+    
+*** icicles
+    Replacement for/alternative to ido-mode.
+#+srcname: icicles
+#+begin_src emacs-lisp :tangle no
+    (require 'icicles)
+    (icy-mode 1)
+#+end_src
 *** Line wrapping and position
     Sane line wrapping for long documents and papers
 #+srcname: line-modes
