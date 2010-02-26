@@ -26,3 +26,4 @@ eshell/lastdir
 src/auctex
 src/share
 src/var
+src/auctex-src/*elc
