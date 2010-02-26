@@ -88,17 +88,14 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 #+srcname: local-loadpath
 #+begin_src emacs-lisp
    ;; Synctex with Skim
-   (add-hook 'TeX-mode-hook
-   (lambda ()
-   (add-to-list 'TeX-output-view-style
-   '("^pdf$" "."
-   "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
-   )
+   ;;(add-hook 'TeX-mode-hook
+   ;;(lambda ()
+   ;;(add-to-list 'TeX-output-view-style
+   ;;'("^pdf$" "."
+   ;; "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
+   ;; )
 
-   ;; PDF mode for latex
-   (setq-default TeX-PDF-mode t)
-
-   ;; Make emacs aware of multi-file projects
+      ;; Make emacs aware of multi-file projects
    (setq-default TeX-master nil)
 
    ;; Auto-raise Emacs on activation (from Skim, usually)
@@ -589,6 +586,8 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
    ;; If there is more than one, they won't work right.
    '(LaTeX-XeTeX-command "xelatex -synctex=1")
    '(TeX-engine (quote xetex))
+   '(TeX-view-program-list (quote (("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b"))))
+   '(TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "Skim") (output-html "xdg-open"))))
    ;; '(cdlatex-paired-parens "$[{(")
    )
 #+end_src
