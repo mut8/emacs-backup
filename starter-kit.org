@@ -409,7 +409,7 @@ Located in [[file:starter-kit-perl.org][starter-kit-perl]]
 Located in [[file:starter-kit-latex.org][starter-kit-latex]]
 
 #+begin_src emacs-lisp
-;; (starter-kit-load "starter-kit-latex.org")
+(starter-kit-load "starter-kit-latex.org")
 #+end_src
 
 ** Load User/System Specific Files
