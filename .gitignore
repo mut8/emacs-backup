@@ -23,3 +23,6 @@ tramp
 \#*
 eshell/history
 eshell/lastdir
+src/auctex
+src/share
+src/var
