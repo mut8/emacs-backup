@@ -31,7 +31,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
            (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
 ** Miscellaneous Settings and starter-kit overrides
-*** Window size
+*** COMMENT Window size
 #+srcname: window_size
 #+begin_src emacs-lisp
     (setq default-frame-alist
@@ -52,39 +52,39 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 
 #+srcname: local-settings
 #+begin_src emacs-lisp
-    ;; Color Theme from vendor directory
-    (require 'color-theme)
-    (load-file "~/.emacs.d/color-themes/color-theme-twilight.el")
-    (color-theme-twilight)
-
-    ;; Highlight current line (twilight theme builds in support for this)
-    (global-hl-line-mode 1)
-
-    ;; require maxframe package to conveniently maxmimize the window with M-x mf
-    ;;(require 'maxframe)
-    ;;(global-set-key (kbd "C-c m") 'x-maximize-frame)
-
-    ;; Fullscreen toggle -- Only works with patched emacs build at git://github.com/typester/emacs.git
-    ;; (global-set-key (kbd "C-c m") 'ns-toggle-fullscreen)
-
-    ;; Fullscreen toggle -- using maxframe.el
-    (require 'maxframe)
-    (defvar my-fullscreen-p t "Check if fullscreen is on or off")
-
-    (defun my-toggle-fullscreen ()
-    (interactive)
-    (setq my-fullscreen-p (not my-fullscreen-p))
-    (if my-fullscreen-p
-    (restore-frame)
-    (maximize-frame)))
-    
-    (global-set-key (kbd "C-c m") 'my-toggle-fullscreen)
-
-    ;; resizing 'windows' (i.e., inside the frame)
-    (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
-    (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-    (global-set-key (kbd "S-C-<down>") 'shrink-window)
-    (global-set-key (kbd "S-C-<up>") 'enlarge-window)
+  ;; Color Theme from vendor directory
+  (require 'color-theme)
+  (load-file "~/.emacs.d/color-themes/color-theme-twilight.el")
+  (color-theme-twilight)
+  
+  ;; Highlight current line (twilight theme builds in support for this)
+  (global-hl-line-mode 1)
+  
+  ;; require maxframe package to conveniently maxmimize the window with M-x MFA
+  ;;(require 'maxframe)
+  ;;(global-set-key (kbd "C-c m") 'x-maximize-frame)
+  
+  ;; Fullscreen toggle -- Only works with patched emacs build at git://github.com/typester/emacs.git
+  (global-set-key (kbd "C-c m") 'ns-toggle-fullscreen)
+  
+  ;; Fullscreen toggle -- using maxframe.el
+  ;; (require 'maxframe)
+  ;; (defvar my-fullscreen-p t "Check if fullscreen is on or off")
+  
+  ;; (defun my-toggle-fullscreen ()
+  ;; (interactive)
+  ;; (setq my-fullscreen-p (not my-fullscreen-p))
+  ;; (if my-fullscreen-p
+  ;; (restore-frame)
+  ;; (maximize-frame)))
+  
+  ;; (global-set-key (kbd "C-c m") 'my-toggle-fullscreen)
+  
+  ;; resizing 'windows' (i.e., inside the frame)
+  (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "S-C-<down>") 'shrink-window)
+  (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 #+end_src
 
 *** Windmove
