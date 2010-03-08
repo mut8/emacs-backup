@@ -579,6 +579,19 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (global-set-key (char-to-string (rest pair))
     'skeleton-pair-insert-maybe))
 #+end_src
+*** Word-count
+#+srcname: word-count
+#+begin_src emacs-lisp
+    (autoload 'word-count-mode "word-count"
+    "Minor mode to count words." t nil)
+    (dolist (hook '(org-mode-hook
+    markdown-mode-hook
+    TeX-mode-hook
+    text-mode-hook))
+    (add-hook hook (lambda () (word-count-mode 1))))
+#+end_src 
+
+
 ** Final Custom elements
 #+srcname: final-custom
 #+begin_src emacs-lisp
