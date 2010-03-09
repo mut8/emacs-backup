@@ -10,3 +10,6 @@
 [submodule "src/auctex-src"]
 	path = src/auctex-src
 	url = git@github.com:kjhealy/auctex.git
+[submodule "src/markdown"]
+	path = src/markdown
+	url = git://jblevins.org/git/markdown-mode.git
