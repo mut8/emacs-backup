@@ -487,7 +487,8 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     to be a bug -- it interacts badly with the smooth scrolling: when
     you get to the bottom of the buffer it wraps the pointer up to the
     middle of the screen without moving the text with it, so you end
-    up typing inside the text that's already there. 
+    up typing inside the text that's already there. Replaced with a
+    simpler version instead, which gives you a straight count via M-x wc.
 
 #+srcname: word-count
 #+begin_src emacs-lisp
@@ -498,6 +499,8 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     ;; TeX-mode-hook
     ;; text-mode-hook))
     ;; (add-hook hook (lambda () (word-count-mode 1))))
+
+    (require 'wc)
 #+end_src 
 *** Line wrapping and position
     Sane line wrapping and scrolling for long documents and papers
