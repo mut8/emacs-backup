@@ -483,7 +483,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (icy-mode 1)
 #+end_src
 *** Line wrapping and position
-    Sane line wrapping for long documents and papers
+    Sane line wrapping and scrolling for long documents and papers
 #+srcname: line-modes
 #+begin_src emacs-lisp
     (global-visual-line-mode t)
@@ -507,6 +507,9 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (lambda () (interactive)
     (condition-case nil (scroll-down)
     (beginning-of-buffer (goto-char (point-min))))))
+
+    ;; smooth-scrolling package in src/
+    (require 'smooth-scrolling)
 #+end_src
 
 *** Spelling
