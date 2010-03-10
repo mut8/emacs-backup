@@ -54,8 +54,10 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 #+begin_src emacs-lisp
   ;; Color Theme from vendor directory
   (require 'color-theme)
-  (load-file "~/.emacs.d/color-themes/color-theme-twilight.el")
-  (color-theme-twilight)
+  ;; (load-file "~/.emacs.d/color-themes/color-theme-twilight.el")
+  ;; (color-theme-twilight)
+  (load-file "~/.emacs.d/color-themes/color-theme-tangosoft.el")
+  (color-theme-tangosoft)
   
   ;; Highlight current line (twilight theme builds in support for this)
   (global-hl-line-mode 1)
