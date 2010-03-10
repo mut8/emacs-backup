@@ -377,23 +377,44 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 ** Misc things not in starter-kit, or starter-kit overrides
 *** ido-mode
     Use ido mode for M-command completion as well as file/buffer
-    completion.
+    completion. (Alreadly implemented in other starter kit files)
 #+srcname: ido-mode
-#+begin_src emacs-lisp
-    (setq ido-execute-command-cache nil)
-    (defun ido-execute-command ()
-    (interactive)
-    (call-interactively
+#+begin_src emacs-lisp :tangle no
+    (ido-mode 1)
+     (setq ido-execute-command-cache nil)
+ (defun ido-execute-command ()
+   (interactive)
+   (call-interactively
     (intern
-    (ido-completing-read
-    "M-x "
-    (progn
-    (unless ido-execute-command-cache
-    (mapatoms (lambda (s)
-    (when (commandp s)
-    (setq ido-execute-command-cache
-    (cons (format "%S" s) ido-execute-command-cache))))))
-    ido-execute-command-cache)))))
+     (ido-completing-read
+      "M-x "
+      (progn
+        (unless ido-execute-command-cache
+          (mapatoms (lambda (s)
+                      (when (commandp s)
+                        (setq ido-execute-command-cache
+                              (cons (format "%S" s) ido-execute-command-cache))))))
+        ido-execute-command-cache)))))
+    
+ (add-hook 'ido-setup-hook
+           (lambda ()
+             (setq ido-enable-flex-matching t)
+             (global-set-key "\M-x" 'ido-execute-command)))
+
+   ;; (setq ido-execute-command-cache nil)
+   ;; (defun ido-execute-command ()
+   ;; (interactive)
+   ;; (call-interactively
+   ;; (intern
+   ;; (ido-completing-read
+   ;; "M-x "
+   ;; (progn
+   ;; (unless ido-execute-command-cache
+   ;; (mapatoms (lambda (s)
+   ;; (when (commandp s)
+   ;; (setq ido-execute-command-cache
+   ;; (cons (format "%S" s) ido-execute-command-cache))))))
+   ;; ido-execute-command-cache)))))
 
     (add-hook 'ido-setup-hook
     (lambda ()
