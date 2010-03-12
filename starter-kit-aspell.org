@@ -1,0 +1,26 @@
+#+TITLE: Starter Kit aspell
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+
+* Starter Kit aspell
+Hackish file to accommodate having cocoaAspell installed on your Mac. Otherwise
+flyspell doesn't start properly. Putting this customization in
+kjhealy.org initiates it too late. NB: Flyspell is too slow on Emacs
+23 to use by default. I'm turning it off. 
+
+** Specify aspell
+#+begin_src emacs-lisp
+(setq ispell-program-name "aspell"
+      ispell-dictionary "english"
+      ispell-dictionary-alist
+      (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
+                       ("-B" "-d" "english" "--dict-dir"
+                        "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
+                       nil iso-8859-1)))
+        `((nil ,@default)
+          ("english" ,@default))))
+(setq ispell-extra-args '("--sug-mode=ultra"))
+(setq ispell-personal-dictionary "~/.aspell.en.pws")
+(setq flyspell-issue-message-flag nil)
+#+end_src
