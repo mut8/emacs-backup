@@ -71,7 +71,7 @@ This allows for the viewing of images in-line in Org-mode documents.
 This code defines the =starter-kit-project= which is used to publish
 the documentation for the Starter Kit to html.
 
-#+begin_src emacs-lisp :results silent
+#+begin_src emacs-lisp :results silent :tangle no
   (unless (boundp 'org-publish-project-alist)
     (setq org-publish-project-alist nil))
   (let ((this-dir (file-name-directory (or load-file-name buffer-file-name))))
