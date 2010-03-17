@@ -541,13 +541,6 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
     (global-set-key "\C-ci" 'ido-goto-symbol) ; or any key you see fit
 #+end_src
     
-*** icicles
-    Replacement for/alternative to ido-mode.
-#+srcname: icicles
-#+begin_src emacs-lisp :tangle no
-    (require 'icicles)
-    (icy-mode 1)
-#+end_src
 *** Word-count
     Live word count in status bar, via wc. Unfortunately there seems
     to be a bug -- it interacts badly with the smooth scrolling: when
