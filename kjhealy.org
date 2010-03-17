@@ -72,7 +72,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
 #+srcname: fullscreen
 #+begin_src emacs-lisp 
   ;; require maxframe package to conveniently maxmimize the window
-  with M-x MFA. Doesn't work with Emacs 23 on Mac. 
+  ;; with M-x MFA. Doesn't work with Emacs 23 on Mac. 
   ;;(require 'maxframe)
   ;;(global-set-key (kbd "C-c m") 'x-maximize-frame)
   
