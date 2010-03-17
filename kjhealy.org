@@ -14,7 +14,7 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
  'kjhealy' and this file is named kjhealy.el.
  - You will need to change the values for the location of 
  bibtex databases specified below. Search for 'kjhealy' in this file
- to find the paths that need to be updated.
+ to find the paths that need to be updated. 
 
 ** Package Locations
  Location of various local packages (in .emacs.d/vendor)
@@ -121,11 +121,22 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
   (global-set-key (kbd "S-C-<up>") 'enlarge-window)  
 #+end_src
 
-*** Enable CUA mode
-    Use cmd-x / cmd-c / cmd-v / cmd-z as god intended. 
-#+srcname: cua-mode
+*** Mac Key mode
+    Used with Mitsuharu Yamamoto's carbon-patched 23.1.94, which turns
+    off support for default mac bindings. 
+#+srcname: mac-keys
 #+begin_src emacs-lisp 
-  (cua-mode t)
+    (setq mac-command-modifier 'alt mac-option-modifier 'meta)
+    (require 'redo+)
+    (require 'mac-key-mode)
+    (mac-key-mode 1)
+   ;;(add-hook 'mac-key-mode-hook
+   ;;     (lambda()
+   ;;       (interactive)
+   ;;       (if mac-key-mode
+   ;;           (setq mac-option-modifier 'meta)
+   ;;           (setq mac-option-modifier nil)
+   ;;           )))
 #+end_src
 
 
