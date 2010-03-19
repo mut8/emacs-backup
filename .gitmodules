@@ -10,3 +10,6 @@
 [submodule "src/markdown"]
 	path = src/markdown
 	url = git://jblevins.org/git/markdown-mode.git
+[submodule "src/org"]
+	path = src/org
+	url = git://repo.or.cz/org-mode.git
