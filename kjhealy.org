@@ -139,7 +139,6 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
    ;;           )))
 #+end_src
 
-
 ** LaTeX Customizations and settings
    AUCTeX, SyncTeX, XeLaTeX, RefTeX.
 *** SyncTeX, PDF mode, Skim
@@ -417,6 +416,38 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
    (setq org-mobile-directory "/Volumes/kjhealy-1/org/")
    (setq org-mobile-inbox-for-pull "~/Documents/org/from-mobile.org")
 #+end_src
+** iBuffer
+   Manage a lot of buffers easily with C-x C-b. Already set up
+   elsewhere in the starter kit. Add local configuration here, e.g.,
+   display categories.
+#+srcname: iBuffer-custom
+#+begin_src emacs_lisp 
+  (setq ibuffer-saved-filter-groups
+      '(("home"
+	 ("emacs-config" (or (filename . ".emacs.d")
+			     (filename . "emacs-config")))
+	 ("Org" (or (mode . org-mode)
+		    (filename . "OrgMode")))
+	 ("Web Dev" (or (mode . html-mode)
+			(mode . css-mode)))
+	 ("Magit" (name . "\*magit"))
+	 ("ESS" (mode . ess-mode))
+         ("LaTeX" (mode . latex-mode))
+	 ("Help" (or (name . "\*Help\*")
+		     (name . "\*Apropos\*")
+		     (name . "\*info\*"))))))
+
+        (add-hook 'ibuffer-mode-hook 
+	             '(lambda ()
+	             (ibuffer-switch-to-saved-filter-groups "home")))
+       (setq ibuffer-show-empty-filter-groups nil)                     
+       (setq ibuffer-expert t)
+       (add-hook 'ibuffer-mode-hook 
+       '(lambda ()
+       (ibuffer-auto-mode 1)
+       (ibuffer-switch-to-saved-filter-groups "home")))
+#+end_src
+  
 ** Misc things not in starter-kit, or starter-kit overrides
 *** ido-mode
     Use ido mode for M-command completion as well as file/buffer
