@@ -1,25 +1,32 @@
 #+OPTIONS: toc:nil num:nil ^:nil
 #+TITLE: Starter Kit kjhealy customizations
 
-This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]]. 
+This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]]. It provides some
+additional settings useful for social scientists, together with some
+other personal customizations I find helpful. This org-mode file
+documents these additions and provides the code to implement them. See
+the [[file:starter-kit.org][main starter-kit file]] for further information. 
 
 * Starter Kit kjhealy
-  Support for some social-science addons and personal customizations. 
+YOU MUST CHANGE THE NAME OF THIS FILE to the value of the Emacs
+ variable =user-login-name= OR =system-name=, so that it will be
+ picked up by =init.el= when Emacs starts up, and be loaded
+ properly. To find the current value of these variables on your
+ system, do =C-h-v system-name [RET]= and =C-h-v user-login-name
+ [RET]=. For example, on my system =user-login-name= is 'kjhealy', so
+ this file is named =kjhealy.org=, and when Emacs starts up with the
+ starter kit it creates the file =kjhealy.el=.
 
- - You should change the name of this file to the value of
- user-login-name OR system-name, so that it will be picked up by
- init.el and loaded properly. To find  the current value of these
- variables on your system, do C-h-v system-name [RET] and C-h-v
- user-login-name [RET]. So, for example, on my system user-login-name is
- 'kjhealy' and this file is named kjhealy.el.
- - You will need to change the values for the location of 
- bibtex databases specified below. Search for 'kjhealy' in this file
- to find the paths that need to be updated. 
+You will also need to change the values for the location of bibtex
+ databases, pandoc and orgmode-mobile specified below, and some other
+ settings. *Search for 'kjhealy' in this file* to find the paths that
+ need to be updated. Change them as needed or comment them out if you
+ don't use these features.
 
 ** Package Locations
  Location of various local packages (in .emacs.d/vendor)
- because I don't want to keep them in /Applications/Emacs.app/ or in
- /usr/share/local/. 
+ because I don't want to keep them in =/Applications/Emacs.app/= or in
+ =/usr/share/local/=. 
 
 *** Load path
 #+srcname: local-loadpath
