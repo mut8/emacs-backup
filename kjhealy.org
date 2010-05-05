@@ -139,6 +139,16 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
    ;;           )))
 #+end_src
 
+*** Browse Kill Ring
+    Conveniently navigate the kill-ring (ie, the cut/copy clipboard
+    history) in a pop-up buffer.
+#+srcname: kill-ring
+#+begin_src emacs-lisp 
+    (when (require 'browse-kill-ring nil 'noerror)
+  (browse-kill-ring-default-keybindings))
+#+end_src
+
+
 ** LaTeX Customizations and settings
    AUCTeX, SyncTeX, XeLaTeX, RefTeX.
 *** SyncTeX, PDF mode, Skim
