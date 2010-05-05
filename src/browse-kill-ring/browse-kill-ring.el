@@ -1,8 +1,3 @@
-SiteMap Search ElispArea HowTo RecentChanges News Problems Suggestions   
-browse-kill-ring.el
-
-Download
-
 ;;; browse-kill-ring.el --- interactively insert items from kill-ring -*- coding: utf-8 -*-
 
 ;; Copyright (C) 2001, 2002 Colin Walters <walters@verbum.org>
