@@ -148,7 +148,6 @@ This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]].
   (browse-kill-ring-default-keybindings))
 #+end_src
 
-
 ** LaTeX Customizations and settings
    AUCTeX, SyncTeX, XeLaTeX, RefTeX.
 *** SyncTeX, PDF mode, Skim
