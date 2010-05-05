@@ -162,58 +162,53 @@ list, not if it appears higher on the list."
     ("XeTeX" . xetex)))
 
 (defvar pandoc-options
-  '((read                  nil      special)                 ; see pandoc-input-formats
-    (read-lhs              nil      special)                 ; input is literal Haskell
-    (write                 "native" special)                 ; see pandoc-output-formats
-    (write-lhs             nil      special)                 ; output is literal Haskell
+  '((read)                         ; see pandoc-input-formats
+    (read-lhs)                     ; input is literal Haskell
+    (write . "native")             ; see pandoc-output-formats
+    (write-lhs)                    ; output is literal Haskell
 
-    (output                nil      filename)
+    (output)                       ; a filename, NIL or T
 
-    (css                   nil      filename)
+    (css)                          ; a filename or NIL
 
-    (include-in-header     nil filepath markdown2pdf)
-    (include-before-body   nil filepath markdown2pdf)
-    (include-after-body    nil filepath markdown2pdf)
-    (custom-header         nil filepath markdown2pdf)
-    (template              nil filepath markdown2pdf)
-    (reference-odt         nil filepath)
+    (include-in-header)            ; a filepath or NIL
+    (include-before-body)          ; a filepath or NIL
+    (include-after-body)           ; a filepath or NIL
+    (custom-header)                ; a filepath or NIL
+    (template)                     ; a filepath or NIL
+    (reference-odt)                ; a filepath or NIL
 
-    (tab-stop              nil integer  markdown2pdf)
+    (tab-stop)                     ; an integer or NIL
 
-    (mimetex               nil special) ; a string, T or NIL
+    (mimetex)                      ; a string, NIL or T
 
-    (title-prefix          nil string)
-    (latexmathml           nil string)
-    (jsmath                nil string)
-    (id-prefix             nil string)
-    (indented-code-classes nil string)
+    (title-prefix)                 ; a string or NIL
+    (latexmathml)                  ; a string or NIL
+    (jsmath)                       ; a string or NIL
+    (id-prefix)                    ; a string or NIL
+    (indented-code-classes)        ; a string or NIL
 
-    (variable              nil alist    markdown2pdf)
+    (variable)                     ; an alist or NIL
 
-    (email-obfuscation     nil special) ; NIL (="none"), "javascript" or "references"
+    (email-obfuscation)            ; nil (="none"), "javascript" or "references"
 
-    (gladtex               nil bool)
-    (incremental           nil bool)
-    (no-wrap               nil bool)
-    (number-sections       nil bool     markdown2pdf)
-    (parse-raw             nil bool     markdown2pdf)
-    (preserve-tabs         nil bool     markdown2pdf)
-    (reference-links       nil bool)
-    (sanitize-html         nil bool)
-    (smart                 nil bool)
-    (standalone            nil bool)
-    (strict                nil bool     markdown2pdf)
-    (table-of-contents     nil bool     markdown2pdf)
-    (xetex                 nil bool     markdown2pdf)
+    (gladtex)                      ; NIL, T
+    (incremental)                  ; NIL, T
+    (no-wrap)                      ; NIL, T
+    (number-sections)              ; NIL, T
+    (parse-raw)                    ; NIL, T
+    (preserve-tabs)                ; NIL, T
+    (reference-links)              ; NIL, T
+    (sanitize-html)                ; NIL, T
+    (smart)                        ; NIL, T
+    (standalone)                   ; NIL, T
+    (strict)                       ; NIL, T
+    (table-of-contents)            ; NIL, T
+    (xetex)                        ; NIL, T
 
     ;; this is not actually a pandoc option:
-    (output-dir            nil special)) ; a directory path or NIL
-  "List of pandoc option.")
-
-(defun pandoc-create-option-alist ()
-  (mapcar #'(lambda (option)
-	      (cons (car option) (cadr option)))
-	  pandoc-options))
+    (output-dir))                  ; a directory path or NIL
+  "Pandoc option alist.")
 
 (defvar pandoc-local-options nil "A buffer-local variable holding a file's pandoc options.")
 (make-variable-buffer-local 'pandoc-local-options)
@@ -261,7 +256,7 @@ list, not if it appears higher on the list."
 (define-minor-mode pandoc-mode
   "Minor mode for interacting with Pandoc."
   :init-value nil :lighter (:eval (concat " Pandoc/" (pandoc-get 'write))) :global nil
-  (setq pandoc-local-options (pandoc-create-option-alist pandoc-options))
+  (setq pandoc-local-options (copy-alist pandoc-options))
   (pandoc-set 'read (cdr (assq major-mode pandoc-major-modes)))
   (setq pandoc-settings-modified-flag nil))
 
@@ -462,8 +457,8 @@ If PDF is non-nil, markdown2pdf is called instead of pandoc."
 	       filename)     ; we want to use settings for that format or no settings at all.
 	  (unless (pandoc-load-settings-for-file (expand-file-name filename) output-format t)
 	    ;; if we do not find a settings file, we unset all options:
-	    (setq pandoc-local-options (pandoc-create-option-alist pandoc-options)
-		  pandoc-project-options (pandoc-create-option-alist pandoc-options))
+	    (setq pandoc-local-options (copy-alist pandoc-options)
+		  pandoc-project-options (copy-alist pandoc-options))
 	    ;; and specify only the input and output formats:
 	    (pandoc-set 'write output-format)
 	    (pandoc-set 'read (pandoc-get 'read buffer)))
@@ -537,7 +532,7 @@ appropriate output format."
 In order to achieve this, the current local settings are copied
 to the project settings."
   (interactive)
-  (setq pandoc-project-options (pandoc-create-option-alist pandoc-local-options))
+  (setq pandoc-project-options (copy-alist pandoc-local-options))
   (pandoc-save-settings 'project (pandoc-get 'write)))
 
 (defun pandoc-save-settings (type format &optional no-confirm)
@@ -595,7 +590,7 @@ Options are written out in the format <option>::<value>."
   "Undo all settings specific to the current file.
 Project settings associated with the current file are kept."
   (interactive)
-  (setq pandoc-local-options (pandoc-create-option-alist pandoc-project-options))
+  (setq pandoc-local-options (copy-alist pandoc-project-options))
   (message "Local file settings undone for current session. Save local settings to make persistent."))
 
 (defun pandoc-load-default-settings ()
@@ -624,8 +619,8 @@ file is found for FILE, otherwise non-NIL."
   (let ((project-settings (pandoc-read-settings-from-file (pandoc-create-settings-filename 'project file format)))
 	(local-settings (pandoc-read-settings-from-file (pandoc-create-settings-filename 'settings file format))))
     (unless (nor project-settings local-settings)
-      (setq pandoc-project-options (pandoc-create-option-alist pandoc-options)
-	    pandoc-local-options (pandoc-create-option-alist pandoc-options))
+      (setq pandoc-project-options (copy-alist pandoc-options)
+	    pandoc-local-options (copy-alist pandoc-options))
       (mapc #'(lambda (option)
 		(pandoc-set (car option) (cdr option))
 		(pandoc-set* (car option) (cdr option)))
@@ -691,7 +686,7 @@ format)."
 	     (y-or-n-p (format "Current settings for output format \"%s\" changed. Save? " (pandoc-get 'write))))
     (pandoc-save-settings (pandoc-get 'write) t))
   (unless (pandoc-load-settings-profile format t)
-    (setq pandoc-local-options (pandoc-create-option-alist pandoc-options))
+    (setq pandoc-local-options (copy-alist pandoc-options))
     (pandoc-set 'write format)
     (pandoc-set 'read (cdr (assq major-mode pandoc-major-modes)))))
 
