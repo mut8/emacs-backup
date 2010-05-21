@@ -1,5 +1,51 @@
 @itemize @w{}
 
+Changes/New Features in 5.9:
+@itemize @bullet
+@item Toolbar:  The toolbar now has an icon for starting Splus.
+@item Indentation: New documentation and code has been added to make it
+easier to change how ESS indents code.  In particular, see
+@code{ess-default-style}, @code{ess-own-style-list} and the documention
+subsection ``Changing indentation styles''.
+@item @command{ess-display-help-on-object} (@kbd{C-c C-v}) now offers
+ completion candidates for help file aliases, in addition to object
+ names.
+@item Font locking: is now turned on
+ even without @command{window-system} is @code{nil}, whenever
+ @var{ess-font-lock-mode} is non-nil, i.e., by default.
+@item @ESS script editing: ess-eval-deactivate-mark default is now t,
+ as suggested by Leo Alekseyev and subsequent ``unanimous'' ESS-help
+ discussion.
+@item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
+ thanks to Jeffrey Arnold.
+@item @ESS{[R]}: Now finds all R versions, both 64-bit and 32-bit, on some
+ 64-bit Windows machines.  Please report back to ess-core success or failure
+ on your 64-bit Windows machine.
+@item ESS Manual now more visually pleasing; @uref{http://ess.r-project.org/Manual/ess.html}
+@item @ESS{[R]}: Roxygen on XEmacs no longer font locks for now
+ (as it required missing features and hence broke ESS startup, there).
+@item @ESS{[R]}: Roxygen has a sub-menu on the [ESS] menu.
+@item @ESS{[R]}: Function @command{ess-rutils-htmldocs} in
+ @file{ess-rutils.el} offers an alternative to @code{help.start()} for
+ navigating R documentation, using the @command{browse-url} Emacs
+ function.
+@end itemize
+
+Changes/New Features in 5.8:
+@itemize @bullet
+@item @ESS{[R]}: New @file{ess-rutils.el} with utilities for listing, loading,
+installing, and updating packages, as well as object manipulation
+(listing, viewing, and deleting).  It also provides an alternative to
+@code{RSiteSearch()} that uses the @command{browse-url} function, so
+results can be viewed in an Emacs web browser.
+@item @ESS{[R]}: much more extensive Roxygen interface, via ess-roxy.el
+ from Henning Redestig. Ess-roxy supports filling of roxygen fields,
+ generation and updating roxygen templates, completion of roxygen tags,
+ basic navigation (marking and moving between entries), folding using
+ hs-minor-mode and preview of the Rd file.
+@item Emacs lisp files have got better names (partly, for now).
+@end itemize
+
 Changes/New Features in 5.7:
 @itemize @bullet
 @item @ESS{[R]}: loading a source file (@kbd{C-c C-l}) now works in

@@ -32,7 +32,7 @@
 
  ; Requires and autoloads
 
-(require 'ess); includes ess-cust.el
+(require 'ess); includes ess-custom.el
 
 ;;; AJR: THIS IS GROSS AND DISGUSTING (but I wrote it).
 ;;; MM:	 and I had to add all other 'ess-eval-*** ...
@@ -234,6 +234,11 @@
     ["Toggle Auto-Fill Mode" auto-fill-mode			t]
     ["Undo"		 undo					t]
     ["About"		 (ess-goto-info "Edit buffer")		t]
+    )
+   ("Roxygen"
+    ["Update/Generate Template" ess-roxy-update-entry	        t]
+    ["Preview Rd"	 ess-roxy-preview-Rd     		t]
+    ["Toggle Roxygen Prefix"	 ess-roxy-toggle-roxy-region    t]
     )
    ("Start Process"
     ;; SJE - :help not yet recognised in XEmacs.
@@ -748,7 +753,7 @@ With prefix argument, only shows the errors ESS reported."
 		   (bolp))
 		 (if ess-auto-newline (progn (ess-indent-line) (newline) t) nil)))
 	(progn
-	  (insert last-command-char)
+	  (insert last-command-event)
 	  (ess-indent-line)
 	  (if ess-auto-newline
 	      (progn
@@ -927,7 +932,8 @@ of the expression are preserved."
 ;;;*;;; Support functions for indentation
 
 (defun ess-comment-indent ()
-  (if (looking-at "###")
+  (if (or (looking-at "###")
+      (and (looking-at "#!") (= 1 (line-number-at-pos))))
       (current-column)
     (if (looking-at "##")
 	(let ((tem (ess-calculate-indent)))
@@ -949,25 +955,28 @@ Return the amount the indentation changed by."
 	   (setq indent (current-indentation)))
 	  (t
 	   (skip-chars-forward " \t")
-	   (if (and ess-fancy-comments (looking-at "###"))
-	       (setq indent 0))
-	   (if (and ess-fancy-comments
-		    (looking-at "#")
-		    (not (looking-at "##")))
-	       (setq indent comment-column)
-	     (if (eq indent t) (setq indent 0))
-	     (if (listp indent) (setq indent (car indent)))
-	     (cond ((and (looking-at "else\\b")
-			 (not (looking-at "else\\s_")))
-		    (setq indent (save-excursion
-				   (ess-backward-to-start-of-if)
-				   (+ ess-else-offset (current-indentation)))))
-		   ((= (following-char) ?})
-		    (setq indent
-			  (+ indent
-			     (- ess-close-brace-offset ess-indent-level))))
-		   ((= (following-char) ?{)
-		    (setq indent (+ indent ess-brace-offset)))))))
+	   (cond ((and ess-fancy-comments ;; ### or #!
+		       (or (looking-at "###")
+			   (and (looking-at "#!") (= 1 (line-number-at-pos)))))
+		  (setq indent 0))
+		 ;; Single # comment
+		 ((and ess-fancy-comments
+		       (looking-at "#") (not (looking-at "##")))
+		  (setq indent comment-column))
+		 (t
+		  (if (eq indent t) (setq indent 0))
+		  (if (listp indent) (setq indent (car indent)))
+		  (cond ((and (looking-at "else\\b")
+			      (not (looking-at "else\\s_")))
+			 (setq indent (save-excursion
+					(ess-backward-to-start-of-if)
+					(+ ess-else-offset (current-indentation)))))
+			((= (following-char) ?})
+			 (setq indent
+			       (+ indent
+				  (- ess-close-brace-offset ess-indent-level))))
+			((= (following-char) ?{)
+			 (setq indent (+ indent ess-brace-offset))))))))
     (skip-chars-forward " \t")
     (setq shift-amt (- indent (current-column)))
     (if (zerop shift-amt)

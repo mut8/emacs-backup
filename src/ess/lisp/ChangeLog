@@ -1,3 +1,264 @@
+2010-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-a.el (ess-sas-file-path/ess-sas-rtf-portrait): 
+	creation of portrait RTFs with the ESS[SAS] font sizes
+	for non-ESS[SAS]-related buffers, such as .el, now
+	allowed, but functionality is somewhat limited
+	TODO: ess-sas-rtf-landscape
+
+2010-05-19  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-custom.el (ess-eval-deactivate-mark): The default is true 
+	since ESS version 5.9, except on XEmacs which doesn't have 
+	\\[deactivate-mark] and friends
+
+2010-05-18  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-inf.el (ess-eval-linewise): Partially work around a bug
+	in GNU Emacs 23.x; thanks to Markus Triska; see 
+	http://article.gmane.org/gmane.emacs.ess.general/4366
+
+2010-05-18  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-custom.el (ess-own-style-list): New customized variable.
+	(ess-add-style): New function, to allow new indentation styles to
+	be added.
+	Nine indentation variables no longer defcustom, as they are set
+	through the `ess-set-style' code, and thus not directly changeable
+	by the user via customize.
+
+2010-05-17  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-help.el: 4278 `ess-find-help-file' now calls the additional
+	function `ess-get-help-aliases-list' so that it offers completion
+	on aliases, in addition to object names, removing duplicates.
+
+2010-05-17  Richard M. Heiberger  <rmh@temple.edu>
+
+	* ess-site.el: I added a call to `w32-short-file-name' on each item
+	in `ess-rterm-version-path'.  Otherwise Windows can't find files
+	with embedded spaces in the directory name.
+
+	I redefined S in Windows.  Now it gives a message to start the S
+	GUI from the icon and then connect to it with M-x `S-existing'.
+	This applies to M-x S, to the S menu item, and to clicking on the
+	icon.
+
+	* ess-sp6w-d.el: turned off a few more `use-dialog-box' and put in
+	some more `w32-short-file-name' calls.
+	
+2010-05-16  Richard M. Heiberger  <rmh@temple.edu>
+
+	* ess-sp6w-d.el, ess-r-d.el: set `use-dialog-box' to nil for Windows.
+	Old version of Windows can't load directories from the dialog.
+
+	* ess-site.el: I revised `ess-rterm-version-path' so it will find
+        both 64-bit and 32-bit versions of R on 64-bit Windows.  I tested it
+        on 64-bit Windows 7 and 32-bit Windows XP.
+
+	* ess-toolbar.el: add C-c C-c
+	`ess-eval-function-or-paragraph-and-step' to `ess-toolbar-items'.
+	Started to change spluslogo to splus_icon_small logo (from S-Plus 7 and
+	earlier to S+ 8).  This needs an xpm and ppm file and permission
+	from TIBCO.  I wrote to Lou Bajuk asking for permission.
+	
+2010-05-13  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): we can safely
+	assume that any line starting with @ is not a NOTE, ERROR
+	or WARNING.  TODO; create separate .sas and .log keywords
+
+2010-05-10  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-swv.el (ess-swv-PDF): 4251 Fixed command string for
+	`shell-command' to view file.
+
+2010-05-05  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-site.el (ess-font-lock-mode): is alone determining the
+	turn-on-font-lock setting in the major modes' hooks.
+
+	* ess-roxy.el (ess-roxy-preview-Rd): more careful checking if
+	require(roxygen) works.
+
+2010-05-03  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-inf.el (ess-eval-region): don't call
+	deactivate-mark unless it is bound
+
+2010-04-26  Henning Redestig  <henning.red@googlemail.com>
+
+	* ess-roxy.el (ess-roxy-insert-args): do not add param field to
+	functions without arguments
+
+	* ess-mode.el (ess-mode-menu): menu entries for editing roxygen
+	entries
+
+2010-04-16  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el (ess-rutils-keys): 4298 Turn on by default, now
+	that bindings do not interfere with anything.
+
+2010-04-15  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4297 Unconditionally activate submenu Rutils, and
+	changed key bindings to avoid using 'C-c c' (reserved for users).
+
+2010-04-14  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el (ess-rutils-htmldocs): 4296 Fixed doc string.
+
+2010-04-13  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4290 Incorporated R function
+	.rutils.help.start(), defined in etc/ess-rutils-help-start.R so
+	that `ess-rutils-htmldocs' is now fully functional.
+	(ess-rutils-rhtml-fn): 4294 Use `expand-file-name' to define path
+	to ess-rutils-help-start.R.
+	Reintroduced autoloading of ess-rdired.el; we really need it.
+
+2010-04-11  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4271 Provided optional argument REMOTE to
+	`ess-rutils-htmldocs', fixed doc strings throughout.
+
+2010-04-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-s-l.el (S-indent-line): also consider '#!'; using patch
+	from Jeffrey Arnold
+	* ess-site.el (interpreter-mode-alist): ditto
+	* ess-mode.el (ess-comment-indent): ditto
+
+2010-03-25  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-roxy.el (ess-roxy-get-function-args): also remove tabs
+
+2010-03-24  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): although note
+	is a keyword in SAS/GRAPH, it is not used very much, but
+	the false positive %put note: ...; is used quite often;
+	therefore, the note statement is no longer fontified
+
+2010-03-24  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-roxy.el (ess-roxy-mode): font-lock-add-keywords etc is not
+	available and hence not called for XEmacs.
+
+2010-03-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-custom.el (ess-eval-deactivate-mark): change default to t
+
+2010-02-16  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4268 Removed `ess-rutils-chgdir', already
+	available as `ess-change-directory' in ess-utils.el, and rebound
+	key to that function in menu and optional key bindings.
+
+2010-02-15  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): more statement
+	names
+
+2010-02-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-custom.el: Tidy up docstrings for defcustom items.
+	Asterisk is not used at start of docstring; prefer 'Non-nil means
+	...' notation for binary variables.
+
+2010-02-05  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: 4265 Placed `ess-rutils-keys' under the ess-R
+	customization group, not under the inexistent ess-r.
+
+2010-02-05  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-custom.el (ess-user-full-name): defines the user name which
+	is also becomes default for the author field in roxy entries
+
+2010-02-04  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el: New file
+
+2010-02-03  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makefile (clean): remove more (and hopefully all) legacy .elc files
+	* renamed ess-mous.el to ess-mouse.el (renames appear to be complete)
+
+2010-02-02  Henning Redestig  <henning@psc.riken.jp>
+
+	* ess-roxy.el (ess-roxy-update-entry): corrected behavior when
+	adding roxygen entries to function with preceeding comments
+	* deleted ess-roxygen.el
+	* ess-r-d.el removed references to ess-roxygen.el
+	* ess-site.el removed references to ess-roxygen.el, replaced with
+	ess-roxy.el
+
+2010-02-01  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* Makefile: add ess-comp.el to dependencies
+	for targets with PRELOAD (as it should be)
+
+2010-01-27  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): new
+	procedure names for SAS/STAT 9.0/9.1/9.2
+
+2010-01-26  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* renamed essl-s.el to ess-s-l.el
+	* renamed essddr.el to ess-rd.el
+	* renamed essd-sp6w.el to ess-sp6w-d.el
+	* renamed essd-sp6.el to ess-sp6-d.el
+	* renamed essd-sp5.el to ess-sp5-d.el
+	* renamed essd-sp4.el to ess-sp4-d.el
+	* renamed essd-sp3.el to ess-sp3-d.el
+	* renamed essd-s4.el to ess-s4-d.el
+	* renamed essd-s3.el to ess-s3-d.el
+	* renamed essd-rgui.el to ess-r-gui.el
+	* renamed essd-r.el to ess-r-d.el
+	* renamed essd-r-args.el to ess-r-args.el
+	* renamed essa-r.el to ess-r-a.el
+	* renamed ess-cust.el to ess-custom.el
+	* renamed ess-emcs.el to ess-compat.el
+
+2010-01-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-roxy.el: new file from Henning Redestig, after moving
+	customizations to
+	* ess-cust.el: + ess-roxy things
+
+2010-01-20  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* ess-sas-l.el (SAS-mode-font-lock-keywords): add some common
+	survival analysis statements to keywords
+	(SAS-mode-font-lock-keywords): remove some common false positives
+	for 1 and 2 letter SAS statements
+
+	* Makefile (clean): remove old-fashioned names too (see below)
+
+2010-01-18  Rodney Sparapani  <rsparapa@mcw.edu>
+
+	* essl-bugs.el renamed to ess-bugs-l.el
+	* essd-bugs.el renamed to ess-bugs-d.el
+	* essd-jags.el renamed to ess-jags-d.el
+	* essl-sas.el renamed to ess-sas-l.el
+	* essd-sas.el renamed to ess-sas-d.el
+	* essa-sas.el renamed to ess-sas-a.el
+	* essl-sta.el renamed to ess-sta-l.el
+	* essd-sta.el renamed to ess-sta-d.el
+
+2010-01-18  Stephen Eglen  <stephen@gnu.org>
+
+	* essd-els.el (ess-remote): Use `ess-current-process-name' as the
+	local process name if none passed to ess-remote.
+
+2010-01-18  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-utils.el: drop (ess-chop1)
+
+	* essd-r.el (ess-r-versions-create): no longer use ess-chop1
+
 2009-12-07  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* ess-inf.el (ess-ddeclient-p): fix blunder; add
@@ -2909,5 +3170,3 @@ Fri Dec	 5 10:12:54 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Fri Dec	 5 10:09:59 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* CVS (ChangeLog): Starting 5.1 series.
-
-

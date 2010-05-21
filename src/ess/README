@@ -3,7 +3,7 @@
 
 This is the README file for the distribution of ESS version
 
-   5.7.1
+   5.9.1
 
    ESS is a GNU Emacs and XEmacs mode for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
@@ -483,6 +483,63 @@ shell, simply type `M-x S+6-msdos RET'.
 1.10 New Features
 =================
 
+     Changes/New Features in 5.9:
+        * Toolbar:  The toolbar now has an icon for starting Splus.
+
+        * Indentation: New documentation and code has been added to
+          make it easier to change how ESS indents code.  In
+          particular, see `ess-default-style', `ess-own-style-list' and
+          the documention subsection "Changing indentation styles".
+
+        * `ess-display-help-on-object' (`C-c C-v') now offers
+          completion candidates for help file aliases, in addition to
+          object  names.
+
+        * Font locking: is now turned on  even without `window-system'
+          is `nil', whenever  ESS-FONT-LOCK-MODE is non-nil, i.e., by
+          default.
+
+        * ESSscript editing: ess-eval-deactivate-mark default is now t
+          as suggested by Leo Alekseyev and subsequent "unanimous"
+          ESS-help  discussion.
+
+        * ESS[R]: Editing support for "#!" (Rscript / littler) editing,
+          thanks to Jeffrey Arnold.
+
+        * ESS[R]: Now finds all R versions, both 64-bit and 32-bit, on
+          some  64-bit Windows machines.  Please report back to
+          ess-core success or failure  on your 64-bit Windows machine.
+
+        * ESS Manual now more visually pleasing;
+          `http://ess.r-project.org/Manual/ess.html'
+
+        * ESS[R]: Roxygen on XEmacs no longer font locks for now  (as
+          it required missing features and hence broke ESS startup,
+          there).
+
+        * ESS[R]: Roxygen has a sub-menu on the [ESS] menu.
+
+        * ESS[R]: Function `ess-rutils-htmldocs' in  `ess-rutils.el'
+          offers an alternative to `help.start()' for  navigating R
+          documentation, using the `browse-url' Emacs  function.
+
+     Changes/New Features in 5.8:
+        * ESS[R]: New `ess-rutils.el' with utilities for listing,
+          loading, installing, and updating packages, as well as object
+          manipulation (listing, viewing, and deleting).  It also
+          provides an alternative to `RSiteSearch()' that uses the
+          `browse-url' function, so results can be viewed in an Emacs
+          web browser.
+
+        * ESS[R]: much more extensive Roxygen interface, via ess-roxy.el
+          from Henning Redestig. Ess-roxy supports filling of roxygen
+          fields,  generation and updating roxygen templates,
+          completion of roxygen tags,  basic navigation (marking and
+          moving between entries), folding using  hs-minor-mode and
+          preview of the Rd file.
+
+        * Emacs lisp files have got better names (partly, for now).
+
      Changes/New Features in 5.7:
         * ESS[R]: loading a source file (`C-c C-l') now works in
           Windows, similarly to other platforms;  (further; it had
@@ -810,4 +867,8 @@ low-volume mailing list.
    * Rodney A. Sparapani (mailto:rsparapa@mcw.edu)
 
    * Stephen Eglen (mailto:stephen@gnu.org)
+
+   * Sebastian P. Luque (mailto:spluque@gmail.com)
+
+   * Henning Redestig (mailto:henning.red@googlemail.com)
 

@@ -12,7 +12,8 @@
 ESS @w{version @ESSVER}
 
 @author The ESS Developers (A.J. Rossini, R.M. Heiberger, K. Hornik,
-@author M. Maechler, R.A. Sparapani  and S.J. Eglen)
+@author M. Maechler, R.A. Sparapani, S.J. Eglen,
+@author S.P. Luque and H. Redestig)
 @c @author (Formerly by: Doug Bates, Ed Kademan, Frank Ritter
 @c @author                and David Smith)
 @c @ifhtml
@@ -20,7 +21,7 @@ ESS @w{version @ESSVER}
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2009 The ESS Developers
+@author Copyright @copyright{} 2002--2010 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @c (@email{rossini@@biostat.washington.edu})
 @c @author Department of Biostatistics
@@ -62,23 +63,25 @@ by  A.J. Rossini,
     R.M. Heiberger,
     K. Hornik,
     M. Maechler,
-    R.A. Sparapani
-and S.J. Eglen.
+    R.A. Sparapani,
+    S.J. Eglen,
+    S.P. Luque
+and H. Redestig.
 @end display
 
 @c (Formerly: Doug
 @c Bates, Ed Kademan, Frank Ritter and David Smith).
 @quotation
 Emacs Speaks Statistics (ESS) provides an intelligent, consistent
-interface between the user and the software.  ESS interfaces with
-SAS, S-PLUS, R, BUGS/JAGS and other statistical analysis packages under
-the Unix, Microsoft Windows, and Apple Mac operating systems.  ESS
-is itself a package within the emacs text editor and uses emacs
-features to streamline the creation and use of statistical software.
-ESS knows the syntax and grammar of statistical analysis packages
-and provides consistent display and editing features based on that
-knowledge.  ESS assists in interactive and batch execution of
-statements written in these statistical analysis languages.
+interface between the user and the software.  ESS interfaces with SAS,
+S-PLUS, R, BUGS/JAGS and other statistical analysis packages on Unix,
+Linux and Microsoft Windows.  ESS is itself a package within the emacs
+text editor and uses emacs features to streamline the creation and use
+of statistical software.  ESS knows the syntax and grammar of
+statistical analysis packages and provides consistent display and
+editing features based on that knowledge.  ESS assists in interactive
+and batch execution of statements written in these statistical
+analysis languages.
 @end quotation
 
 @end ifnottex
@@ -93,7 +96,7 @@ statements written in these statistical analysis languages.
 
 * ESS for the S family::
 * Editing::                     How to create/edit objects and functions
-* Editing R documentation files::
+* Editing R documentation::
 * Help::                        Reading help files
 
 * ESS for SAS::
@@ -1671,7 +1674,7 @@ from @Sl{} mode, also available in @Sl{} Transcript Mode.
 @include help-s.texi
 
 @comment  node-name,  next,  previous,  up
-@node Editing, Editing R documentation files, ESS for the S family, Top
+@node Editing, Editing R documentation, ESS for the S family, Top
 @chapter Editing S functions
 
 @cindex editing functions
@@ -1910,7 +1913,7 @@ of the window, you will need to set the variable
 @node Indenting, Other edit buffer commands, Evaluating code, Editing
 @section Indenting and formatting S code
 
-ESS now provides a sophisticated mechanism for indenting @Sl{} source
+ESS provides a sophisticated mechanism for indenting @Sl{} source
 code (thanks to Ken'ichi Shibayama).  Compound statements (delimited by
 @samp{@{} and @samp{@}}) are indented relative to their enclosing block.
 In addition, the braces have been electrified to automatically indent to
@@ -1939,11 +1942,8 @@ behavior by adding the line
 @code{(setq ess-fancy-comments nil)} to your @file{.emacs} file.
 @vindex ess-fancy-comments
 
-@cindex roxygen
-ESS now has preliminary support for editing roxygen tags within R mode
-buffers.  In particular, when the function @code{ess-roxygen-fn} (bound
-to @kbd{C-c C-o}) is called with point inside a R function, the roxygen
-template for the function is added just above the function.
+ESS also supports Roxygen entries which is R documentation maintained in
+the source code as comments @xref{Roxygen}.
 
 The indentation commands provided by ESS are:
 @cindex indenting
@@ -1979,12 +1979,56 @@ appropriate comment marker.
 @item
 @kbd{M-x ess-set-style} @*
 Set the formatting style in this buffer to be one of the predefined
-styles: @code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and @code{C++}.
-The @code{DEFAULT} style uses the default values for the indenting
-variables (unless they have been modified in your @file{.emacs} file.)
-@cindex @file{.emacs} file
-This command causes all of the formatting variables to be buffer-local.
+styles, including @code{GNU}, @code{BSD}, @code{K&R}, @code{CLB}, and
+@code{C++}. The @code{DEFAULT} style uses the default values for the
+indenting variables;  The @code{OWN} style allows you to use your own
+private values of the indentation variable, see below.
 @end itemize
+
+@menu
+* Styles::                     Changing indentation styles
+@end menu
+
+@comment  node-name,  next,  previous,  up
+@node Styles,  , ,Indenting 
+@subsection Changing indentation styles
+
+The combined value of nine variables that control indentation are
+collectively termed a @i{style}.  ESS provides several styles covering the
+common styles of indentation: @code{DEFAULT}, @code{OWN}, @code{GNU},
+@code{BSD}, @code{K&R}, @code{C++}, @code{RRR}, @code{CLB}.  The
+variable @code{ess-style-alist} lists the value of each indentation
+variable per style.  
+
+If you wish to change from one predefined style to another, change the
+variable @code{ess-default-style}, for example:
+
+@example
+(setq ess-default-style 'C++)
+@end example
+
+The styles @code{DEFAULT} and @code{OWN} are initially identical.  If
+you wish to edit some of the default values, set
+@code{ess-default-style} to @code{'OWN} and change
+@code{ess-own-style-list}.  
+@xref{Customization}, for convenient ways to set both these variables.
+
+
+If you prefer not to use the custom facility, you can change individual
+indentation variables within a hook, for example:
+
+@example
+(defun myindent-ess-hook ()
+  (setq ess-indent-level 4))
+(add-hook 'ess-mode-hook 'myindent-ess-hook) 
+@end example
+
+In the rare case that you'd like to add an entire new indentation style
+of your own, copy the definition of @code{ess-own-style-list} to a new
+variable and ensure that the last line of the @code{:set} declaration
+calls @code{ess-add-style} with a unique name for your style
+(e.g. @code{'MINE}).  Finally, add @code{(setq ess-default-style 'MINE)}
+to use your new style.
 
 @comment  node-name,  next,  previous,  up
 @node Other edit buffer commands, Source Files, Indenting, Editing
@@ -2220,15 +2264,28 @@ be created, you will be asked whether you wish to create the directory.
 If you choose not to, or the directory cannot be created, you will not
 be able to edit functions.
 
-@node Editing R documentation files, Help, Editing, Top
-@chapter Editing R documentation files
+@node Editing R documentation, Help, Editing, Top
+@chapter Editing R documentation
 
-ESS also provides support for editing @dfn{R documentation} (``Rd'')
-files.  @R{} objects are documented in files written in Rd format, a
-simple markup language closely resembling (La)@TeX{}, which can be
-processed into a variety of formats, including La@TeX{}, @acronym{HTML},
-and plain text.  Rd format is described in section ``Rd format'' of the
-``Writing R Extensions'' manual in the R distribution.
+ESS provides two ways of writing documentation for R objects. Either
+using the standard R documentation system or using in-source
+documentation written as structured comment fields for use with the
+Roxygen package.
+
+@menu
+* R documentation files::       Edit objects in a specialized buffer
+* Roxygen::                     Loading source files into the ESS process
+@end menu
+
+@node R documentation files, Roxygen, Editing R documentation, Editing R documentation
+@section Editing R documentation (Rd) files
+
+@R{} objects are documented in files written in the @dfn{R
+documentation} (``Rd''), a simple markup language closely resembling
+(La)@TeX{}, which can be processed into a variety of formats, including
+La@TeX{}, @acronym{HTML}, and plain text.  Rd format is described in
+section ``Rd format'' of the ``Writing R Extensions'' manual in the R
+distribution. ESS has several features that facilitate editing Rd files.
 
 Visiting an Rd file as characterized by its extension @file{Rd} will
 activate Rd Mode, which provides several facilities for making editing R
@@ -2325,9 +2382,121 @@ add the following lines to one of your Emacs startup files:
            (font-lock-mode 1)))
 @end example
 
+@node Roxygen, , R documentation files, Editing R documentation
+@section Editing Roxygen documentation
+@cindex Roxygen
+@cindex roxy
+@cindex ess-roxy
+
+The Roxygen R package makes it possible to keep the intended contents
+for Rd files as structured comments in the R source files. Roxygen can
+then parse R files and generate appropriate Rd files from these
+comments, fill the usage fields as well as updating @file{NAMESPACE}
+files. See the Roxygen documentation found via @uref{http://roxygen.org}
+for more information its usage. An example of an Roxygen entry for a
+simple R function can look like this:
+
+@example
+@verbatim
+##' Description of the function
+##'
+##' Further details about this function
+##' @title A title
+##' @param me all parameters must be listed and documented
+##' @return Description of the return value
+##' @author The author
+myfun <- function(me)
+  cat("Hello", me, "\n")
+@end verbatim
+@end example
+The entry is immediately preceding the object to document and all lines
+start with the Roxygen prefix string, in this case @code{##'}. ESS
+provides support to edit these documentation entries by providing line
+filling, navigation, template generation etc. Syntax highlighting is
+provided for Emacs but not for XEmacs.
+
+Roxygen is customized by the variables in the customization group ``Ess
+Roxy''. Customizables include the Roxygen prefix, use of folding
+to toggle visibility of Roxygen entries and the Roxygen template.
+
+All ESS Roxygen support is defined in @file{ess-roxy.el} which is loaded
+by default in ESS. The following special Emacs commands are provided.
+
+@table @kbd
+@item C-c C-o 
+@pindex ess-roxy-update-entry
+@code{ess-roxy-update-entry}: Generate a Roxygen template or update the
+parameter list in Roxygen entry at point (or above the function at the
+point). Documented parameters that are not in the function are placed
+last in the list, parameters that are not documented and not in the
+definition are dropped.
+
+@item C-c C-e C-c 
+@pindex ess-roxy-toggle-roxy-region
+@code{ess-roxy-toggle-roxy-region}: Toggle the presence of the leading
+Roxygen string on all lines in the marked region. Convenient for
+transferring text to Roxygen entries and to evaluate example fields.
+
+@item C-c C-e C-r 
+@pindex ess-roxy-preview-Rd
+@code{ess-roxy-preview-Rd}: Use the attached R process to parse the
+entry at point obtain the input for an Rd file. Convenient for checking
+syntax. When used with the prefix argument, i.e. @kbd{C-u C-c C-e C-r},
+place the content in a buffer associated with a Rd file with the same
+name as the documentation. Requires the Roxygen package to be installed.
+
+@item C-c C-e p @code{ess-roxy-previous-entry}
+@pindex ess-roxy-previous-entry
+Go to start of the Roxygen entry above point.
+
+@item C-c C-e n 
+@pindex ess-roxy-next-entry
+@code{ess-roxy-next-entry}: Go to end of the Roxygen entry above point.
+
+@item C-c C-e C-h 
+@pindex ess-roxy-hide-all
+@code{ess-roxy-hide-all}: Use the hideshow mode to fold away the
+visibility of all Roxygen entries. Hide-show support must be enabled for
+this binding to get defined.
+@end table
+
+ESS also advices several standard editing functions in order to make
+Roxygen editing more intuitive. The advised functions are as follows.
+
+@table @kbd
+@item C-c TAB 
+@pindex ess-R-complete-object-name
+@code{ess-R-complete-object-name}: Complete Roxygen tag at
+point. E.g. doing @kbd{C-c TAB} when the point is at the end of
+@code{@@par} completes to @code{@@param}.
+
+@item M-h 
+@pindex mark-paragraph
+@code{mark-paragraph}: If the transient mark mode is active, place mark
+and point at start end end of the field at point and activate the mark.
+
+@item TAB 
+@pindex ess-indent-command
+@code{ess-indent-command}: If hide-show support is enabled, fold away
+the visibility of the Roxygen entry at point.
+
+@item M-q 
+@pindex fill-paragraph
+@code{fill-paragraph}: Fill the Roxygen field at point.
+
+@item C-a 
+@pindex move-beginning-of-line
+@code{move-beginning-of-line}: Move to the point directly to the right
+of the Roxygen start string.
+
+@item ENTER 
+@pindex newline-and-indent
+@code{newline-and-indent}: Insert a new line and the Roxygen prefix
+string.
+@end table
 
 @comment  node-name,  next,  previous,  up
-@node Help, ESS for SAS, Editing R documentation files, Top
+@node Help, ESS for SAS, Editing R documentation, Top
 @chapter Reading help files
 @cindex help files
 
@@ -2392,7 +2561,7 @@ e.g., @samp{Description:} instead of  @samp{DESCRIPTION:} and also
 only some versions of S(-plus) have
 sections @samp{BACKGROUND}, @samp{BUGS}, @samp{OPTIONAL ARGUMENTS},
 @samp{REQUIRED ARGUMENTS}, and @samp{SIDE EFFECTS}.
-@c The bindings are all in ../lisp/essl-s.el
+@c The bindings are all in ../lisp/ess-s-l.el
 @c  ess-help-*-sec-keys-alist
 @c
 @c S-plus only:
@@ -2569,6 +2738,7 @@ ESS has a few miscellaneous features, which didn't fit anywhere else.
 * Toolbar::                     Support for toolbar in ESS
 * TAGS::                        Using TAGS for S files
 * Rdired::                      Directory editor for R objects
+* Rutils::                      R object/package management and help utilities
 @end menu
 
 @comment  node-name,  next,  previous,  up
@@ -2775,9 +2945,8 @@ R CMD rtags --help
 @end example
 
 
-
 @comment  node-name,  next,  previous,  up
-@node Rdired, , TAGS, Miscellaneous
+@node Rdired, Rutils, TAGS, Miscellaneous
 @section Rdired
 
 Ess-rdired provides a dired-like buffer for viewing, editing and
@@ -2816,6 +2985,100 @@ Type @kbd{C-h m} or @kbd{?} to get a list of the keybindings for this
 mode.  For example, with your point on the line of a variable, `p' will
 plot the object, `v' will view it, and `d' will mark the object for
 deletion (`x' will actually perform the deletion).
+
+
+@comment  node-name,  next,  previous,  up
+@node Rutils, , Rdired, Miscellaneous
+@section Rutils
+
+Ess-rutils builds up on ess-rdired, providing key bindings for
+performing basic R functions in the inferior-ESS process buffer, such as
+loading and managing packages, object manipulation (listing, viewing,
+and deleting), and alternatives to @code{help.start()} and
+@code{RSiteSearch()} that use the @command{browse-url} Emacs function.
+The library can be loaded using @kbd{M-x load-file}, but the easiest is
+to include:
+
+@lisp
+(require 'ess-rutils)
+@end lisp
+
+in your .emacs.  Once R is started with @kbd{M-x R}, and if the value of
+the customizable variable @code{ess-rutils-keys} is true, several key
+bindings become available in iESS process buffers:
+
+@itemize @bullet
+@item
+@kbd{C-c C-. l} (@command{ess-rutils-localpkgs}) @*
+@pindex ess-rutils-localpkgs
+List all packages in all available libraries.
+
+@item
+@kbd{C-c C-. r} (@command{ess-rutils-repospkgs}) @*
+@pindex ess-rutils-repospkgs
+List available packages from repositories listed by
+@command{getOptions(``repos'')} in the current R session.
+
+@item
+@kbd{C-c C-. u} (@command{ess-rutils-updatepkgs}) @*
+@pindex ess-rutils-updatepkgs
+Update packages in a particular library and repository.
+
+@item
+@kbd{C-c C-. a} (@command{ess-rutils-apropos}) @*
+@pindex ess-rutils-apropos
+Search for a string using apropos.
+
+@item
+@kbd{C-c C-. m} (@command{ess-rutils-rmall}) @*
+@pindex ess-rutils-rmall
+Remove all R objects.
+
+@item
+@kbd{C-c C-. o} (@command{ess-rutils-objs}) @*
+@pindex ess-rutils-objs
+Manipulate R objects; wrapper for @command{ess-rdired}.
+
+@item
+@kbd{C-c C-. w} (@command{ess-rutils-loadwkspc}) @*
+@pindex ess-rutils-loadwkspc
+Load a workspace file into R.
+
+@item
+@kbd{C-c C-. s} (@command{ess-rutils-savewkspc}) @*
+@pindex ess-rutils-savewkspc
+Save a workspace file.
+
+@item
+@kbd{C-c C-. d} (@command{ess-change-directory}) @*
+@pindex ess-change-directory
+Change the working directory for the current R session.
+
+@item
+@kbd{C-c C-. H} (@command{ess-rutils-htmldocs}) @*
+@pindex ess-rutils-htmldocs
+Use @command{browse-url} to navigate R html documentation.
+
+@end itemize
+
+See the submenu @samp{Rutils} under the iESS menu for alternative access
+to these functions.  The function @command{ess-rutils-rsitesearch} is
+provided without a particular key binding.  This function is useful in
+any Emacs buffer, so can be bound to a user-defined key:
+
+@lisp
+(eval-after-load "ess-rutils"
+  '(global-set-key [(control c) (f6)] 'ess-rutils-rsitesearch))
+@end lisp
+@pindex ess-rutils-rsitesearch
+
+Functions for listing objects and packages
+(@command{ess-rutils-localpkgs}, @command{ess-rutils-repospkgs}, and
+@command{ess-rutils-objs}) show results in a separate buffer and window,
+in @code{ess-rutils-mode}, providing useful key bindings in this mode
+(type @kbd{?} in this buffer for a description).
+
+
 
 @comment  node-name,  next,  previous,  up@chapter Using S4
 @node Mailing lists/bug reports, Customization, Miscellaneous, Top

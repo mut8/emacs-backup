@@ -397,10 +397,10 @@ Other keybindings are as follows:
   ;; section headings.
 
   (setq ess-help-sec-map (make-sparse-keymap))
-  (mapcar '(lambda (key)
-	    (define-key ess-help-sec-map (char-to-string key)
-	      'ess-skip-to-help-section))
-	    (mapcar 'car ess-help-sec-keys-alist))
+  (mapc '(lambda (key)
+	   (define-key ess-help-sec-map (char-to-string key)
+	     'ess-skip-to-help-section))
+	(mapcar 'car ess-help-sec-keys-alist))
   (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
   (define-key ess-help-sec-map ">" 'end-of-buffer)
   (define-key ess-help-sec-map "<" 'beginning-of-buffer)
@@ -465,11 +465,11 @@ to see which keystrokes find which sections."
 
 Keystroke    Section
 ---------    -------\n")
-      (mapcar '(lambda (cs) (insert "	 "
-				    (car cs)
-				    "	   "
-				    (cdr cs) "\n"))
-	      keys-alist)
+      (mapc '(lambda (cs) (insert "    "
+				  (car cs)
+				  "      "
+				  (cdr cs) "\n"))
+	    keys-alist)
       (insert "\nFull list of key definitions:\n"
 	      (substitute-command-keys
 	       "\\{ess-help-sec-map}")))))
@@ -498,10 +498,12 @@ Stata or XLispStat for additional information."
 	(string-match "XLS" ess-language)
 	(string-match "STA" ess-language)
 	(string-match "SAS" ess-language)))
-      (let* ((help-files-list (or (ess-get-help-files-list)
-				  (mapcar 'list
-					  (ess-get-object-list
-					   ess-current-process-name))))
+      (let* ((help-files-list
+	      (delete-dups (append (ess-get-help-files-list)
+				   (ess-get-help-aliases-list)
+				   (mapcar 'list
+					   (ess-get-object-list
+					    ess-current-process-name)))))
 	     (default (ess-read-helpobj-name-default help-files-list))
 	     (prompt-string (if default
 				(format "%s(default %s) " p-string default)
@@ -525,6 +527,20 @@ Stata or XLispStat for additional information."
 				(directory-files dirname)))
 			 (mapcar '(lambda (str) (concat str "/.Help"))
 				 (ess-search-list))))))
+
+(defun ess-get-help-aliases-list ()
+  "Return a list of aliases which have help available."
+  (delete-dups
+   (mapcar 'list
+	   (apply 'append
+		  (mapcar '(lambda (a-file)
+			     (if (file-exists-p a-file)
+				 (ess-get-words-from-vector
+				  (format
+				   "names(.readRDS(\"%s\"))\n" a-file))))
+			  (mapcar '(lambda (str) (concat str "/help/aliases.rds"))
+				  (ess-get-words-from-vector
+				   "searchpaths()\n")))))))
 
 (defun ess-nuke-help-bs ()
   "Remove ASCII underlining and overstriking performed by ^H codes."

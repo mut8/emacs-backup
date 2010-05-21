@@ -108,10 +108,10 @@
 	)
     (require 'font-lock))
 
-(require 'ess-emcs)
+(require 'ess-compat)
 
 (eval-and-compile
-  (require 'ess-cust))
+  (require 'ess-custom))
 
  ; ess-mode: editing S/R/XLS/SAS source
 
@@ -190,7 +190,7 @@
 Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-ps-viewer-pref		; -> ./ess-cust.el
+   (or (and ess-ps-viewer-pref		; -> ./ess-custom.el
 	    (executable-find ess-ps-viewer-pref))
        (executable-find "gv")
        (executable-find "evince")
@@ -201,7 +201,7 @@ Otherwise try a list of fixed known viewers."
 Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
 Otherwise try a list of fixed known viewers."
   (file-name-nondirectory
-   (or (and ess-pdf-viewer-pref		; -> ./ess-cust.el
+   (or (and ess-pdf-viewer-pref		; -> ./ess-custom.el
 	    (executable-find ess-pdf-viewer-pref))
        (car (ess-get-words-from-vector
 	     "getOption(\"pdfviewer\")\n"))
@@ -246,11 +246,11 @@ Otherwise try a list of fixed known viewers."
 (defun ess-setq-vars-local (alist &optional buf)
   "Set language variables from ALIST, in buffer BUF, if desired."
   (if buf (set-buffer buf))
-  (mapcar (lambda (pair)
-	    (make-local-variable (car pair))
-	    (if (cdr pair)
-		(set (car pair) (eval (cdr pair)))))
-	  alist)
+  (mapc (lambda (pair)
+	  (make-local-variable (car pair))
+	  (if (cdr pair)
+	      (set (car pair) (eval (cdr pair)))))
+	alist)
   (ess-write-to-dribble-buffer
    (format "(ess-setq-vars-LOCAL): language=%s, dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
 	   ess-language ess-dialect buf comint-process-echoes comint-input-sender)))
@@ -261,9 +261,9 @@ Otherwise try a list of fixed known viewers."
    (format "ess-setq-vars-default 0: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
 	   ess-language ess-dialect buf comint-process-echoes comint-input-sender))
   (if buf (set-buffer buf))
-  (mapcar (lambda (pair)
-	    (set-default (car pair) (eval (cdr pair))))
-	  alist)
+  (mapc (lambda (pair)
+	  (set-default (car pair) (eval (cdr pair))))
+	alist)
   (ess-write-to-dribble-buffer
    (format "ess-setq-vars-default 1: ess-language=%s, -dialect=%s, buf=%s, comint..echoes=%s, comint..sender=%s\n"
 	   ess-language ess-dialect buf comint-process-echoes comint-input-sender))

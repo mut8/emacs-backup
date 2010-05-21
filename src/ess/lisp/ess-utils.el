@@ -28,7 +28,7 @@
 (defun ess-inside-string-or-comment-p (pos)
   "Return non-nil if POSition [defaults to (point)] is inside string or comment
  (according to syntax). NOT OKAY for multi-line comments!!"
-  ;;FIXME (defun S-calculate-indent ..) in ./essl-s.el can do that ...
+  ;;FIXME (defun S-calculate-indent ..) in ./ess-s-l.el can do that ...
   (interactive "d");point by default
   (let ((pps (save-excursion
 	       (parse-partial-sexp
@@ -448,10 +448,6 @@ This function will work even if LIST is unsorted.  See also `uniq'."
 (defun ess-drop-non-directories (file-strings)
   "Drop all entries that do not \"look like\" directories."
   (ess-flatten-list (mapcar 'file-name-directory file-strings)))
-
-(defun ess-chop1 (string)
-  "chop last character; typically to remove trailing \"/\"."
- (substring string 0 -1))
 
 
 (defun ess-flatten-list (&rest list)

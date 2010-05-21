@@ -139,7 +139,7 @@ The extension, in a file name, is the part that follows the last `.'."
 
 ;;; The following require sets ess-local-custom-available to
 ;;; true if custom is provided at this point.
-(require 'ess-emcs)
+(require 'ess-compat)
 ;;; If it is not provided, but we think it will be available when necessary,
 ;;; then we can use the following line (uncommented) to make sure that
 ;;; it will be used.  If you have to ask, then you don't need this.
@@ -204,7 +204,7 @@ for ESS, such as icons.")
 ;;;  (add-hook 'ess-mode-hook 'ess-restore-asm-extns)
 ;;;  (add-hook 'inferior-ess-mode-hook 'ess-restore-asm-extns)
 
-(autoload 'Rd-mode "essddr" "Major mode for editing R documentation." t)
+(autoload 'Rd-mode "ess-rd" "Major mode for editing R documentation." t)
 
 ;; This is thanks to  Ed L Cashin <ecashin@uga.edu>, 03 Mar 2004 :
 (defun ess-restore-asm-extns ()
@@ -258,6 +258,14 @@ between .s or .S files and assembly mode.
            ("\\.[Jj][Mm][Dd]\\'"         . ess-jags-mode)
           )
 	 auto-mode-alist)))
+
+;; Rscript and littler interpreters recognized
+(setq interpreter-mode-alist
+      (append
+       '(("Rscript" . r-mode)
+	 ("r"       . r-mode)
+	 )
+       interpreter-mode-alist))
 
 ;; (1.4) Customize the dialects for your setup.
 
@@ -317,9 +325,9 @@ between .s or .S files and assembly mode.
 ;;; S+6 in an emacs buffer, using the same technology as ESS uses for
 ;;; Unix S-Plus.  Interactive graphics with javagraph are available
 ;;; in this mode beginning with S-Plus 6.1.
-;;; See essd-sp4.el or essd-sp6w.el
+;;; See ess-sp4-d.el or ess-sp6w-d.el
 
-;;; -----> configuration now via custom, see ./ess-cust.el and look for
+;;; -----> configuration now via custom, see ./ess-custom.el and look for
 ;;;        inferior-Sqpe+... e.g. inferior-Sqpe+6-program-name
 
 ;;; These ddeclient values will be buffer-local on MS-Windows 9x/NT
@@ -358,47 +366,47 @@ sending `inferior-ess-language-start' to S-Plus.")
 (if (< max-specpdl-size 700)	 ;;; ESS won't load at the default of 600
     (setq max-specpdl-size 700))
 
-(ess-message "[ess-site:] Before requiring dialect 'essd-** ....")
-(ess-message "[ess-site:] require 'essd-r ...")
-(require 'essd-r)    ;; R
-;; (ess-message "[ess-site:] require 'essd-s4 ...")
-;; (require 'essd-s4) ; has become VERY RARE ..
+(ess-message "[ess-site:] Before requiring dialect 'ess-*-d ....")
+(ess-message "[ess-site:] require 'ess-r-d ...")
+(require 'ess-r-d)    ;; R
+;; (ess-message "[ess-site:] require 'ess-s4-d ...")
+;; (require 'ess-s4-d) ; has become VERY RARE ..
 
-;;(ess-message "[ess-site:] require 'essd-s3 ...")
-;;(require 'essd-s3)  ; THIS IS RARE.  You probably do not have this.
+;;(ess-message "[ess-site:] require 'ess-s3-d ...")
+;;(require 'ess-s3-d)  ; THIS IS RARE.  You probably do not have this.
 
 ;; "sp" refers to S-PLUS (MathSoft/StatSci/Insightful/TIBCO):
-(ess-message "[ess-site:] require 'essd-sp3 ...")
-(require 'essd-sp3)
+(ess-message "[ess-site:] require 'ess-sp3-d ...")
+(require 'ess-sp3-d)
 
 (if ess-microsoft-p
     (progn
-      (ess-message "[ess-site:] require 'essd-sp4 ...")
-      (require 'essd-sp4)
-      (ess-message "[ess-site:] require 'essd-sp6w ...")
-      (require 'essd-sp6w))
+      (ess-message "[ess-site:] require 'ess-sp4-d ...")
+      (require 'ess-sp4-d)
+      (ess-message "[ess-site:] require 'ess-sp6w-d ...")
+      (require 'ess-sp6w-d))
   ;; else: decent OS
-  (ess-message "[ess-site:] require 'essd-sp5 ...")
-  (require 'essd-sp5)
-  (ess-message "[ess-site:] require 'essd-sp6 ...")
-  (require 'essd-sp6))
+  (ess-message "[ess-site:] require 'ess-sp5-d ...")
+  (require 'ess-sp5-d)
+  (ess-message "[ess-site:] require 'ess-sp6-d ...")
+  (require 'ess-sp6-d))
 
-(ess-message "[ess-site:] require 'essd-sta ...")
-(require 'essd-sta)  ;; for Stata.
-(ess-message "[ess-site:] require 'essd-xls ...")
-(require 'essd-xls)  ;; XLispStat
-(ess-message "[ess-site:] require 'essd-vst ...")
-(require 'essd-vst)  ;; ViSta
-(ess-message "[ess-site:] require 'essd-arc ...")
-(require 'essd-arc)  ;; Arc
-(ess-message "[ess-site:] require 'essd-sas ...")
-(require 'essd-sas)
+(ess-message "[ess-site:] require 'ess-sta-d ...")
+(require 'ess-sta-d)  ;; for Stata.
+(ess-message "[ess-site:] require 'ess-xls-d ...")
+(require 'ess-xls-d)  ;; XLispStat
+(ess-message "[ess-site:] require 'ess-vst-d ...")
+(require 'ess-vst-d)  ;; ViSta
+(ess-message "[ess-site:] require 'ess-arc-d ...")
+(require 'ess-arc-d)  ;; Arc
+(ess-message "[ess-site:] require 'ess-sas-d ...")
+(require 'ess-sas-d)
 (ess-message "[ess-site:] require 'essd-els ...")
 (require 'essd-els)  ;; S-elsewhere, on another machine by telnet
-(ess-message "[ess-site:] require 'essd-omg ...")
-(require 'essd-omg)  ;; for omegahat
-(ess-message "[ess-site:] require 'essl-bugs ...")
-(require 'essl-bugs)  ;; for batch BUGS
+;; (ess-message "[ess-site:] require 'essd-omg ...")
+;; (require 'essd-omg)  ;; for omegahat
+(ess-message "[ess-site:] require 'ess-bugs-l ...")
+(require 'ess-bugs-l)  ;; for batch BUGS
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el]: ess-customize-alist=%s \n"
@@ -410,7 +418,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; ALWAYS:
 (ess-message "[ess-site:] require 'ess   *ITSELF* ...")
-(require 'ess); -> loads ess-cust.el and more
+(require 'ess); -> loads ess-custom.el and more
 
 (ess-write-to-dribble-buffer
    (format "[ess-site.el _2_]: ess-customize-alist=%s \n"
@@ -419,7 +427,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; (1.8) Speedbar and mouse
 
 (require 'ess-menu)
-(require 'ess-mous)
+(require 'ess-mouse)
 
 ;; (1.9) Toolbar support
 
@@ -450,13 +458,27 @@ sending `inferior-ess-language-start' to S-Plus.")
 (autoload 'ess-rdired "ess-rdired"
   "View *R* objects in a dired-like buffer." t)
 
-(autoload 'ess-roxygen-fn "ess-roxygen"
-  "Insert roxygen tags for function definitions." t)
+(autoload 'ess-roxy-mode "ess-roxy"
+  "Insert and edit Roxygen tags for function definitions." t)
+(add-hook 'ess-mode-hook 'ess-roxy-mode)
+
 
 ;;; On a PC, the default is S+6.
 ;; Elsewhere (unix and linux) the default is S+6
 (cond (ess-microsoft-p ; MS-Windows
-       (fset 'S 'S+6)
+;;        (fset 'S
+;; 	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+;; 		 'S+6-msdos
+;; 	       'S+6))
+       (defun S-by-icon (&rest x)
+	 (interactive)
+	 (message "Please start S+ from the icon.\n Then you can connect emacs to it with `M-x S-existing'.")
+	 )
+       (fset 'S 'S-by-icon)
+       (fset 'S-existing
+	     (if (equal (file-name-nondirectory shell-file-name) "cmdproxy.exe")
+		 'S+6-msdos-existing
+	       'S+6-existing))
        (fset 'Sqpe 'Sqpe+6)
        (fset 's-mode 'S+6-mode)
        (fset 's-transcript-mode 'S+6-transcript-mode))
@@ -503,7 +525,15 @@ sending `inferior-ess-language-start' to S-Plus.")
       (progn
 	(setq ess-s-versions-created
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
-	(setq ess-rterm-version-paths (ess-find-rterm))
+	(setq ess-rterm-version-paths ;; (ess-find-rterm))
+	      (ess-uniq-list
+	       (nconc
+		(ess-find-rterm (concat (getenv "ProgramFiles") "/R/"))       ;; always 32 on 32 bit OS
+		;;                                                            ;; depends on 32 or 64 process on 64 bit OS
+		(ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/"))  ;; always 32 on 64 bit OS, nil on 32 bit OS
+		(ess-find-rterm (concat (getenv "ProgramW6432") "/R/"))       ;; always 64 on 64 bit OS, nil on 32 bit OS
+		)))
+	(setq ess-rterm-version-paths (mapcar '(lambda(x) (w32-short-file-name x)) ess-rterm-version-paths))
 	)
     ;;else  real OS :
       (setq ess-s-versions-created
@@ -533,8 +563,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;; Check to see that inferior-R-program-name points to a working version
 ;; of R; if not, try to find the newest version:
-(require 'essd-r)
-(ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./essd-r.el
+(require 'ess-r-d)
+(ess-check-R-program-name) ;; -> (ess-find-newest-R) if needed, in ./ess-r-d.el
 
 ;;; 3. Customization (and examples) for your site
 ;;;; ===============================================
@@ -554,11 +584,11 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;; The following two expressions automatically enable font-lock-mode
 ;; for ess-mode and inferior-ess-mode buffers.
 
-;; FIXME: XEmacs and Emacs 21.x has font-lock for ttys, as well.
-;; So we need a better check! [or do this unconditionally -working everywhere ??]
-(when (and window-system ess-font-lock-mode)
+;; no longer requiring  (window-system)  here:
+(when ess-font-lock-mode
   (add-hook 'ess-mode-hook 'turn-on-font-lock t)
   (add-hook 'ess-transcript-mode-hook 'turn-on-font-lock t)
+  (add-hook 'Rd-mode-hook 'turn-on-font-lock t)
   (add-hook 'inferior-ess-mode-hook 'turn-on-font-lock t))
 
 ;; If nil, then don't font-lock the input
@@ -598,7 +628,7 @@ sending `inferior-ess-language-start' to S-Plus.")
 ;;; (3.4) ess-ask-for-ess-directory
 ;;; If t, will ask for the directory to use.  If nil, assumes the
 ;;; default (usually, the users home directory...).
-;;now rather in ./ess-cust.el : (setq ess-ask-for-ess-directory t)
+;;now rather in ./ess-custom.el : (setq ess-ask-for-ess-directory t)
 
 ;;; (3.5) ess-directory default	 (correlated with above)
 ;;; The default location for running the subprocess is configurable.
@@ -638,8 +668,8 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 ;;; 3.6 Example of formatting changes
 
-;;; Formatting and indentation patterns are defined in ess-cust.el, please
-;;; see ess-cust.el for exact definitions of these variable settings.
+;;; Formatting and indentation patterns are defined in ess-custom.el, please
+;;; see ess-custom.el for exact definitions of these variable settings.
 ;;; To change them (eg, follow changes suggested by Terry Therneau),
 ;;; you need one or both of the following lines:
 ;;;
