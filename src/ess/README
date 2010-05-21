@@ -573,7 +573,8 @@ shell, simply type `M-x S+6-msdos RET'.
           buffer.
 
         * ESS[S] when transient-mark-mode is true, the mark is now kept,
-          rather than deactivated, thanks to a patch from David Reitter.
+          rather than deactivated, thanks to a patch from David
+          Reitter.
 
      Changes/New Features in 5.3.11:
         * ESS[SAS]: work around bug in Emacs 22.2 & 22.3 which fails to
