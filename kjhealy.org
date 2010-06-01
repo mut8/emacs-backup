@@ -432,6 +432,15 @@ You will also need to change the values for the location of bibtex
    (setq org-mobile-inbox-for-pull "~/Documents/org/from-mobile.org")
 #+end_src
 
+** Haskell Mode
+   Haskell. 
+#+srcname: haskell-mode
+#+begin_src emacs-lisp 
+  (load "haskell-site-file")
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+#+end_src
+
 ** iBuffer
    Manage a lot of buffers easily with C-x C-b. Already set up
    elsewhere in the starter kit. Add local configuration here, e.g.,
