@@ -151,7 +151,7 @@ You will also need to change the values for the location of bibtex
     history) in a pop-up buffer.
 #+srcname: kill-ring
 #+begin_src emacs-lisp 
-    (when (require 'browse-kill-ring nil 'noerror)
+  (when (require 'browse-kill-ring nil 'noerror)
   (browse-kill-ring-default-keybindings))
 #+end_src
 
@@ -169,7 +169,7 @@ You will also need to change the values for the location of bibtex
    ;; )
 
       ;; Make emacs aware of multi-file projects
-   (setq-default TeX-master nil)
+      (setq-default TeX-master nil)
 
    ;; Auto-raise Emacs on activation (from Skim, usually)
    (defun raise-emacs-on-aqua()
