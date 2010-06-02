@@ -20,6 +20,14 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 (setq org-disputed-keys t)
 (setq org-completion-use-ido t)
 ;; (if window-system (require 'org-mouse))
+
+;; Compatibility with WindMove
+;; Make windmove work in org-mode:
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
+
 #+end_src
 
 ** Org-Mode Hook
