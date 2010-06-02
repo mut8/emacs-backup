@@ -155,6 +155,259 @@ You will also need to change the values for the location of bibtex
   (browse-kill-ring-default-keybindings))
 #+end_src
 
+*** ido-mode
+    Use ido mode for M-command completion as well as file/buffer
+    completion. (Alreadly implemented in other starter kit files)
+#+srcname: ido-mode
+#+begin_src emacs-lisp :tangle no
+    (ido-mode 1)
+     (setq ido-execute-command-cache nil)
+ (defun ido-execute-command ()
+   (interactive)
+   (call-interactively
+    (intern
+     (ido-completing-read
+      "M-x "
+      (progn
+        (unless ido-execute-command-cache
+          (mapatoms (lambda (s)
+                      (when (commandp s)
+                        (setq ido-execute-command-cache
+                              (cons (format "%S" s) ido-execute-command-cache))))))
+        ido-execute-command-cache)))))
+    
+ (add-hook 'ido-setup-hook
+           (lambda ()
+             (setq ido-enable-flex-matching t)
+             (global-set-key "\M-x" 'ido-execute-command)))
+
+   ;; (setq ido-execute-command-cache nil)
+   ;; (defun ido-execute-command ()
+   ;; (interactive)
+   ;; (call-interactively
+   ;; (intern
+   ;; (ido-completing-read
+   ;; "M-x "
+   ;; (progn
+   ;; (unless ido-execute-command-cache
+   ;; (mapatoms (lambda (s)
+   ;; (when (commandp s)
+   ;; (setq ido-execute-command-cache
+   ;; (cons (format "%S" s) ido-execute-command-cache))))))
+   ;; ido-execute-command-cache)))))
+
+    (add-hook 'ido-setup-hook
+    (lambda ()
+    (setq ido-enable-flex-matching t)
+    (global-set-key "\M-x" 'ido-execute-command)
+    (define-key ido-completion-map [tab] 'ido-complete)))
+
+    (defvar ido-enable-replace-completing-read t
+      "If t, use ido-completing-read instead of completing-read if possible.
+    
+    Set it to nil using let in around-advice for functions where the
+    original completing-read is required.  For example, if a function
+    foo absolutely must use the original completing-read, define some
+    advice like this:
+    
+    (defadvice foo (around original-completing-read-only activate)
+      (let (ido-enable-replace-completing-read) ad-do-it))")
+    
+    ;; Replace completing-read wherever possible, unless directed otherwise
+    (defadvice completing-read
+      (around use-ido-when-possible activate)
+      (if (or (not ido-enable-replace-completing-read) ; Manual override disable ido
+              (boundp 'ido-cur-list)) ; Avoid infinite loop from ido calling this
+          ad-do-it
+        (let ((allcomp (all-completions "" collection predicate)))
+          (if allcomp
+              (setq ad-return-value
+                    (ido-completing-read prompt
+                                   allcomp
+                                   nil require-match initial-input hist def))
+            ad-do-it))))
+
+    (setq ido-work-directory-list '("~/" "~/Desktop" "~/Documents"))
+
+    ;; ido-mode and imenu
+    (defun ido-goto-symbol (&optional symbol-list)
+      "Refresh imenu and jump to a place in the buffer using Ido."
+      (interactive)
+      (unless (featurep 'imenu)
+        (require 'imenu nil t))
+      (cond
+       ((not symbol-list)
+        (let ((ido-mode ido-mode)
+              (ido-enable-flex-matching
+               (if (boundp 'ido-enable-flex-matching)
+                   ido-enable-flex-matching t))
+              name-and-pos symbol-names position)
+          (unless ido-mode
+            (ido-mode 1)
+            (setq ido-enable-flex-matching t))
+          (while (progn
+                   (imenu--cleanup)
+                   (setq imenu--index-alist nil)
+                   (ido-goto-symbol (imenu--make-index-alist))
+                   (setq selected-symbol
+                         (ido-completing-read "Symbol? " symbol-names))
+                   (string= (car imenu--rescan-item) selected-symbol)))
+          (setq position (cdr (assoc selected-symbol name-and-pos)))
+          (cond
+           ((overlayp position)
+            (goto-char (overlay-start position)))
+           (t
+            (goto-char position)))))
+       ((listp symbol-list)
+        (dolist (symbol symbol-list)
+          (let (name position)
+            (cond
+             ((and (listp symbol) (imenu--subalist-p symbol))
+              (ido-goto-symbol symbol))
+             ((listp symbol)
+              (setq name (car symbol))
+              (setq position (cdr symbol)))
+             ((stringp symbol)
+              (setq name symbol)
+              (setq position
+                    (get-text-property 1 'org-imenu-marker symbol))))
+            (unless (or (null position) (null name)
+                        (string= (car imenu--rescan-item) name))
+              (add-to-list 'symbol-names name)
+              (add-to-list 'name-and-pos (cons name position))))))))
+    (global-set-key "\C-ci" 'ido-goto-symbol) ; or any key you see fit
+#+end_src
+    
+*** Word-count
+    Live word count in status bar, via wc. Unfortunately there seems
+    to be a bug -- it interacts badly with the smooth scrolling: when
+    you get to the bottom of the buffer it wraps the pointer up to the
+    middle of the screen without moving the text with it, so you end
+    up typing inside the text that's already there. Replaced with a
+    simpler version instead, which gives you a straight count via M-x wc.
+
+#+srcname: word-count
+#+begin_src emacs-lisp
+    ;; (autoload 'word-count-mode "word-count"
+    ;; "Minor mode to count words." t nil)
+    ;; (dolist (hook '(org-mode-hook
+    ;; markdown-mode-hook
+    ;; TeX-mode-hook
+    ;; text-mode-hook))
+    ;; (add-hook hook (lambda () (word-count-mode 1))))
+
+    (require 'wc)
+#+end_src 
+*** Line wrapping and position
+    Sane line wrapping and scrolling for long documents and
+    papers. Plus a function for removing any hard-returns in a
+    document. 
+#+srcname: line-modes
+#+begin_src emacs-lisp
+    (global-visual-line-mode t)
+    ;;; prefer auto-fill to visual line wrap in ESS mode
+    (add-hook 'ess-mode-hook 'turn-on-auto-fill)
+    (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
+
+    ;;; but turn off auto-fill in tex and markdown
+    (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
+    (add-hook 'latex-mode-hook 'turn-off-auto-fill)
+
+    ;;; unfill paragraph
+    (defun unfill-paragraph ()
+    (interactive)
+    (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+    (global-set-key (kbd "<f6>") 'unfill-paragraph)
+
+    ;; Page down/up move the point, not the screen.
+    ;; In practice, this means that they can move the
+    ;; point to the beginning or end of the buffer.
+    (global-set-key [next]
+    (lambda () (interactive)
+    (condition-case nil (scroll-up)
+    (end-of-buffer (goto-char (point-max))))))
+
+    (global-set-key [prior]
+    (lambda () (interactive)
+    (condition-case nil (scroll-down)
+    (beginning-of-buffer (goto-char (point-min))))))
+
+    ;; smooth-scrolling package in src/
+    (require 'smooth-scrolling)
+#+end_src
+
+*** Spelling
+    Use cocoAspell instead of ispell. Turned off here because it loads
+    too late. I had to put it in a separate org file of its own.
+#+srcname: spelling-mode
+#+begin_src emacs-lisp :tangle no
+ (setq ispell-program-name "aspell"
+      ispell-dictionary "english"
+      ispell-dictionary-alist
+      (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
+                       ("-B" "-d" "english" "--dict-dir"
+                        "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
+                       nil iso-8859-1)))
+        `((nil ,@default)
+          ("english" ,@default))))
+
+    ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
+    (setq ispell-tex-skip-alists
+    '((;;("%\\[" . "%\\]") ; AMStex block comment...
+    ;; All the standard LaTeX keywords from L. Lamport's guide:
+    ;; \cite, \hspace, \hspace*, \hyphenation, \include, \includeonly, \input,
+    ;; \label, \nocite, \rule (in ispell - rest included here)
+    ("\\\\addcontentsline"              ispell-tex-arg-end 2)
+    ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
+    ("\\\\\\([aA]lph\\|arabic\\)"   ispell-tex-arg-end)
+    ("\\\\author"                         ispell-tex-arg-end)
+    ;; New regexps here --- kjh
+    ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
+    ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
+    ("\\\\bibliographystyle"                ispell-tex-arg-end)
+    ("\\\\makebox"                  ispell-tex-arg-end 0)
+    ("\\\\e?psfig"                  ispell-tex-arg-end)
+    ("\\\\document\\(class\\|style\\)" .
+    "\\\\begin[ \t\n]*{[ \t\n]*document[ \t\n]*}"))
+    (;; delimited with \begin.  In ispell: displaymath, eqnarray, eqnarray*,
+    ;; equation, minipage, picture, tabular, tabular* (ispell)
+    ("\\(figure\\|table\\)\\*?"     ispell-tex-arg-end 0)
+    ("list"                                 ispell-tex-arg-end 2)
+    ("program"             . "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
+    ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
+#+end_src
+
+*** Skeleton mode
+    Enable skeleton mode in ESS for paired insertion
+#+srcname: skeleton-mode
+#+begin_src emacs-lisp
+    (require 'skeleton)
+    (setq skeleton-pair t)
+    (defvar my-skeleton-pair-alist
+    '((?\) . ?\()
+    (?\] . ?\[)
+    (?} . ?{)
+    (?" . ?")))
+    
+    (defun my-skeleton-pair-end (arg)
+    "Skip the char if it is an ending, otherwise insert it."
+    (interactive "*p")
+    (let ((char last-command-char))
+    (if (and (assq char my-skeleton-pair-alist)
+    (eq char (following-char)))
+    (forward-char)
+    (self-insert-command (prefix-numeric-value arg)))))
+
+    (dolist (pair my-skeleton-pair-alist)
+    (global-set-key (char-to-string (first pair))
+    'my-skeleton-pair-end)
+    ;; If the char for begin and end is the same,
+    ;; use the original skeleton
+    (global-set-key (char-to-string (rest pair))
+    'skeleton-pair-insert-maybe))
+#+end_src
+
 ** LaTeX Customizations and settings
    AUCTeX, SyncTeX, XeLaTeX, RefTeX.
 *** SyncTeX, PDF mode, Skim
@@ -473,260 +726,6 @@ You will also need to change the values for the location of bibtex
        (ibuffer-switch-to-saved-filter-groups "home")))
 #+end_src
   
-** Misc things not in starter-kit, or starter-kit overrides
-*** ido-mode
-    Use ido mode for M-command completion as well as file/buffer
-    completion. (Alreadly implemented in other starter kit files)
-#+srcname: ido-mode
-#+begin_src emacs-lisp :tangle no
-    (ido-mode 1)
-     (setq ido-execute-command-cache nil)
- (defun ido-execute-command ()
-   (interactive)
-   (call-interactively
-    (intern
-     (ido-completing-read
-      "M-x "
-      (progn
-        (unless ido-execute-command-cache
-          (mapatoms (lambda (s)
-                      (when (commandp s)
-                        (setq ido-execute-command-cache
-                              (cons (format "%S" s) ido-execute-command-cache))))))
-        ido-execute-command-cache)))))
-    
- (add-hook 'ido-setup-hook
-           (lambda ()
-             (setq ido-enable-flex-matching t)
-             (global-set-key "\M-x" 'ido-execute-command)))
-
-   ;; (setq ido-execute-command-cache nil)
-   ;; (defun ido-execute-command ()
-   ;; (interactive)
-   ;; (call-interactively
-   ;; (intern
-   ;; (ido-completing-read
-   ;; "M-x "
-   ;; (progn
-   ;; (unless ido-execute-command-cache
-   ;; (mapatoms (lambda (s)
-   ;; (when (commandp s)
-   ;; (setq ido-execute-command-cache
-   ;; (cons (format "%S" s) ido-execute-command-cache))))))
-   ;; ido-execute-command-cache)))))
-
-    (add-hook 'ido-setup-hook
-    (lambda ()
-    (setq ido-enable-flex-matching t)
-    (global-set-key "\M-x" 'ido-execute-command)
-    (define-key ido-completion-map [tab] 'ido-complete)))
-
-    (defvar ido-enable-replace-completing-read t
-      "If t, use ido-completing-read instead of completing-read if possible.
-    
-    Set it to nil using let in around-advice for functions where the
-    original completing-read is required.  For example, if a function
-    foo absolutely must use the original completing-read, define some
-    advice like this:
-    
-    (defadvice foo (around original-completing-read-only activate)
-      (let (ido-enable-replace-completing-read) ad-do-it))")
-    
-    ;; Replace completing-read wherever possible, unless directed otherwise
-    (defadvice completing-read
-      (around use-ido-when-possible activate)
-      (if (or (not ido-enable-replace-completing-read) ; Manual override disable ido
-              (boundp 'ido-cur-list)) ; Avoid infinite loop from ido calling this
-          ad-do-it
-        (let ((allcomp (all-completions "" collection predicate)))
-          (if allcomp
-              (setq ad-return-value
-                    (ido-completing-read prompt
-                                   allcomp
-                                   nil require-match initial-input hist def))
-            ad-do-it))))
-
-    (setq ido-work-directory-list '("~/" "~/Desktop" "~/Documents"))
-
-    ;; ido-mode and imenu
-    (defun ido-goto-symbol (&optional symbol-list)
-      "Refresh imenu and jump to a place in the buffer using Ido."
-      (interactive)
-      (unless (featurep 'imenu)
-        (require 'imenu nil t))
-      (cond
-       ((not symbol-list)
-        (let ((ido-mode ido-mode)
-              (ido-enable-flex-matching
-               (if (boundp 'ido-enable-flex-matching)
-                   ido-enable-flex-matching t))
-              name-and-pos symbol-names position)
-          (unless ido-mode
-            (ido-mode 1)
-            (setq ido-enable-flex-matching t))
-          (while (progn
-                   (imenu--cleanup)
-                   (setq imenu--index-alist nil)
-                   (ido-goto-symbol (imenu--make-index-alist))
-                   (setq selected-symbol
-                         (ido-completing-read "Symbol? " symbol-names))
-                   (string= (car imenu--rescan-item) selected-symbol)))
-          (setq position (cdr (assoc selected-symbol name-and-pos)))
-          (cond
-           ((overlayp position)
-            (goto-char (overlay-start position)))
-           (t
-            (goto-char position)))))
-       ((listp symbol-list)
-        (dolist (symbol symbol-list)
-          (let (name position)
-            (cond
-             ((and (listp symbol) (imenu--subalist-p symbol))
-              (ido-goto-symbol symbol))
-             ((listp symbol)
-              (setq name (car symbol))
-              (setq position (cdr symbol)))
-             ((stringp symbol)
-              (setq name symbol)
-              (setq position
-                    (get-text-property 1 'org-imenu-marker symbol))))
-            (unless (or (null position) (null name)
-                        (string= (car imenu--rescan-item) name))
-              (add-to-list 'symbol-names name)
-              (add-to-list 'name-and-pos (cons name position))))))))
-    (global-set-key "\C-ci" 'ido-goto-symbol) ; or any key you see fit
-#+end_src
-    
-*** Word-count
-    Live word count in status bar, via wc. Unfortunately there seems
-    to be a bug -- it interacts badly with the smooth scrolling: when
-    you get to the bottom of the buffer it wraps the pointer up to the
-    middle of the screen without moving the text with it, so you end
-    up typing inside the text that's already there. Replaced with a
-    simpler version instead, which gives you a straight count via M-x wc.
-
-#+srcname: word-count
-#+begin_src emacs-lisp
-    ;; (autoload 'word-count-mode "word-count"
-    ;; "Minor mode to count words." t nil)
-    ;; (dolist (hook '(org-mode-hook
-    ;; markdown-mode-hook
-    ;; TeX-mode-hook
-    ;; text-mode-hook))
-    ;; (add-hook hook (lambda () (word-count-mode 1))))
-
-    (require 'wc)
-#+end_src 
-*** Line wrapping and position
-    Sane line wrapping and scrolling for long documents and
-    papers. Plus a function for removing any hard-returns in a
-    document. 
-#+srcname: line-modes
-#+begin_src emacs-lisp
-    (global-visual-line-mode t)
-    ;;; prefer auto-fill to visual line wrap in ESS mode
-    (add-hook 'ess-mode-hook 'turn-on-auto-fill)
-    (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
-
-    ;;; but turn off auto-fill in tex and markdown
-    (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
-    (add-hook 'latex-mode-hook 'turn-off-auto-fill)
-
-    ;;; unfill paragraph
-    (defun unfill-paragraph ()
-    (interactive)
-    (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-    (global-set-key (kbd "<f6>") 'unfill-paragraph)
-
-    ;; Page down/up move the point, not the screen.
-    ;; In practice, this means that they can move the
-    ;; point to the beginning or end of the buffer.
-    (global-set-key [next]
-    (lambda () (interactive)
-    (condition-case nil (scroll-up)
-    (end-of-buffer (goto-char (point-max))))))
-
-    (global-set-key [prior]
-    (lambda () (interactive)
-    (condition-case nil (scroll-down)
-    (beginning-of-buffer (goto-char (point-min))))))
-
-    ;; smooth-scrolling package in src/
-    (require 'smooth-scrolling)
-#+end_src
-
-*** Spelling
-    Use cocoAspell instead of ispell. Turned off here because it loads
-    too late. I had to put it in a separate org file of its own.
-#+srcname: spelling-mode
-#+begin_src emacs-lisp :tangle no
- (setq ispell-program-name "aspell"
-      ispell-dictionary "english"
-      ispell-dictionary-alist
-      (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
-                       ("-B" "-d" "english" "--dict-dir"
-                        "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
-                       nil iso-8859-1)))
-        `((nil ,@default)
-          ("english" ,@default))))
-
-    ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
-    (setq ispell-tex-skip-alists
-    '((;;("%\\[" . "%\\]") ; AMStex block comment...
-    ;; All the standard LaTeX keywords from L. Lamport's guide:
-    ;; \cite, \hspace, \hspace*, \hyphenation, \include, \includeonly, \input,
-    ;; \label, \nocite, \rule (in ispell - rest included here)
-    ("\\\\addcontentsline"              ispell-tex-arg-end 2)
-    ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
-    ("\\\\\\([aA]lph\\|arabic\\)"   ispell-tex-arg-end)
-    ("\\\\author"                         ispell-tex-arg-end)
-    ;; New regexps here --- kjh
-    ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
-    ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
-    ("\\\\bibliographystyle"                ispell-tex-arg-end)
-    ("\\\\makebox"                  ispell-tex-arg-end 0)
-    ("\\\\e?psfig"                  ispell-tex-arg-end)
-    ("\\\\document\\(class\\|style\\)" .
-    "\\\\begin[ \t\n]*{[ \t\n]*document[ \t\n]*}"))
-    (;; delimited with \begin.  In ispell: displaymath, eqnarray, eqnarray*,
-    ;; equation, minipage, picture, tabular, tabular* (ispell)
-    ("\\(figure\\|table\\)\\*?"     ispell-tex-arg-end 0)
-    ("list"                                 ispell-tex-arg-end 2)
-    ("program"             . "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
-    ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
-#+end_src
-
-*** Skeleton mode
-    Enable skeleton mode in ESS for paired insertion
-#+srcname: skeleton-mode
-#+begin_src emacs-lisp
-    (require 'skeleton)
-    (setq skeleton-pair t)
-    (defvar my-skeleton-pair-alist
-    '((?\) . ?\()
-    (?\] . ?\[)
-    (?} . ?{)
-    (?" . ?")))
-    
-    (defun my-skeleton-pair-end (arg)
-    "Skip the char if it is an ending, otherwise insert it."
-    (interactive "*p")
-    (let ((char last-command-char))
-    (if (and (assq char my-skeleton-pair-alist)
-    (eq char (following-char)))
-    (forward-char)
-    (self-insert-command (prefix-numeric-value arg)))))
-
-    (dolist (pair my-skeleton-pair-alist)
-    (global-set-key (char-to-string (first pair))
-    'my-skeleton-pair-end)
-    ;; If the char for begin and end is the same,
-    ;; use the original skeleton
-    (global-set-key (char-to-string (rest pair))
-    'skeleton-pair-insert-maybe))
-#+end_src
-
 ** Final Custom elements
 #+srcname: final-custom
 #+begin_src emacs-lisp
