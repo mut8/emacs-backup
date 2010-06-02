@@ -618,7 +618,9 @@ You will also need to change the values for the location of bibtex
     (require 'wc)
 #+end_src 
 *** Line wrapping and position
-    Sane line wrapping and scrolling for long documents and papers
+    Sane line wrapping and scrolling for long documents and
+    papers. Plus a function for removing any hard-returns in a
+    document. 
 #+srcname: line-modes
 #+begin_src emacs-lisp
     (global-visual-line-mode t)
@@ -629,6 +631,13 @@ You will also need to change the values for the location of bibtex
     ;;; but turn off auto-fill in tex and markdown
     (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
     (add-hook 'latex-mode-hook 'turn-off-auto-fill)
+
+    ;;; unfill paragraph
+    (defun unfill-paragraph ()
+    (interactive)
+    (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+    (global-set-key (kbd "<f6>") 'unfill-paragraph)
 
     ;; Page down/up move the point, not the screen.
     ;; In practice, this means that they can move the
