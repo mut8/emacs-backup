@@ -298,6 +298,7 @@ You will also need to change the values for the location of bibtex
 
     (require 'wc)
 #+end_src 
+
 *** Line wrapping and position
     Sane line wrapping and scrolling for long documents and
     papers. Plus a function for removing any hard-returns in a
