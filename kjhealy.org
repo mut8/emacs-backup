@@ -686,15 +686,11 @@ You will also need to change the values for the location of bibtex
    (setq org-mobile-inbox-for-pull "~/Documents/org/from-mobile.org")
 #+end_src
 ** Org-mode Babel
-   Babel literate programming framework for org-mode. 
+   Babel literate programming framework for org-mode/R. You can enable
+   it for other languages, too.) 
 #+srcname: org-babel
 #+begin_src emacs-lisp 
-  (require 'org-babel-init)
   (require 'org-babel-R)         ;; requires R and ess-mode
-  ;; (require 'org-babel-ruby)      ;; requires ruby, irb, ruby-mode, and inf-ruby
-  ;; (require 'org-babel-python)    ;; requires python, and python-mode
-  ;; (require 'org-babel-clojure)   ;; requires clojure, clojure-mode,swank-clojure and slime
-
   (org-babel-load-library-of-babel)
 #+end_src
 
