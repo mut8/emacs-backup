@@ -297,6 +297,10 @@ project is not in elpa.
 (add-to-list 'load-path elisp-source-dir)
 #+end_src
 
+*** Starter kit and Gnus
+If you would like help setting up the gnus email client, checkout
+[[file:starter-kit-gnus.org][Starter Kit Gnus]], a starter kit file that is not loaded by default.
+
 ** Load the rest of the starter kit core
 The following files contain the remainder of the core of the Emacs
 Starter Kit.  All of the code in this section should be loaded by
@@ -431,31 +435,6 @@ After we've loaded all the Starter Kit defaults, lets load the User's stuff.
       (mapc #'load (directory-files user-specific-dir nil ".*el$"))
       (mapc #'org-babel-load-file (directory-files user-specific-dir nil ".*org$"))))
 #+end_src
-
-
-* Development
-  :PROPERTIES:
-  :CUSTOM_ID: development
-  :END:
-
-** Tasks [1/10]
-
-*** TODO setup electric for ruby
-*** TODO set up ri for ruby
-*** TODO Submit the packages in starter-kit-elpa.el to ELPA.
-*** STARTED Greg Newman is working on Python helpers.
-*** STARTED submit ruby fixes to flymake
-*** PROPOSED which-func-mode in ruby?
-*** TODO all bindings to kbd invocations
-*** DEFERRED should yasnippet be included in rinari?
-No, rinari has no dependency on yasnippet, and yasnippet has many
-applications outside of rinari.
-
-*** TODO flymake for perl
-*** TODO electric bugaloo for perl
-
-** Bugs [0/1]
-*** TODO get jabber.el to automatically disconnect when suspending/hibernating (via dbus)
 
 
 * Footnotes
