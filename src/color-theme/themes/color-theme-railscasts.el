@@ -55,4 +55,8 @@
      (flymake-warnline ((t (:background "LightSteelBlue" :foreground 
                                         "black"))))
      (underline ((t (:underline t)))) 
-     (minibuffer-prompt ((t (:bold t :foreground "#FF6600")))))))
+     (minibuffer-prompt ((t (:bold t :foreground "#FF6600"))))
+     ;; two org-mode faces
+     (org-document-info-keyword ((t (:foreground "#BC9458" :bold t))))
+     (org-document-title ((t (:foreground "#BC9458" :bold t))))
+     )))
