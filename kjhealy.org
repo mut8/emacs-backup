@@ -22,7 +22,7 @@ You will also need to change the values for the location of bibtex
  settings. *Search for 'kjhealy' in this file* to find the paths that
  need to be updated. Change them as needed or comment them out if you
  don't use these features.
-
+ 
 ** Package Locations
  Location of various local packages (in .emacs.d/vendor)
  because I don't want to keep them in =/Applications/Emacs.app/= or in
