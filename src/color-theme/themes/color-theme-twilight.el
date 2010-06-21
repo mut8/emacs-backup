@@ -77,11 +77,13 @@
      (underline ((nil (:underline nil))))
      (zmacs-region ((t (:background "snow" :foreground "ble"))))
 
-     (font-latex-sectioning-0-face ((t (:bold t :foreground "dodger blue" :height 3))))
-     (font-latex-sectioning-1-face ((t (:bold t :foreground "dodger blue" :height 2))))
+     (font-latex-sectioning-0-face ((t (:bold t :foreground "dodger blue" :height 4))))
+     (font-latex-sectioning-1-face ((t (:bold t :foreground "dodger blue" :height 2.5))))
      (font-latex-sectioning-2-face ((t (:bold t :foreground "dodger blue" :height 1.5))))
      (font-latex-sectioning-3-face ((t (:foreground "#edd400" :height 1.2))))
-     (font-latex-sectioning-4-face ((t (:foreground "tomato" :height 1.0))))
+     (font-latex-sectioning-4-face ((t (:foreground "#edd400" :height 1.0))))
+     (font-latex-string-face ((t (:foreground "#4A70A1")))) ;; quotes
+     (font-latex-match-reference-keywords ((t (:foreground "#8A848B")))) ;; content in \ref{} and \cite{}
 
      (org-level-1 ((t (:bold t :foreground "dodger blue" :height 1.5))))
      (org-level-2 ((t (:bold t :foreground "#6ac214" :height 1.2))))
@@ -97,5 +99,4 @@
      (org-verse ((t (:inherit org-block :slant italic))))
      (org-todo ((t (:bold t :foreground "Red"))))
      (org-done ((t (:bold t :foreground "ForestGreen"))))
-     
      )))
