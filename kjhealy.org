@@ -377,10 +377,21 @@ You will also need to change the values for the location of bibtex
     ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
 #+end_src
 
+*** AutoPair Mode
+    TextMate-like autopairing of quotes and parentheses. Trying out
+    instead of Skeleton Mode. 
+#+srcname: autopair
+#+begin_src emacs-lisp 
+  (require 'autopair)
+  (autopair-global-mode) ;; enable autopair in all buffers 
+  (setq autopair-autowrap t)
+#+end_src
+
+
 *** Skeleton mode
-    Enable skeleton mode in ESS for paired insertion
+   TURNED OFF. Enable skeleton mode in ESS for paired insertion
 #+srcname: skeleton-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
     (require 'skeleton)
     (setq skeleton-pair t)
     (defvar my-skeleton-pair-alist
