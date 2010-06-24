@@ -5,7 +5,7 @@
 ;; This is the first thing to get loaded.
 ;;
 
-setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
+(setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
 
 ;; org-mode windmove compatibility
 (setq org-replace-disputed-keys t)
