@@ -699,8 +699,11 @@ You will also need to change the values for the location of bibtex
    it for other languages, too.) 
 #+srcname: org-babel
 #+begin_src emacs-lisp 
-  (require 'org-babel-R)         ;; requires R and ess-mode
-  (org-babel-load-library-of-babel)
+  (require 'ob-R)         ;; requires R and ess-mode
+  (require 'ob-emacs-lisp)
+  (require 'ob-python)
+  (require 'ob-haskell)
+  (require 'ob-sh)
 #+end_src
 
    
@@ -770,4 +773,5 @@ You will also need to change the values for the location of bibtex
    ;; '(cdlatex-paired-parens "$[{(")
    )
 #+end_src
+   
    
