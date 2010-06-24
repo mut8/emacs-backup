@@ -17,7 +17,6 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 ** Helpful Packages
 #+begin_src emacs-lisp
 (require 'org-install)
-(setq org-disputed-keys t)
 (setq org-completion-use-ido t)
 ;; (if window-system (require 'org-mouse))
 
