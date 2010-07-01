@@ -527,6 +527,7 @@ You will also need to change the values for the location of bibtex
 #+src-name: ess-mode
 #+begin_src emacs-lisp
  (require 'ess-site)
+ 
 #+end_src
 
 *** Make shift-enter to a lot in ESS.
