@@ -63,9 +63,14 @@ You will also need to change the values for the location of bibtex
 #+begin_src emacs-lisp
   ;; Color Theme from vendor directory
   (require 'color-theme)
-  
-  (load-file "~/.emacs.d/src/color-theme/themes/color-theme-twilight.el")
-  (color-theme-twilight)
+  (load-file
+  "~/.emacs.d/src/color-theme/themes/color-theme-twilight.el")
+  (load-file
+  "~/.emacs.d/src/color-theme/themes/color-theme-tangosoft.el") 
+  (if window-system
+    (color-theme-twilight)   ;; Emacs started in own window
+    (color-theme-tangosoft) ;; Emacs started in tty
+    )
   
   ;; Highlight current line (twilight theme builds in support for this)
   (global-hl-line-mode 1)
