@@ -697,7 +697,7 @@ You will also need to change the values for the location of bibtex
 #+src-name: orgmode-mobile
 #+begin_src emacs-lisp
    ;; Set to the location of your Org files on your local system
-   (setq org-directory "~/Documents/org")
+   (setq org-directory "~/Dropbox/Org")
    ;; Set to the name of the file where new notes will be stored
    (setq org-mobile-inbox-for-pull "~/Documents/org/from-mobile.org")
    ;; Set to <your Dropbox root directory>/MobileOrg.
