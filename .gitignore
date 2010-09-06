@@ -21,6 +21,11 @@ elpa-to-submit/nxhtml/etc/schema/xhtml-loader.rnc~
 session*
 tramp
 \#*
+## exported files
+*el
+starter-kit*html
+doc
+eshell/lastdir
 eshell/history
 eshell/lastdir
 src/auctex
