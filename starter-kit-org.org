@@ -89,7 +89,6 @@ Org-mode manual is available to the =info= command (bound to =C-h i=).
                 "org"
                 (expand-file-name "src" dotfiles-dir)))
               Info-directory-list))
->>>>>>> .merge_file_G5vQRo
 #+end_src
 
 ** Starter Kit Documentation
