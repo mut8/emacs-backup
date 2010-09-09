@@ -64,8 +64,10 @@
 ;;;_* Code follows
 ;;;_ + disable `scroll-margin'
 (setq scroll-margin 0)
+
+(setq auto-window-vscroll nil)
 ;;;_ + defcustoms
-(defcustom smooth-scroll-margin 10
+(defcustom smooth-scroll-margin 25
   "Number of lines of visible margin at the top and bottom of a window.
 If the point is within these margins, then scrolling will occur
 smoothly for `previous-line' at the top of the window, and for
@@ -174,16 +176,16 @@ lines of the bottom of the window."
         (scroll-up
          (1+ (- smooth-scroll-margin lines-from-window-bottom))))))))
 
-(defadvice previous-line (after smooth-scroll-down
+(defadvice previous-line (before smooth-scroll-down
                             (&optional arg try-vscroll)
                             activate)
   (smooth-scroll-down))
-(defadvice next-line (after smooth-scroll-up
+(defadvice next-line (before smooth-scroll-up
                             (&optional arg try-vscroll)
                             activate)
   (smooth-scroll-up))
 
-(defadvice isearch-repeat (after isearch-smooth-scroll
+(defadvice isearch-repeat (before isearch-smooth-scroll
                                  (direction)
                                  activate)
   (if (eq direction 'forward)
