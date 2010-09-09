@@ -176,16 +176,16 @@ lines of the bottom of the window."
         (scroll-up
          (1+ (- smooth-scroll-margin lines-from-window-bottom))))))))
 
-(defadvice previous-line (before smooth-scroll-down
+(defadvice previous-line (after smooth-scroll-down
                             (&optional arg try-vscroll)
                             activate)
   (smooth-scroll-down))
-(defadvice next-line (before smooth-scroll-up
+(defadvice next-line (after smooth-scroll-up
                             (&optional arg try-vscroll)
                             activate)
   (smooth-scroll-up))
 
-(defadvice isearch-repeat (before isearch-smooth-scroll
+(defadvice isearch-repeat (after isearch-smooth-scroll
                                  (direction)
                                  activate)
   (if (eq direction 'forward)
