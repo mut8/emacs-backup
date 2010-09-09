@@ -735,8 +735,7 @@ You will also need to change the values for the location of bibtex
    it for other languages, too.) 
 #+srcname: org-babel
 #+begin_src emacs-lisp 
-  (setq org-src-fontify-natively t) ;; Turn on font coloring of src
-  snippets in org files
+  (setq org-src-fontify-natively t) ;; Turn on font coloring of src snippets in org files
   (require 'ob-R)         ;; requires R and ess-mode
   (require 'ob-emacs-lisp)
   (require 'ob-python)
@@ -811,5 +810,6 @@ You will also need to change the values for the location of bibtex
    ;; '(cdlatex-paired-parens "$[{(")
    )
 #+end_src
+   
    
    
