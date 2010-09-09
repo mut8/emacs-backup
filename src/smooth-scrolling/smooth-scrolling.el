@@ -67,7 +67,7 @@
 
 (setq auto-window-vscroll nil)
 ;;;_ + defcustoms
-(defcustom smooth-scroll-margin 25
+(defcustom smooth-scroll-margin 35
   "Number of lines of visible margin at the top and bottom of a window.
 If the point is within these margins, then scrolling will occur
 smoothly for `previous-line' at the top of the window, and for
