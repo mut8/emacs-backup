@@ -324,21 +324,14 @@ You will also need to change the values for the location of bibtex
     (fill-paragraph nil)))
     (global-set-key (kbd "<f6>") 'unfill-paragraph)
 
-    ;; Page down/up move the point, not the screen.
-    ;; In practice, this means that they can move the
-    ;; point to the beginning or end of the buffer.
-    ;; (global-set-key [next]
-    ;; (lambda () (interactive)
-    ;; (condition-case nil (scroll-up)
-    ;; (end-of-buffer (goto-char (point-max))))))
-
-    ;; (global-set-key [prior]
-    ;; (lambda () (interactive)
-    ;; (condition-case nil (scroll-down)
-    ;; (beginning-of-buffer (goto-char (point-min))))))
-
     ;; smooth-scrolling package in src/
     (require 'smooth-scrolling)
+
+    ;; more smooth efforts.
+    (setq-default 
+    scroll-conservatively 0
+    scroll-up-aggressively 0.01
+    scroll-down-aggressively 0.01)
     
     ;; centered-cursor package in src/
     ;; (and
