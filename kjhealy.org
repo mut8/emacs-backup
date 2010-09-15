@@ -467,6 +467,18 @@ You will also need to change the values for the location of bibtex
     (setq reftex-default-bibliography
     '("/Users/kjhealy/Documents/bibs/socbib.bib"))
 
+    ;; Make RefTeX work with Org-Mode
+    ;; use 'C-c (' instead of 'C-c [' because the latter is already
+    ;; defined in orgmode to the add-to-agenda command.
+    (defun org-mode-reftex-setup ()
+    (load-library "reftex") 
+    (and (buffer-file-name)
+    (file-exists-p (buffer-file-name))
+    (reftex-parse-all))
+    (define-key org-mode-map (kbd "C-c (") 'reftex-citation))
+
+    (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+
     ;; RefTeX formats for biblatex (not natbib)
     (setq reftex-cite-format
     '(
@@ -509,6 +521,8 @@ You will also need to change the values for the location of bibtex
     ;;                     '("$[{("))
     ;;             )))
 #+end_src
+
+
 
 *** Custom vc command
     Run the vc shellscript before running xelatex with C-c c (instead of
