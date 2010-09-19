@@ -1,3 +1,37 @@
+ess (5.10-1) unstable; urgency=low
+
+  * New upstream version released this morning
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 08 Jun 2010 05:29:06 -0500
+
+ess (5.9.1-2) unstable; urgency=low
+
+  * lisp/*: Upgraded to svn revision 5352 with a fix by Sebastian Luque 
+    for the XEmacs incompatibility			(Closes: #583857)
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 04 Jun 2010 09:59:22 -0500
+
+ess (5.9.1-1) unstable; urgency=low
+
+  * New upstream version 
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Tue, 25 May 2010 09:02:10 -0500
+
+ess (5.9-1) unstable; urgency=low
+
+  * New upstream version released this morning
+
+  * debian/control: Increased Standards-Version: to current version
+  * debian/source/format: Added with value "1.0" to please lintian
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Fri, 21 May 2010 02:32:53 -0500
+
+ess (5.8-1) unstable; urgency=low
+
+  * New upstream version released this morning
+
+ -- Dirk Eddelbuettel <edd@debian.org>  Wed, 03 Mar 2010 06:25:04 -0600
+
 ess (5.7.1-1) unstable; urgency=low
 
   * New upstream version released this afternoon

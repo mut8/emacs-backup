@@ -1,6 +1,79 @@
+2010-07-12  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-s-l.el (ess-use-this-dir): renamed and moved here: For S and R.
+	(ess-mode-hook): bind ess-use-this-dir to M-<RET>
+
+2010-07-05  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-r-d.el (ess-R-use-this-dir): New defun.
+
+2010-07-01  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-eldoc.el (ess-use-eldoc): Use the new R-mode-hook instead of
+	ess-mode-hook.
+
+2010-06-26  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-custom.el (R-mode-hook): new, use in
+	* ess-site.el: add ess-roxy-mode to R-mode-hook instead of
+	ess-mode-hook.
+
+2010-06-22  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-swv.el: allow customizable "pdflatex" command, via
+	* ess-custom.el (ess-swv-pdflatex-commands, ess-sweave): new
+	variable, in new group;
+
+2010-06-22  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (ess-complete-filename): Use
+	comint-dynamic-complete-filename so that filename is not expanded.
+
+	* ess-r-d.el (ess-R-complete-object-name): If there are no
+	possible-completions, should return nil, so that when this
+	function is called from comint-dynamic-complete-functions, other
+	functions can then be tried.  This should fix bug that history
+	expansion was not working (reported by Vinu Jacob).
+
+2010-06-10  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* ess-r-d.el (ess-dirs): give a message, and also set ess-directory.
+
+2010-06-06  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-swv.el (ess-swv-PDF): 4308 Fixed cmdstr-*.
+
+	* ess-rutils.el (ess-rutils-updatepkgs): 4352 Use better defaults.
+
+2010-06-03  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-help.el (ess-find-help-file): 4318 Replaced `delete-dups' by
+	`ess-uniq-list', since XEmacs doesn't know about it.
+
+	* ess-rutils.el: 4345 Redesigned menu generation and key binding
+	definitions so that Xemacs understands them.
+
+2010-06-03  Stephen Eglen  <stephen@gnu.org>
+
+	* ess-inf.el (inferior-ess-mode): Bind M-RET to 'ess-dirs in *R*
+	and *S* buffers only.
+	* ess-r-d.el (ess-dirs): New function.
+
+2010-05-26  Sebastian P. Luque  <spluque@gmail.com>
+
+	* ess-rutils.el (ess-rutils-objs): 4299 Added `fit-frame' (if
+	available) after calling rdired.
+
+2010-05-23  Richard M. Heiberger  <rmh@temple.edu>
+
+	* ess-site.el, ess-r-d.el: Detect cases when `R/R-x.y.x' exists and
+	`R/R-x.y.z/bin/Rterm.exe' does not exist.  In `ess-find-rterm' in file
+	`ess-r-d.el', replace such values with `nil'.  In `ess-site.el',
+	use `ess-flatten-list' to remove the `nil'.
+
 2010-05-20  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-sas-a.el (ess-sas-file-path/ess-sas-rtf-portrait): 
+	* ess-sas-a.el (ess-sas-file-path/ess-sas-rtf-portrait):
 	creation of portrait RTFs with the ESS[SAS] font sizes
 	for non-ESS[SAS]-related buffers, such as .el, now
 	allowed, but functionality is somewhat limited
@@ -8,14 +81,14 @@
 
 2010-05-19  Rodney Sparapani  <rsparapa@mcw.edu>
 
-	* ess-custom.el (ess-eval-deactivate-mark): The default is true 
-	since ESS version 5.9, except on XEmacs which doesn't have 
+	* ess-custom.el (ess-eval-deactivate-mark): The default is true
+	since ESS version 5.9, except on XEmacs which doesn't have
 	\\[deactivate-mark] and friends
 
 2010-05-18  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-inf.el (ess-eval-linewise): Partially work around a bug
-	in GNU Emacs 23.x; thanks to Markus Triska; see 
+	in GNU Emacs 23.x; thanks to Markus Triska; see
 	http://article.gmane.org/gmane.emacs.ess.general/4366
 
 2010-05-18  Stephen Eglen  <stephen@gnu.org>
@@ -46,7 +119,7 @@
 
 	* ess-sp6w-d.el: turned off a few more `use-dialog-box' and put in
 	some more `w32-short-file-name' calls.
-	
+
 2010-05-16  Richard M. Heiberger  <rmh@temple.edu>
 
 	* ess-sp6w-d.el, ess-r-d.el: set `use-dialog-box' to nil for Windows.
@@ -61,7 +134,7 @@
 	Started to change spluslogo to splus_icon_small logo (from S-Plus 7 and
 	earlier to S+ 8).  This needs an xpm and ppm file and permission
 	from TIBCO.  I wrote to Lou Bajuk asking for permission.
-	
+
 2010-05-13  Rodney Sparapani  <rsparapa@mcw.edu>
 
 	* ess-sas-l.el (SAS-mode-font-lock-keywords): we can safely

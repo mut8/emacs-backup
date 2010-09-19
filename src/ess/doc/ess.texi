@@ -910,7 +910,8 @@ Completion is also provided over file names, which is particularly
 useful when using @Sl{} functions such as @code{get()} or @code{scan()}
 which require fully expanded file names.  Whenever the cursor is within
 an @Sl{} string, pressing @kbd{TAB} completes the file name before
-point, and also expands any @samp{~} or environment variable references.
+point.  Since ESS 5.11, it no longer also expands any @samp{~} or
+environment variable references.
 
 If the cursor is not in a string and does not follow a (partial) object
 name, the @key{TAB} key has a third use: it expands history references.
@@ -2935,7 +2936,7 @@ with the function name starting in column 0.  Windows users may need to
 change the single quotes to double quotes.
 
 R version 2.9.0 introduced a front-end script for finding R tags, which
-calls the @samp{rtags()} function).  By default, this script will
+calls the @samp{rtags()} function.  By default, this script will
 recursively search the directories for relevant tags in R/C/Rd files.
 To use this script from the command line, try the following to get
 started:
@@ -2944,6 +2945,7 @@ started:
 R CMD rtags --help
 @end example
 
+For further details, see @uref{http://developer.r-project.org/rtags.html}
 
 @comment  node-name,  next,  previous,  up
 @node Rdired, Rutils, TAGS, Miscellaneous

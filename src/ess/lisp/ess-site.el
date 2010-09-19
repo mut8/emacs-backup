@@ -460,7 +460,9 @@ sending `inferior-ess-language-start' to S-Plus.")
 
 (autoload 'ess-roxy-mode "ess-roxy"
   "Insert and edit Roxygen tags for function definitions." t)
-(add-hook 'ess-mode-hook 'ess-roxy-mode)
+;; if ever ess-roxy works for non- R ess modes, we will have
+;; (add-hook 'ess-mode-hook 'ess-roxy-mode)
+(add-hook 'R-mode-hook 'ess-roxy-mode)
 
 
 ;;; On a PC, the default is S+6.
@@ -526,13 +528,14 @@ sending `inferior-ess-language-start' to S-Plus.")
 	(setq ess-s-versions-created
 	      (ess-sqpe-versions-create))   ;; use ess-SHOME-versions
 	(setq ess-rterm-version-paths ;; (ess-find-rterm))
-	      (ess-uniq-list
-	       (nconc
-		(ess-find-rterm (concat (getenv "ProgramFiles") "/R/"))       ;; always 32 on 32 bit OS
-		;;                                                            ;; depends on 32 or 64 process on 64 bit OS
-		(ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/"))  ;; always 32 on 64 bit OS, nil on 32 bit OS
-		(ess-find-rterm (concat (getenv "ProgramW6432") "/R/"))       ;; always 64 on 64 bit OS, nil on 32 bit OS
-		)))
+	      (ess-flatten-list
+	       (ess-uniq-list
+		(nconc
+		 (ess-find-rterm (concat (getenv "ProgramFiles") "/R/"))       ;; always 32 on 32 bit OS
+		 ;;                                                            ;; depends on 32 or 64 process on 64 bit OS
+		 (ess-find-rterm (concat (getenv "ProgramFiles(x86)") "/R/"))  ;; always 32 on 64 bit OS, nil on 32 bit OS
+		 (ess-find-rterm (concat (getenv "ProgramW6432") "/R/"))       ;; always 64 on 64 bit OS, nil on 32 bit OS
+		 ))))
 	(setq ess-rterm-version-paths (mapcar '(lambda(x) (w32-short-file-name x)) ess-rterm-version-paths))
 	)
     ;;else  real OS :

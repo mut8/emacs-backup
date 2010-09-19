@@ -449,6 +449,26 @@ Uses the file given by the variable `ess-function-outline-file'."
 	  (replace-match (ess-time-string 'clock) 'not-upcase 'literal)))
     (goto-char (1+ oldpos))))
 
+
+(defun ess-use-this-dir ()
+  "Synchronise the current directory of the S or R process to the one of the current
+buffer. If that buffer has no associated *R* process, provide a message."
+  (interactive)
+  (if ess-local-process-name
+      (let ((cmd (format "setwd('%s')\n" default-directory))
+	    )
+	(unless (string= ess-language "S")
+	  ;; FIXME: generalize this for Stata, SAS, Xlispstat... -- then move to ess-mode.el
+	  (error
+	   "ESS setting working directory in *%s* not yet implemented for language %s"
+	   ess-local-process-name ess-language))
+	(ess-command cmd)
+	(message "Directory of *%s* process set to %s"
+		 ess-local-process-name default-directory))
+        ;; no local process
+    (message "No *%s* process associated with this buffer." ess-dialect)))
+
+
 ;;*;; S/R  Pretty-Editing
 
 (defun ess-fix-comments (&optional dont-query verbose)
@@ -719,7 +739,10 @@ and I need to relearn emacs lisp (but I had to, anyway."
 	    (set (make-local-variable 'fill-nobreak-predicate)
 		 'ess-inside-string-p)
 	    (set (make-local-variable 'normal-auto-fill-function)
-		 'ess-do-auto-fill)))
+		 'ess-do-auto-fill)
+	    (when (string= ess-language "S");; <- is this needed at all here?
+	      (local-set-key "\M-\r" 'ess-use-this-dir))
+	    ))
 
 (provide 'ess-s-l)
 

@@ -173,6 +173,7 @@ to R, put them in the variable `inferior-R-args'."
 	(ess-eval-linewise inferior-ess-language-start
 			   nil nil nil 'wait-prompt))))
 
+
 ;;;### autoload
 (defun R-mode  (&optional proc-name)
   "Major mode for editing R source.  See `ess-mode' for more help."
@@ -189,8 +190,7 @@ to R, put them in the variable `inferior-R-args'."
 	     (ess-imenu-R)))
   ;; MM:      ^^^^^^^^^^^ should really use ess-imenu-mode-function from the
   ;;     alist above!
-  )
-
+  (run-hooks 'R-mode-hook))
 
 (fset 'r-mode 'R-mode)
 
@@ -430,9 +430,11 @@ in English locales) which is the default location for the R distribution."
 			  (file-name-all-completions r-prefix ess-R-root-dir))
 		       (append '("rw") ess-r-versions))))))
 	(mapcar '(lambda (dir)
-		   (concat ess-R-root-dir
-			   (ess-replace-regexp-in-string "[\\]" "/" dir)
-			   "bin/Rterm.exe"))
+		   (let ((R-path
+			  (concat ess-R-root-dir
+				  (ess-replace-regexp-in-string "[\\]" "/" dir)
+				  "bin/Rterm.exe")))
+		     (if (file-exists-p R-path) R-path)))
 		R-ver))))
 
 ;; From Jim (James W.) MacDonald, based on code by Deepayan Sarkar,
@@ -468,9 +470,16 @@ To be used instead of ESS' completion engine for R versions >= 2.5.0
 	    (ess-get-words-from-vector
 	     (concat NS ".retrieveCompletions()\n")))))
 
-    (or (comint-dynamic-simple-complete token-string
-					possible-completions)
-	'none)))
+    ;; If there are no possible-completions, should return nil, so
+    ;; that when this function is called from
+    ;; comint-dynamic-complete-functions, other functions can then be
+    ;; tried.
+    (if (null possible-completions)
+	nil
+      (or (comint-dynamic-simple-complete token-string
+					  possible-completions)
+	  'none))))
+
 
 ;;;### autoload
 (defun Rnw-mode ()
@@ -577,6 +586,20 @@ Completion is available for supplying options."
       ;; else: without prefix use defaults:
       (browse-url (concat site okstring "&max=20&result=normal&sort=score"
 			  "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
+
+
+(defun ess-dirs ()
+  "Set Emacs' current directory to be the same as the *R* process.
+If you change directory within *R* using setwd(), run this command so that
+Emacs can update its `default-directory' variable for the *R* buffer.
+
+Currently this function has been tested only for *R*, but should also work for
+*S* buffers."
+  (interactive)
+  (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
+    (message "new (ESS / default) directory: %s" dir)
+    (setq ess-directory (file-name-as-directory dir)))
+    (setq default-directory ess-directory))
 
 
  ; provides

@@ -826,7 +826,7 @@ Assumes that buffer has not already been in found in current frame."
 inferior-ess-ddeclient, and nil if the ess-process is running as an
 ordinary inferior process.  Alway nil on Unix machines."
   (interactive)
-  (if ess-microsoft-p 
+  (if ess-microsoft-p
       (progn
 	;; Debug: C-c C-l fails (to start R or give good message) in Windows
 	(ess-write-to-dribble-buffer
@@ -1424,7 +1424,11 @@ the next paragraph.  Arg has same meaning as for `ess-eval-region'."
   ;; Use syntax valid *both* for GNU emacs and XEmacs :
   (define-key inferior-ess-mode-map "\r"       'inferior-ess-send-input)
   (define-key inferior-ess-mode-map "\C-a"     'comint-bol)
-  (define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
+
+  ;; 2010-06-03 SJE
+  ;; disabled this in favour of ess-dirs.  Martin was not sure why this
+  ;; key was defined anyway in this mode.
+  ;;(define-key inferior-ess-mode-map "\M-\r"    'ess-transcript-send-command-and-move)
   (define-key inferior-ess-mode-map "\C-c\C-l" 'ess-load-file)
   ;; the above OVERRIDES  comint-dynamic-list-input-ring --> re-assign:
   (define-key inferior-ess-mode-map "\C-c\M-l" 'comint-dynamic-list-input-ring)
@@ -1613,6 +1617,9 @@ to continue it."
 	(setq comint-input-sender 'inferior-R-input-sender))
        ( (member ess-dialect '("S3" "S4" "S+3" "S+4" "S+5" "S+6" "S"))
 	(setq comint-input-sender 'inferior-ess-input-sender))))
+
+  (when (string= ess-language "S")
+    (local-set-key "\M-\r"    'ess-dirs))
 
   ;; Configuration for Stata input handling
   ;; AJR: Stata is hell.   This is the primary configuration point.
@@ -1858,12 +1865,14 @@ A negative prefix argument gets the objects for that position
   (interactive "P")
   (ess-execute inferior-ess-search-list-command	 invert "S search list"))
 
+;; FIXME --- this *only* works in S / S-plus; not in R
+;; -----     ("at least" is not assigned to any key by default)
 (defun ess-execute-attach (dir &optional posn)
   "Attach a directory in the `ess-language' process with the attach() command.
 When used interactively, user is prompted for DIR to attach and
 prefix argument is used for POSN (or 2, if absent.)
 Doesn't work for data frames."
-  (interactive "DAttach directory: \nP")
+  (interactive "Attach directory: \nP")
   (ess-execute (concat "attach(\""
 		     (directory-file-name (expand-file-name dir))
 		     "\""
@@ -2348,7 +2357,8 @@ form completions."
 	(if (featurep 'xemacs) ;; work around Xemacs bug
 	    (comint-dynamic-complete-filename)
 	  ;; GNU emacs and correctly working Xemacs:
-	  (comint-replace-by-expanded-filename))
+	  ;;(comint-replace-by-expanded-filename))
+	  (comint-dynamic-complete-filename))
 	;; always return t if in a string
 	t)))
 

@@ -1,9 +1,9 @@
 ;;; ess-rutils.el --- R functions and keybindings to use in iESS.
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: Fri Apr 16 15:02:19 2010 (UTC)
+;; Last-Updated: Sun Jun  6 19:28:52 2010 (UTC)
 ;;           By: Sebastian P. Luque
-;; Version: $Id: ess-rutils.el 4299 2010-04-17 17:19:34Z sluque $
+;; Version: $Id: ess-rutils.el 4356 2010-06-06 19:44:01Z sluque $
 ;; Compatibility: GNU Emacs >= 22.0.50.1
 ;; copyright (c) 2005, 2006, 2007, 2008, 2009, 2010 Sebastian P. Luque
 ;; This program is free software; you can redistribute it and/or modify
@@ -228,13 +228,19 @@ User is asked for confirmation."
       (message "no packages flagged to install"))))
 
 (defun ess-rutils-updatepkgs (lib repos)
-  "Update packages in library LIB and repos REPOS. Defaults are the Debian
-local library directory (/usr/local/lib/R/site-library) and the Canadian
-CRAN repository (http://probability.ca/cran/). This also uses
-checkBuilt=TRUE to rebuild installed packages if needed."
+  "Update packages in library LIB and repos REPOS. Defaults are the first
+element returned by .libPaths() for LIB, and the repository named CRAN
+returned by getOption(\"repos\") for REPOS. This also uses checkBuilt=TRUE
+to rebuild installed packages if needed."
   (interactive "DPath to library to update: \nsrepos: ")
-  (if (string= "" lib) (setq lib "/usr/local/lib/R/site-library"))
-  (if (string= "" repos) (setq repos "http://probability.ca/cran/"))
+  (if (string= "" lib)
+      (setq lib
+	    (car (ess-get-words-from-vector
+		  "as.character(.libPaths())\n"))))
+  (if (string= "" repos)
+      (setq repos
+	    (car (ess-get-words-from-vector
+		  "as.character(getOption(\"repos\")[\"CRAN\"])\n"))))
   (ess-execute (concat "update.packages(lib.loc='"
 		       lib "', repos='" repos
 		       "', ask=FALSE, checkBuilt=TRUE)") 'buffer))
@@ -262,7 +268,9 @@ checkBuilt=TRUE to rebuild installed packages if needed."
 (defun ess-rutils-objs ()
   "Manipulate R objects; wrapper for `ess-rdired'."
   (interactive)
-  (ess-rdired))
+  (ess-rdired)
+  (if (featurep 'fit-frame)
+      (fit-frame)))
 
 (defun ess-rutils-loadwkspc (file)
   "Load workspace FILE into R."
@@ -311,7 +319,7 @@ displaying results in long or short formats, and sorting by any given field.
 Options should be separated by value of `crm-default-separator'."
   (interactive "sSearch string: ")
   (let ((site "http://search.r-project.org/cgi-bin/namazu.cgi?query=")
-	(okstring (replace-regexp-in-string " +" "+" string)))
+	(okstring (ess-replace-regexp-in-string " +" "+" string)))
     (if current-prefix-arg
 	(let ((mpp (concat
 		    "&max="
@@ -378,59 +386,58 @@ Options should be separated by value of `crm-default-separator'."
   "Provide key bindings."
   (interactive)
   (when ess-rutils-keys
-    ;; Some key bindings suggested by Patrick Dreschler.
-    (define-key inferior-ess-mode-map [(control c) (control .) (l)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (l)]
       'ess-rutils-localpkgs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (r)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (r)]
       'ess-rutils-repospkgs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (u)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
       'ess-rutils-updatepkgs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (a)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
       'ess-rutils-apropos)
-    (define-key inferior-ess-mode-map [(control c) (control .) (m)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
       'ess-rutils-rmall)
-    (define-key inferior-ess-mode-map [(control c) (control .) (o)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (o)]
       'ess-rutils-objs)
-    (define-key inferior-ess-mode-map [(control c) (control .) (w)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (w)]
       'ess-rutils-loadwkspc)
-    (define-key inferior-ess-mode-map [(control c) (control .) (s)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (s)]
       'ess-rutils-savewkspc)
-    (define-key inferior-ess-mode-map [(control c) (control .) (d)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (d)]
       'ess-change-directory)
-    (define-key inferior-ess-mode-map [(control c) (control .) (H)]
+    (define-key inferior-ess-mode-map [(control c) (control \.) (H)]
       'ess-rutils-htmldocs)))
 
-;; Menu, as suggested by Martin Maechler
-(when inferior-ess-mode-map
-  (define-key-after
-    (lookup-key inferior-ess-mode-map [menu-bar iESS])
-    [sep]
-    '("--") 'ess-submit-bug-report)
-  (define-key-after
-    (lookup-key inferior-ess-mode-map [menu-bar iESS])
-    [Rutils]
-    (cons "Rutils" (make-sparse-keymap "Rutils"))
-    'ess-submit-bug-report)
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils htmldocs]
-    '("Browse HTML" . ess-rutils-htmldocs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils apropos]
-    '("Apropos" . ess-rutils-apropos))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils chgdir]
-    '("Change directory" . ess-change-directory))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils savewkspc]
-    '("Save workspace" . ess-rutils-savewkspc))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils loadwkspc]
-    '("Load workspace" . ess-rutils-loadwkspc))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils updatepkgs]
-    '("Update packages" . ess-rutils-updatepkgs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils repospkgs]
-    '("Packages in repositories" . ess-rutils-repospkgs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils localpkgs]
-    '("Local packages" . ess-rutils-localpkgs))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils rmall]
-    '("Remove objects" . ess-rutils-rmall))
-  (define-key inferior-ess-mode-map [menu-bar iESS Rutils objs]
-    '("Manage objects" . ess-rutils-objs)))
+(easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
+  "Submenu of `inferior-ess-mode' to use with RUtils."
+  '("RUtils"
+    ["Manage objects" 	       ess-rutils-objs		t]
+    ["Remove objects"  	       ess-rutils-rmall		t]
+    "------"
+    ["Local packages"           ess-rutils-localpkgs	t]
+    ["Packages in repositories" ess-rutils-repospkgs	t]
+    ["Update packages"          ess-rutils-update-pkgs	t]
+    "------"
+    ["Load workspace"           ess-rutils-loadwkspc	t]
+    ["Save workspace"           ess-rutils-savewkspc	t]
+    ["Change directory"	       ess-change-directory	t]
+    "------"
+    ["Browse HTML" 	       ess-rutils-htmldocs	t]
+    ["Apropos"	  	       ess-rutils-apropos	t]))
+
+(when (featurep 'xemacs)
+  (defun ess-rutils-mode-xemacs-menu ()
+    "Hook to install `ess-rutils-mode' menu for XEmacs (with easymenu)."
+    (if 'inferior-ess-mode
+	;; Why does using nil for 2nd arg put menu at top level?
+	(easy-menu-add-item inferior-ess-mode-menu nil
+			    ess-rutils-mode-menu)
+      (easy-menu-remove-item inferior-ess-mode-menu nil
+			     ess-rutils-mode-menu)))
+  (add-hook 'inferior-ess-mode-hook 'ess-rutils-mode-xemacs-menu t))
+
+(unless (featurep 'xemacs)
+  (easy-menu-add-item inferior-ess-mode-menu nil
+		      ess-rutils-mode-menu))
 
 (add-hook 'inferior-ess-mode-hook 'ess-rutils-keys t)
 

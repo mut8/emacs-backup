@@ -1,6 +1,6 @@
 ;;; ess-custom.el --- Customize variables for ESS
 
-;; Copyright (C) 1997--2006 A.J. Rossini, Rich M. Heiberger, Martin
+;; Copyright (C) 1997--2010 A.J. Rossini, Rich M. Heiberger, Martin
 ;;	Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
 
 ;; Original Author: A.J. Rossini <blindglobe@gmail.com>
@@ -117,9 +117,14 @@
   :prefix "ess-" ;; << -- added for ESS integration  FIXME??
   :group 'tools)
 
+(defgroup ess-sweave nil
+  "Mode for editing Sweave (*.[SR]nw) files."
+  :group 'ess-S
+  :prefix "ess-")
+
 ;; Variables (not user-changeable)
 
-(defvar ess-version "5.9.1"
+(defvar ess-version "5.11"
   "Version of ESS currently loaded.")
 
 (defvar no-doc
@@ -605,6 +610,11 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
+(defcustom R-mode-hook nil
+  "Hook run when entering R mode."
+  :type 'hook
+  :group 'ess-R)
+
 (defcustom Rnw-mode-hook nil
   "Hook run when entering Rnw mode."
   :type 'hook
@@ -676,6 +686,13 @@ syntactically correct roxygen entries)"
   "Prefix string to insert before each line in a roxygen block."
   :group 'ess-roxy
   :type 'string)
+
+(defcustom ess-swv-pdflatex-commands '("texi2pdf" "pdflatex" "make")
+  "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
+the first entry is the default command."
+  :group 'ess-sweave
+  :type 'list)
+
 
  ; System variables
 

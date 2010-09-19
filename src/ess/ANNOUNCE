@@ -3,7 +3,7 @@
 
 The ESS Developers proudly announce the release of ESS
 
-   5.9.1
+   5.11
 
    Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with
@@ -211,6 +211,28 @@ in the file COPYING in the same directory as this file for more details.
 1.9 New Features
 ================
 
+     Changes/New Features in 5.11:
+        * Filename completion within buffers now adds only trailing
+          characters to complete the filename, rather than expanding to
+          an absolute file path.  This filename completion is bound to
+          the TAB key.
+
+        * `M-n P' in Sweave buffers now prompts for the command to run
+          instead of using `pdflatex' unconditionally, offering
+          completion from customizable collection
+          `ess-swv-pdflatex-commands', the first of which is taken as
+          default and that defaults to `texi2pdf'.
+
+        * `M-RET' is now also bound in S language (R and S+) buffers to
+          `ess-use-this-dir'. It sends `setwd(..)' to the S process to
+          set the working directory to the one of the source file.
+
+     Changes/New Features in 5.10:
+        * `M-RET' in *S* buffers is now bound to `ess-dirs'.  This
+          function will set Emacs's current directory to be the same as
+          the *S* process.  This is useful if you use `setwd()' within
+          a *S* process.
+
      Changes/New Features in 5.9:
         * Toolbar:  The toolbar now has an icon for starting Splus.
 
@@ -227,7 +249,7 @@ in the file COPYING in the same directory as this file for more details.
           is `nil', whenever  ESS-FONT-LOCK-MODE is non-nil, i.e., by
           default.
 
-        * ESSscript editing: ess-eval-deactivate-mark default is now t
+        * ESS script editing: ess-eval-deactivate-mark default is now t,
           as suggested by Leo Alekseyev and subsequent "unanimous"
           ESS-help  discussion.
 
@@ -301,8 +323,7 @@ in the file COPYING in the same directory as this file for more details.
           buffer.
 
         * ESS[S] when transient-mark-mode is true, the mark is now kept,
-          rather than deactivated, thanks to a patch from David
-          Reitter.
+          rather than deactivated, thanks to a patch from David Reitter.
 
      Changes/New Features in 5.3.11:
         * ESS[SAS]: work around bug in Emacs 22.2 & 22.3 which fails to

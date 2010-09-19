@@ -1,5 +1,28 @@
 @itemize @w{}
 
+Changes/New Features in 5.11:
+@itemize @bullet
+@item Filename completion within buffers now adds only trailing
+characters to complete the filename, rather than expanding to an
+absolute file path.  This filename completion is bound to the TAB key.
+
+@item @kbd{M-n P} in Sweave buffers now prompts for the command to run
+instead of using @command{pdflatex} unconditionally, offering completion from
+customizable collection @code{ess-swv-pdflatex-commands}, the first of
+which is taken as default and that defaults to @command{texi2pdf}.
+@item @kbd{M-RET} is now also bound in S language (R and S+) buffers
+to @command{ess-use-this-dir}. It sends @code{setwd(..)} to the S process
+to set the working directory to the one of the source file.
+@end itemize
+
+Changes/New Features in 5.10:
+@itemize @bullet
+@item @kbd{M-RET} in *S* buffers is now bound to
+@code{ess-dirs}.  This function will set Emacs's current
+directory to be the same as the *S* process.  This is useful if you use
+@code{setwd()} within a *S* process.
+@end itemize
+
 Changes/New Features in 5.9:
 @itemize @bullet
 @item Toolbar:  The toolbar now has an icon for starting Splus.
@@ -13,7 +36,7 @@ subsection ``Changing indentation styles''.
 @item Font locking: is now turned on
  even without @command{window-system} is @code{nil}, whenever
  @var{ess-font-lock-mode} is non-nil, i.e., by default.
-@item @ESS script editing: ess-eval-deactivate-mark default is now t,
+@item @ESS{} script editing: ess-eval-deactivate-mark default is now t,
  as suggested by Leo Alekseyev and subsequent ``unanimous'' ESS-help
  discussion.
 @item @ESS{[R]}: Editing support for ``#!'' (Rscript / littler) editing,
