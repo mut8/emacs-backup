@@ -699,6 +699,61 @@ You will also need to change the values for the location of bibtex
       '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
 #+end_src
 
+*** Make ESS support cacheSweave() library in R
+ESS comes with support for Sweave, e.g.,: M-n s M-n P from the Rnw
+file. But we also want to be able to conveniently use the
+cacheSweave() library, which uses a different driver. So we need a
+separate command for that. The following solution comes from [[http://blog.nguyenvq.com/2009/05/14/editingadding-on-to-sweave-features-in-ess/][Vinh
+Nguyen]] and allows for cachSweave() compilation with M-n w. 
+
+#+source: ess-cacheSweave
+#+begin_src emacs-lisp
+  
+(defun ess-swv-run-in-R2 (cmd &optional choose-process)
+  "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
+  (let* ((rnw-buf (current-buffer)))
+    (if choose-process ;; previous behavior
+    (ess-force-buffer-current "R process to load into: ")
+      ;; else
+      (update-ess-process-name-list)
+      (cond ((= 0 (length ess-process-name-list))
+         (message "no ESS processes running; starting R")
+         (sit-for 1); so the user notices before the next msgs/prompt
+         (R)
+         (set-buffer rnw-buf)
+         )
+        ((not (string= "R" (ess-make-buffer-current))); e.g. Splus, need R
+         (ess-force-buffer-current "R process to load into: "))
+       ))
+
+    (save-excursion
+      (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
+      (basic-save-buffer); do not Sweave/Stangle old version of file !
+      (let* ((sprocess (get-ess-process ess-current-process-name))
+         (sbuffer (process-buffer sprocess))
+         (rnw-file (buffer-file-name))
+         (Rnw-dir (file-name-directory rnw-file))
+         (Sw-cmd
+          (format
+           "local({..od <- getwd(); setwd(%S); %s(%S, cacheSweaveDriver()); setwd(..od) })"
+           Rnw-dir cmd rnw-file))
+         )
+    (message "%s()ing %S" cmd rnw-file)
+    (ess-execute Sw-cmd 'buffer nil nil)
+    (switch-to-buffer rnw-buf)
+    (ess-show-buffer (buffer-name sbuffer) nil)))))
+
+
+(defun ess-swv-weave2 ()
+   "Run Sweave on the current .Rnw file."
+   (interactive)
+   (ess-swv-run-in-R2 "Sweave"))
+
+(define-key noweb-minor-mode-map "\M-nw" 'ess-swv-weave2)
+
+#+end_src
+
+
 ** Pandoc 
  Make Emacs see where pandoc is installed. (Emacs can't access the bash
  $PATH directly.)
