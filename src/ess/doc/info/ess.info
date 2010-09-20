@@ -1,6 +1,6 @@
-ESS -- Emacs Speaks Statistics
-This is ess.info, produced by makeinfo version 4.13 from ess.texi.
+This is ess.info, produced by makeinfo version 4.8 from ess.texi.
 
+ESS -- Emacs Speaks Statistics
 ******************************
 
 INFO-DIR-SECTION Emacs
@@ -319,7 +319,8 @@ File: ess.info,  Node: New features,  Next: Credits,  Prev: Features,  Up: Intro
           buffer.
 
         * ESS[S] when transient-mark-mode is true, the mark is now kept,
-          rather than deactivated, thanks to a patch from David Reitter.
+          rather than deactivated, thanks to a patch from David
+          Reitter.
 
      Changes/New Features in 5.3.11:
         * ESS[SAS]: work around bug in Emacs 22.2 & 22.3 which fails to
@@ -1213,7 +1214,7 @@ File: ess.info,  Node: Manual,  Prev: Latest version,  Up: Introduction
 1.5 How to read this manual
 ===========================
 
-If you need to install ESS, read *note Installation:: for details on
+If you need to install ESS, read *Note Installation:: for details on
 what needs to be done before proceeding to the next chapter.
 
    In this manual we use the standard notation for describing the
@@ -1251,7 +1252,7 @@ from the flexible nature of lisp.  In particular, many aspects of ESS
 behaviour can be changed by suitable customization of lisp variables.
 This manual mentions some of the most frequent variables.  A full list
 of them however is available by using the Custom facility within emacs.
-(Type `M-x customize-group RET ess RET' to get started.)  *note
+(Type `M-x customize-group RET ess RET' to get started.)  *Note
 Customization:: provides details of common user variables you can
 change to customize ESS to your taste, but it is recommended that you
 defer this section until you are more familiar with ESS.
@@ -2065,7 +2066,7 @@ Note that these two commands are analogous to `C-p' and `C-n' but apply
 to command lines rather than text lines.  And just like `C-p' and
 `C-n', passing a prefix argument to these commands means to move to the
 ARG'th next (or previous) command.  (These commands are also discussed
-in *note Shell History Copying: (emacs)Shell History Copying.)
+in *Note Shell History Copying: (emacs)Shell History Copying.)
 
    There are also two similar commands (not bound to any keys by
 default) which move to preceding or succeeding commands, but which
@@ -2128,7 +2129,7 @@ go).  If the current line does not begin with a prompt, an error is
 signalled.  This feature, coupled with the command-based motion
 commands described above, could be used as a primitive history
 mechanism.  ESS provides a more sophisticated mechanism, however, which
-is described in *note Command History::.
+is described in *Note Command History::.
 
 
 File: ess.info,  Node: Saving transcripts,  Prev: Transcript resubmit,  Up: Transcript
@@ -2143,7 +2144,7 @@ name of the file, but this is not a problem.  You can still use S as
 usual; just remember to save the file before you quit Emacs with `C-x
 C-s'.  You can make ESS prompt you for a filename in which to save the
 transcript every time you start S by setting the variable `ess-ask-about-transfile'
-to `t'; see *note Customizing startup::.  We recommend you save your
+to `t'; see *Note Customizing startup::.  We recommend you save your
 transcripts with filenames that end in `.St'.  There is a special mode
 (ESS transcript mode -- *note Transcript Mode::) for editing transcript
 files which is automatically selected for files with this suffix.
@@ -2369,7 +2370,7 @@ process buffer or in a separate buffer, as indicated:
      Checking::, for more details.
 
    * `C-c C-v' (`ess-display-help-on-object')
-     Pops up a help buffer for an S object or function.  See *note
+     Pops up a help buffer for an S object or function.  See *Note
      Help:: for more details.
 
    * `C-c C-q' (`ess-quit')
@@ -2459,7 +2460,7 @@ The following commands are also provided in the process buffer:
      Prompts for an object to be edited in an edit buffer.  *Note
      Editing::.
 
-   Other commands available in Inferior S mode are discussed in *note
+   Other commands available in Inferior S mode are discussed in *Note
 Shell Mode: (emacs)Shell Mode.
 
 
@@ -2594,7 +2595,8 @@ processes (programs).  This mode handles:
      executing process with a single keystroke [RET].
 
    -  The ability to request help from the current process for variables
-     and functions, and to have the results sent into a separate buffer.
+     and functions, and to have the results sent into a separate
+     buffer.
 
    -  completion of object names and file names.
 
@@ -2882,8 +2884,8 @@ in your .emacs file, the line:
       )
 
    3. Fontlocking sometimes fails to behave nicely upon errors.  When
-Splus dumps, a mis-matched "  (double-quote) can result in the    wrong
-font-lock face being used for the remainder of the buffer.
+Splus dumps, a mis-matched "  (double-quote) can result in the
+wrong font-lock face being used for the remainder of the buffer.
 
    Solution: add a " at the end of the "Dumped..." statement, to
 revert the font-lock face back to normal.
@@ -3517,6 +3519,7 @@ See the Roxygen documentation found via `http://roxygen.org' for more
 information its usage. An example of an Roxygen entry for a simple R
 function can look like this:
 
+
      ##' Description of the function
      ##'
      ##' Further details about this function
@@ -4036,7 +4039,7 @@ UNIX     PC       Nickname
 <F3>     <F8>     `SUBMIT'
                   save the current `.sas' file (which is either the `.sas'
                   file in the current buffer or the `.sas' file associated
-                  with the `.lst' or `.log' file in the current buffer)
+                   with the `.lst' or `.log' file in the current buffer)
                   and submit the file as a batch SAS job
 <F4>     <F5>     `PROGRAM'
                   switch buffer to `.sas' file
@@ -4992,7 +4995,7 @@ Concept Index
 * comint:                                Credits.             (line   6)
 * command history:                       Command History.     (line   6)
 * command line arguments:                iESS(S)--Inferior ESS processes.
-                                                              (line  38)
+                                                              (line  39)
 * command-line completion:               Completion.          (line   6)
 * command-line editing:                  Command-line editing.
                                                               (line   6)
@@ -5069,8 +5072,8 @@ Concept Index
 * roxy:                                  Roxygen.             (line   6)
 * Roxygen:                               Roxygen.             (line   6)
 * running S:                             Starting up.         (line   6)
-* search list <1>:                       Source Directories.  (line  55)
-* search list:                           Hot keys.            (line  27)
+* search list <1>:                       Hot keys.            (line  27)
+* search list:                           Source Directories.  (line  55)
 * sending input:                         Entering commands.   (line   6)
 * starting directory:                    Starting up.         (line  12)
 * starting ESS:                          Starting up.         (line   6)
@@ -5087,8 +5090,8 @@ Concept Index
 * transcripts of S sessions:             Introduction.        (line  40)
 * using S interactively:                 Introduction.        (line  31)
 * winjava:                               winjava.             (line   6)
-* working directory <1>:                 Source Directories.  (line  55)
-* working directory:                     Starting up.         (line  12)
+* working directory <1>:                 Starting up.         (line  12)
+* working directory:                     Source Directories.  (line  55)
 * X windows:                             X11.                 (line   6)
 
 
@@ -5122,9 +5125,9 @@ Variable and command index
                                                               (line  14)
 * comint-next-matching-input:            Command History.     (line  35)
 * comint-next-matching-input-from-input: Command History.     (line  47)
-* comint-previous-input <1>:             Command History.     (line  14)
-* comint-previous-input:                 Process buffer motion.
+* comint-previous-input <1>:             Process buffer motion.
                                                               (line  11)
+* comint-previous-input:                 Command History.     (line  14)
 * comint-previous-matching-input:        Command History.     (line  31)
 * comint-previous-matching-input-from-input: Command History. (line  43)
 * comint-show-maximum-output:            Last command.        (line  16)
@@ -5141,12 +5144,12 @@ Variable and command index
                                                               (line   9)
 * ess-change-directory:                  Rutils.              (line  45)
 * ess-change-sp-regexp:                  Completion details.  (line   9)
-* ess-cleanup <1>:                       Help.                (line 150)
-* ess-cleanup:                           Hot keys.            (line  66)
+* ess-cleanup <1>:                       Hot keys.            (line  66)
+* ess-cleanup:                           Help.                (line 150)
 * ess-delete-dump-files:                 Source Files.        (line  13)
 * ess-describe-help-mode:                Help.                (line  21)
 * ess-directory:                         Source Directories.  (line  48)
-* ess-display-help-on-object:            Help.                (line   8)
+* ess-display-help-on-object:            Help.                (line  25)
 * ess-dump-filename-template:            Source Directories.  (line  10)
 * ess-dump-object-into-edit-buffer <1>:  Edit buffer.         (line   9)
 * ess-dump-object-into-edit-buffer:      Other.               (line  21)
@@ -5159,8 +5162,8 @@ Variable and command index
 * ess-eval-function-and-go:              Evaluating code.     (line  34)
 * ess-eval-line:                         Evaluating code.     (line  25)
 * ess-eval-line-and-go:                  Evaluating code.     (line  28)
-* ess-eval-line-and-step <1>:            Help.                (line 109)
-* ess-eval-line-and-step:                Evaluating code.     (line  49)
+* ess-eval-line-and-step <1>:            Evaluating code.     (line  49)
+* ess-eval-line-and-step:                Help.                (line 109)
 * ess-eval-region <1>:                   Help.                (line 113)
 * ess-eval-region:                       Evaluating code.     (line  37)
 * ess-eval-region-and-go:                Evaluating code.     (line  40)
@@ -5173,28 +5176,28 @@ Variable and command index
 * ess-execute-search:                    Hot keys.            (line  27)
 * ess-fancy-comments:                    Indenting.           (line  28)
 * ess-function-template:                 Edit buffer.         (line  17)
-* ess-indent-command:                    Roxygen.             (line  82)
+* ess-indent-command:                    Roxygen.             (line  83)
 * ess-keep-dump-files:                   Source Files.        (line  27)
 * ess-list-object-completions:           Completion.          (line  36)
 * ess-load-file <1>:                     Loading.             (line  13)
 * ess-load-file:                         Hot keys.            (line  51)
-* ess-parse-errors <1>:                  Error Checking.      (line   9)
-* ess-parse-errors:                      Hot keys.            (line  53)
+* ess-parse-errors <1>:                  Hot keys.            (line  53)
+* ess-parse-errors:                      Error Checking.      (line   9)
 * ess-quit <1>:                          Help.                (line 150)
 * ess-quit:                              Other.               (line  18)
-* ess-R-complete-object-name:            Roxygen.             (line  72)
+* ess-R-complete-object-name:            Roxygen.             (line  73)
 * ess-R-mode-font-lock-keywords:         Highlighting.        (line  27)
 * ess-remote:                            ESS processes on Remote Computers.
                                                               (line   6)
 * ess-request-a-process:                 Multiple ESS processes.
                                                               (line  15)
 * ess-resynch:                           Completion details.  (line  24)
-* ess-roxy-hide-all:                     Roxygen.             (line  64)
-* ess-roxy-next-entry:                   Roxygen.             (line  61)
-* ess-roxy-preview-Rd:                   Roxygen.             (line  50)
-* ess-roxy-previous-entry:               Roxygen.             (line  58)
-* ess-roxy-toggle-roxy-region:           Roxygen.             (line  44)
-* ess-roxy-update-entry:                 Roxygen.             (line  37)
+* ess-roxy-hide-all:                     Roxygen.             (line  65)
+* ess-roxy-next-entry:                   Roxygen.             (line  62)
+* ess-roxy-preview-Rd:                   Roxygen.             (line  51)
+* ess-roxy-previous-entry:               Roxygen.             (line  59)
+* ess-roxy-toggle-roxy-region:           Roxygen.             (line  45)
+* ess-roxy-update-entry:                 Roxygen.             (line  38)
 * ess-rutils-apropos:                    Rutils.              (line  30)
 * ess-rutils-htmldocs:                   Rutils.              (line  48)
 * ess-rutils-loadwkspc:                  Rutils.              (line  39)
@@ -5211,9 +5214,9 @@ Variable and command index
 * ess-skip-to-previous-section:          Help.                (line  42)
 * ess-source-directory:                  Source Directories.  (line  23)
 * ess-submit-bug-report:                 Reporting Bugs.      (line   6)
-* ess-switch-to-end-of-ESS <1>:          Help.                (line 122)
-* ess-switch-to-end-of-ESS:              Other edit buffer commands.
+* ess-switch-to-end-of-ESS <1>:          Other edit buffer commands.
                                                               (line  32)
+* ess-switch-to-end-of-ESS:              Help.                (line 122)
 * ess-switch-to-ESS:                     Other edit buffer commands.
                                                               (line  36)
 * ess-transcript-clean-region:           Saving transcripts.  (line  31)
@@ -5221,15 +5224,15 @@ Variable and command index
 * ess-transcript-send-command:           Resubmit.            (line  10)
 * ess-transcript-send-command-and-move:  Transcript resubmit. (line  22)
 * exit():                                Hot keys.            (line  61)
-* fill-paragraph:                        Roxygen.             (line  86)
+* fill-paragraph:                        Roxygen.             (line  87)
 * inferior-ess-program:                  Customizing startup. (line  44)
 * inferior-ess-R-font-lock-keywords:     Highlighting.        (line  20)
-* inferior-ess-send-input <1>:           Transcript resubmit. (line  13)
-* inferior-ess-send-input:               Command-line editing.
+* inferior-ess-send-input <1>:           Command-line editing.
                                                               (line  10)
-* mark-paragraph:                        Roxygen.             (line  77)
-* move-beginning-of-line:                Roxygen.             (line  89)
-* newline-and-indent:                    Roxygen.             (line  93)
+* inferior-ess-send-input:               Transcript resubmit. (line  13)
+* mark-paragraph:                        Roxygen.             (line  78)
+* move-beginning-of-line:                Roxygen.             (line  90)
+* newline-and-indent:                    Roxygen.             (line  94)
 * objects():                             Hot keys.            (line  21)
 * printer():                             printer.             (line  11)
 * q():                                   Hot keys.            (line  61)
@@ -5238,109 +5241,109 @@ Variable and command index
                                                               (line   6)
 * search() <1>:                          Hot keys.            (line  27)
 * search():                              Completion.          (line  20)
-* source() <1>:                          Evaluating code.     (line  18)
-* source():                              Loading.             (line  13)
+* source() <1>:                          Loading.             (line  13)
+* source():                              Evaluating code.     (line  18)
 * STERM:                                 Statistical Process running in ESS?.
                                                               (line   6)
 
 
 
 Tag Table:
-Node: Top278
-Node: Introduction2104
-Node: Features5086
-Node: New features8507
-Node: Credits47829
-Node: Latest version51321
-Node: Manual53105
-Node: Installation55647
-Node: Unix installation56125
-Node: Microsoft Windows installation60226
-Node: Requirements69667
-Node: Interactive ESS70176
-Node: Starting up71030
-Node: Multiple ESS processes71841
-Node: ESS processes on Remote Computers72876
-Node: S+elsewhere and ESS-elsewhere76026
-Node: Customizing startup78789
-Node: Entering commands81469
-Node: Command-line editing82768
-Node: Completion84052
-Node: Completion details86847
-Ref: Completion details-Footnote-188253
-Node: Transcript88533
-Node: Last command90308
-Node: Process buffer motion91798
-Node: Transcript resubmit93319
-Node: Saving transcripts95928
-Node: Command History97974
-Node: History expansion100598
-Node: Hot keys103806
-Node: Statistical Process running in ESS?107273
-Node: Emacsclient108578
-Node: Other109385
-Node: Transcript Mode110431
-Node: Resubmit111587
-Node: Clean112671
-Node: ESS for the S family113390
-Node: ESS(S)--Editing files113797
-Node: iESS(S)--Inferior ESS processes114849
-Node: ESS-help--assistance with viewing help120540
-Node: Philosophies for using ESS(S)120870
-Node: Scenarios for use (possibilities--based on actual usage)122006
-Node: Customization Examples and Solutions to Problems126697
-Node: Editing128489
-Node: Edit buffer129670
-Node: Loading131704
-Node: Error Checking132755
-Node: Evaluating code133801
-Node: Indenting137236
-Node: Styles140384
-Node: Other edit buffer commands141813
-Node: Source Files143730
-Node: Source Directories148260
-Node: Editing R documentation151399
-Node: R documentation files151910
-Node: Roxygen155812
-Node: Help159593
-Node: ESS for SAS163917
-Node: ESS(SAS)--Design philosophy164639
-Node: ESS(SAS)--Editing files165593
-Node: ESS(SAS)--TAB key167453
-Node: ESS(SAS)--Batch SAS processes168751
-Node: ESS(SAS)--Function keys for batch processing173775
-Node: iESS(SAS)--Interactive SAS processes183366
-Node: iESS(SAS)--Common problems187116
-Node: ESS(SAS)--Graphics188648
-Node: ESS(SAS)--Windows189431
-Node: ESS for BUGS190010
-Node: ESS(BUGS)--Model files191030
-Node: ESS(BUGS)--Command files194200
-Node: ESS(BUGS)--Log files195516
-Node: ESS for JAGS196066
-Node: ESS(JAGS)--Model files197045
-Node: ESS(JAGS)--Command files199476
-Node: ESS(JAGS)--Log files200252
-Node: Miscellaneous200548
-Node: Highlighting201273
-Node: Parens202688
-Node: Graphics203276
-Node: printer203792
-Node: X11204565
-Node: winjava205096
-Node: Imenu205509
-Node: Toolbar206357
-Node: TAGS206772
-Node: Rdired208131
-Node: Rutils209402
-Node: Mailing lists/bug reports211701
-Node: Bugs211966
-Node: Reporting Bugs213629
-Node: Mailing Lists214442
-Node: Help with emacs215207
-Node: Customization215761
-Node: Key Index216526
-Node: Concept Index216681
-Node: Variable and command index224844
+Node: Top277
+Node: Introduction2103
+Node: Features5085
+Node: New features8506
+Node: Credits47838
+Node: Latest version51330
+Node: Manual53114
+Node: Installation55656
+Node: Unix installation56134
+Node: Microsoft Windows installation60235
+Node: Requirements69676
+Node: Interactive ESS70185
+Node: Starting up71039
+Node: Multiple ESS processes71850
+Node: ESS processes on Remote Computers72885
+Node: S+elsewhere and ESS-elsewhere76035
+Node: Customizing startup78798
+Node: Entering commands81478
+Node: Command-line editing82777
+Node: Completion84061
+Node: Completion details86856
+Ref: Completion details-Footnote-188262
+Node: Transcript88542
+Node: Last command90317
+Node: Process buffer motion91807
+Node: Transcript resubmit93328
+Node: Saving transcripts95937
+Node: Command History97983
+Node: History expansion100607
+Node: Hot keys103815
+Node: Statistical Process running in ESS?107282
+Node: Emacsclient108587
+Node: Other109394
+Node: Transcript Mode110440
+Node: Resubmit111596
+Node: Clean112680
+Node: ESS for the S family113399
+Node: ESS(S)--Editing files113806
+Node: iESS(S)--Inferior ESS processes114858
+Node: ESS-help--assistance with viewing help120554
+Node: Philosophies for using ESS(S)120884
+Node: Scenarios for use (possibilities--based on actual usage)122020
+Node: Customization Examples and Solutions to Problems126711
+Node: Editing128500
+Node: Edit buffer129681
+Node: Loading131715
+Node: Error Checking132766
+Node: Evaluating code133812
+Node: Indenting137247
+Node: Styles140395
+Node: Other edit buffer commands141824
+Node: Source Files143741
+Node: Source Directories148271
+Node: Editing R documentation151410
+Node: R documentation files151921
+Node: Roxygen155823
+Node: Help159605
+Node: ESS for SAS163929
+Node: ESS(SAS)--Design philosophy164651
+Node: ESS(SAS)--Editing files165605
+Node: ESS(SAS)--TAB key167465
+Node: ESS(SAS)--Batch SAS processes168763
+Node: ESS(SAS)--Function keys for batch processing173787
+Node: iESS(SAS)--Interactive SAS processes183379
+Node: iESS(SAS)--Common problems187129
+Node: ESS(SAS)--Graphics188661
+Node: ESS(SAS)--Windows189444
+Node: ESS for BUGS190023
+Node: ESS(BUGS)--Model files191043
+Node: ESS(BUGS)--Command files194213
+Node: ESS(BUGS)--Log files195529
+Node: ESS for JAGS196079
+Node: ESS(JAGS)--Model files197058
+Node: ESS(JAGS)--Command files199489
+Node: ESS(JAGS)--Log files200265
+Node: Miscellaneous200561
+Node: Highlighting201286
+Node: Parens202701
+Node: Graphics203289
+Node: printer203805
+Node: X11204578
+Node: winjava205109
+Node: Imenu205522
+Node: Toolbar206370
+Node: TAGS206785
+Node: Rdired208144
+Node: Rutils209415
+Node: Mailing lists/bug reports211714
+Node: Bugs211979
+Node: Reporting Bugs213642
+Node: Mailing Lists214455
+Node: Help with emacs215220
+Node: Customization215774
+Node: Key Index216539
+Node: Concept Index216694
+Node: Variable and command index224857
 
 End Tag Table
