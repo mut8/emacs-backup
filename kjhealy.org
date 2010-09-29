@@ -843,7 +843,7 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
               org-export-latex-classes))
 
-  (setq org-latex-to-pdf-process
+(setq org-latex-to-pdf-process
         '("xelatex -interaction nonstopmode %b"
           "bibtex %b"
           "xelatex -interaction nonstopmode %b"
