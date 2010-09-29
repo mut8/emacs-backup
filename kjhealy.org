@@ -812,6 +812,44 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
   (require 'ob-sh)
 #+end_src
 
+** Org-mode XeLaTeX Export
+   Configure org-mode to export directly to PDF using latex or
+   xelatex, compiling the bibliography as it goes, with my preferred
+   xelatex setup.
+#+source: orgmode-xelatex-export
+#+begin_src emacs-lisp
+  (require 'org-latex)
+  (setq org-export-latex-classes
+        (cons '("article"
+                "\\documentclass[11pt,article,oneside]{memoir}
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{graphicx,url,rotating} 
+  \\usepackage{memoir-article-styles}
+  \\usepackage{fontspec,xunicode}
+  \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Old Style 7 Std} 
+  \\setsansfont[Mapping=tex-text]{Old Style 7 Std}  
+  \\setmonofont[Mapping=tex-text,Scale=0.8]{Pragmata} 
+  \\usepackage[american]{babel}
+  \\usepackage[babel]{csquotes}
+  \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
+  \\bibliography{socbib}
+  \\usepackage[usenames,dvipsnames]{color}
+  \\usepackage[xetex, colorlinks=true, urlcolor=BlueViolet,
+  plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
+                ("\\section{%s}" . "\\section*{%s}")
+                ("\\subsection{%s}" . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+              org-export-latex-classes))
+
+  (setq org-latex-to-pdf-process
+        '("xelatex -interaction nonstopmode %b"
+          "bibtex %b"
+          "xelatex -interaction nonstopmode %b"
+          "xelatex -interaction nonstopmode %b"))
+#+end_src
+
    
 ** Haskell Mode
    Haskell. 
@@ -879,6 +917,7 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
    ;; '(cdlatex-paired-parens "$[{(")
    )
 #+end_src
+   
    
    
    
