@@ -524,7 +524,7 @@ You will also need to change the values for the location of bibtex
 
 
 
-*** Custom vc command
+*** Custom vc commands
     Run the vc shellscript before running xelatex with C-c c (instead of
     C-c C-c for regular compile)
 #+srcname: vc-command
@@ -536,6 +536,18 @@ You will also need to change the values for the location of bibtex
     [?\M-! ?v ?c return ?\C-c ?\C-c return])
     (global-set-key (kbd "C-c c") 'run-vc-then-xelatex)
 #+end_src
+
+    Or just run vc alone --- this is useful when writing LaTeX files
+    using org-mode. (See the org-mode customizations below).
+#+source: vc-alone
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c v")
+                      (lambda ()
+                        (interactive)
+                        (shell-command "vc")))
+#+end_src
+
+
 ** R and ESS
    Load ESS: Emacs Speaks Statistics, and several further tweaks for
  R. 
@@ -823,6 +835,7 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
         (cons '("article"
                 "\\documentclass[11pt,article,oneside]{memoir}
   [NO-DEFAULT-PACKAGES]
+ \\input{vc} % REMOVE THIS LINE IF YOU DO NOT USE VC + GIT
   \\usepackage{graphicx,url,rotating} 
   \\usepackage{memoir-article-styles}
   \\usepackage{fontspec,xunicode}
