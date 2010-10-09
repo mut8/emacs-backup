@@ -75,6 +75,58 @@ for use by code blocks in *any* emacs file.  See the actual
        (expand-file-name "src" dotfiles-dir))))))
 #+end_src
 
+** Speed keys
+Speed commands enable single-letter commands in Org-mode files when
+the point is at the beginning of a headline, or at the beginning of a
+code block.
+
+See the `=org-speed-commands-default=' variable for a list of the keys
+and commands enabled at the beginning of headlines.  All code blocks
+are available at the beginning of a code block, the following key
+sequence =C-c C-v h= (bound to `=org-babel-describe-bindings=') will
+display a list of the code blocks commands and their related keys.
+
+#+begin_src emacs-lisp
+  (setq org-use-speed-commands t)
+#+end_src
+
+** Code blocks
+This activates a number of widely used languages, you are encouraged
+to activate more languages using the customize interface for the
+`=org-babel-load-languages=' variable, or with an elisp form like the
+one below.  The customize interface of `=org-babel-load-languages='
+contains an up to date list of the currently supported languages.
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (sh . t)
+     (R . t)
+     (perl . t)
+     (ruby . t)
+     (python . t)
+     (js . t)
+     (haskell . t)
+     (clojure . t)
+     (ditaa . t)))
+#+end_src
+
+You are encouraged to add the following to your personal configuration
+although it is not added by default as a security precaution.
+#+begin_src emacs-lisp :tangle no
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+The following displays the contents of code blocks in Org-mode files
+using the major-mode of the code.  It also changes the behavior of
+=TAB= to as if it were used in the appropriate major mode.  This means
+that reading and editing code form inside of your Org-mode files is
+much more like reading and editing of code using its major mode.
+#+begin_src emacs-lisp
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+#+end_src
+
 ** Ensure the Latest Org-mode manual is in the info directory
 By placing the =doc/= directory in Org-mode at the front of the
 =Info-directory-list= we can be sure that the latest version of the

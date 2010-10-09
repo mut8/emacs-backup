@@ -5,14 +5,16 @@
 ;; This is the first thing to get loaded.
 ;;
 
-(setq dotfiles-dir (file-name-directory (or load-file-name (buffer-file-name))))
+;; org-mode windmove compatibility
+(setq org-replace-disputed-keys t)
+
+setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
 
 (add-to-list 'load-path (expand-file-name
                          "lisp" (expand-file-name
                                  "org" (expand-file-name
                                         "src" dotfiles-dir))))
 ;; Load up Org Mode and Babel
-(setq org-replace-disputed-keys t)
 (require 'org-install)
 
 ;; load up the main file
