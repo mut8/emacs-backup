@@ -434,8 +434,8 @@ You will also need to change the values for the location of bibtex
    ;; "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
    ;; )
 
-      ;; Make emacs aware of multi-file projects
-      (setq-default TeX-master nil)
+   ;; Make emacs aware of multi-file projects
+   ;; (setq-default TeX-master nil)
 
    ;; Auto-raise Emacs on activation (from Skim, usually)
    (defun raise-emacs-on-aqua()
