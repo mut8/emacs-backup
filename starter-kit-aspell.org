@@ -8,10 +8,11 @@ Hackish file to accommodate having cocoaAspell installed on your Mac. Otherwise
 flyspell doesn't start properly. Putting this customization in
 <username>.org initiates it too late. 
 
+- This file is loaded by a special line added to [[file:starter-kit.org][starter-kit.org]]. 
 - NB: Flyspell is sometimes very slow on Emacs 23. 
 
 ** Specify aspell
-#+begin_src emacs-lisp tangle: yes
+#+begin_src emacs-lisp
 (setq ispell-program-name "aspell"
       ispell-dictionary "english"
       ispell-dictionary-alist

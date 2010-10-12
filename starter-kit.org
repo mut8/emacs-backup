@@ -301,7 +301,7 @@ backport some functionality to Emacs 22 if needed
 *** Starter Kit aspell
 aspell workaround in [[file:starter-kit-aspell.org][starter-kit-aspell]]
 #+begin_src emacs-lisp
-;;(starter-kit-load "starter-kit-aspell.org")
+  (starter-kit-load "starter-kit-aspell.org")
 #+end_src
 
 *** ELPA (Emacs Lisp Package Manager)
