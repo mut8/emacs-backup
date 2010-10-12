@@ -341,7 +341,7 @@ You will also need to change the values for the location of bibtex
 
 *** Spelling
     Use cocoAspell instead of ispell. Turned off here because it loads
-    too late. I had to put it in a separate org file of its own.
+    too late. I had to put it in [[file:starter-kit-aspell.org][starter-kit-aspell.org]].
 #+srcname: spelling-mode
 #+begin_src emacs-lisp :tangle no
  (setq ispell-program-name "aspell"
