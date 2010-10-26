@@ -798,6 +798,15 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
        (ibuffer-auto-mode 1)
        (ibuffer-switch-to-saved-filter-groups "home")))
 #+end_src
+
+** Minimal mode
+   A nice clutter-free appearance with a reduced-size modeline. 
+#+source: minimal-mode
+#+begin_src emacs-lisp
+  (require 'minimal)
+  (global-set-key (kbd "C-c s") 'minimal-mode)
+#+end_src
+
   
 ** Final Custom elements
 #+srcname: final-custom
@@ -824,6 +833,7 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
    ;; '(cdlatex-paired-parens "$[{(")
    )
 #+end_src
+   
    
    
    
