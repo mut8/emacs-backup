@@ -63,6 +63,15 @@ Key Bindings.
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
+** Browse the Kill Ring
+    Conveniently navigate the kill-ring (ie, the cut/copy clipboard
+    history) in a pop-up buffer.
+#+srcname: kill-ring
+#+begin_src emacs-lisp 
+  (when (require 'browse-kill-ring nil 'noerror)
+  (browse-kill-ring-default-keybindings))
+#+end_src
+
 ** Window switching. (C-x o goes to the next window)
 #+begin_src emacs-lisp 
 (windmove-default-keybindings) ;; Shift+direction
@@ -112,7 +121,6 @@ Key Bindings.
   
 #+end_src
     
-
 ** Fetch the contents at a URL, display it raw.
 #+begin_src emacs-lisp 
 (global-set-key (kbd "C-x h") 'view-url)
