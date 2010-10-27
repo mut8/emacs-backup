@@ -479,6 +479,21 @@ Located in [[file:starter-kit-latex.org][starter-kit-latex]]
 (starter-kit-load "starter-kit-latex.org")
 #+end_src
 
+*** Starter Kit Stats
+Located in [[file:starter-kit-stats.org][starter-kit-stats]]
+
+#+begin_src emacs-lisp
+  (starter-kit-load "starter-kit-stats.org")
+#+end_src
+
+*** Starter Kit Text
+Located in [[file:starter-kit-text.org][starter-kit-text]]
+
+#+begin_src emacs-lisp
+  (starter-kit-load "starter-kit-text.org")
+#+end_src
+
+
 ** Load User/System Specific Files
 
 After we've loaded all the Starter Kit defaults, lets load the User's stuff.
