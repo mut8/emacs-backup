@@ -37,6 +37,7 @@ You will also need to change the values for the location of bibtex
            (setq load-path (cons my-lisp-dir load-path))
            (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
+
 ** Miscellaneous Settings and starter-kit overrides
 *** Window size
 #+srcname: window_size
@@ -149,174 +150,7 @@ You will also need to change the values for the location of bibtex
    ;;           )))
 #+end_src
 
-*** Browse Kill Ring
-    Conveniently navigate the kill-ring (ie, the cut/copy clipboard
-    history) in a pop-up buffer.
-#+srcname: kill-ring
-#+begin_src emacs-lisp 
-  (when (require 'browse-kill-ring nil 'noerror)
-  (browse-kill-ring-default-keybindings))
-#+end_src
-
-*** Smex
-    Smex replaces M-x, and is built on top of ido-mode. See
-    http://github.com/nonsequitur/smex or
-    http://www.emacswiki.org/emacs/Smex for details.  
-#+srcname: smex
-#+begin_src emacs-lisp
-  (require 'smex)
-  (smex-initialize)  
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "C-x C-m") 'smex) ;; supersedes binding in starter-kit-bindings.org
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  (global-set-key (kbd "C-x C-M") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-  
-#+end_src
-    
-*** Word-count
-    Live word count in status bar, via wc. Unfortunately there seems
-    to be a bug -- it interacts badly with the smooth scrolling: when
-    you get to the bottom of the buffer it wraps the pointer up to the
-    middle of the screen without moving the text with it, so you end
-    up typing inside the text that's already there. Replaced with a
-    simpler version instead, which gives you a straight count via M-x wc.
-
-#+srcname: word-count
-#+begin_src emacs-lisp
-    ;; (autoload 'word-count-mode "word-count"
-    ;; "Minor mode to count words." t nil)
-    ;; (dolist (hook '(org-mode-hook
-    ;; markdown-mode-hook
-    ;; TeX-mode-hook
-    ;; text-mode-hook))
-    ;; (add-hook hook (lambda () (word-count-mode 1))))
-
-    (require 'wc)
-#+end_src 
-
-*** Line wrapping and position
-    Sane line wrapping and scrolling for long documents and
-    papers. Plus a function for removing any hard-returns in a
-    document. 
-#+srcname: line-modes
-#+begin_src emacs-lisp
-    (global-visual-line-mode t)
-    ;;; prefer auto-fill to visual line wrap in ESS mode
-    (add-hook 'ess-mode-hook 'turn-on-auto-fill)
-    (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
-
-    ;;; but turn off auto-fill in tex and markdown
-    (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
-    (add-hook 'latex-mode-hook 'turn-off-auto-fill)
-
-    ;;; unfill paragraph
-    (defun unfill-paragraph ()
-    (interactive)
-    (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-    (global-set-key (kbd "<f6>") 'unfill-paragraph)
-
-    ;; smooth-scrolling package in src/
-    (require 'smooth-scrolling)
-
-    ;; more smooth efforts.
-    (setq-default 
-    scroll-conservatively 0
-    scroll-up-aggressively 0.01
-    scroll-down-aggressively 0.01)
-    
-    ;; centered-cursor package in src/
-    ;; (and
-    ;;  (require 'centered-cursor-mode)
-    ;;  (global-centered-cursor-mode +1)) 
-#+end_src
-
-*** Spelling
-    Use cocoAspell instead of ispell. Turned off here because it loads
-    too late. I had to put it in [[file:starter-kit-aspell.org][starter-kit-aspell.org]].
-#+srcname: spelling-mode
-#+begin_src emacs-lisp :tangle no
- (setq ispell-program-name "aspell"
-      ispell-dictionary "english"
-      ispell-dictionary-alist
-      (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
-                       ("-B" "-d" "english" "--dict-dir"
-                        "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
-                       nil iso-8859-1)))
-        `((nil ,@default)
-          ("english" ,@default))))
-
-    ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
-    (setq ispell-tex-skip-alists
-    '((;;("%\\[" . "%\\]") ; AMStex block comment...
-    ;; All the standard LaTeX keywords from L. Lamport's guide:
-    ;; \cite, \hspace, \hspace*, \hyphenation, \include, \includeonly, \input,
-    ;; \label, \nocite, \rule (in ispell - rest included here)
-    ("\\\\addcontentsline"              ispell-tex-arg-end 2)
-    ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
-    ("\\\\\\([aA]lph\\|arabic\\)"   ispell-tex-arg-end)
-    ("\\\\author"                         ispell-tex-arg-end)
-    ;; New regexps here --- kjh
-    ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
-    ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
-    ("\\\\bibliographystyle"                ispell-tex-arg-end)
-    ("\\\\makebox"                  ispell-tex-arg-end 0)
-    ("\\\\e?psfig"                  ispell-tex-arg-end)
-    ("\\\\document\\(class\\|style\\)" .
-    "\\\\begin[ \t\n]*{[ \t\n]*document[ \t\n]*}"))
-    (;; delimited with \begin.  In ispell: displaymath, eqnarray, eqnarray*,
-    ;; equation, minipage, picture, tabular, tabular* (ispell)
-    ("\\(figure\\|table\\)\\*?"     ispell-tex-arg-end 0)
-    ("list"                                 ispell-tex-arg-end 2)
-    ("program"             . "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
-    ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
-#+end_src
-
-*** AutoPair Mode
-    TextMate-like autopairing of quotes and parentheses. Trying out
-    instead of Skeleton Mode. 
-#+srcname: autopair
-#+begin_src emacs-lisp 
-  (require 'autopair)
-  (autopair-global-mode) ;; enable autopair in all buffers 
-  (setq autopair-autowrap t)
-#+end_src
-
-
-*** Skeleton mode
-   TURNED OFF. Enable skeleton mode in ESS for paired insertion
-#+srcname: skeleton-mode
-#+begin_src emacs-lisp :tangle no
-    (require 'skeleton)
-    (setq skeleton-pair t)
-    (defvar my-skeleton-pair-alist
-    '((?\) . ?\()
-    (?\] . ?\[)
-    (?} . ?{)
-    (?" . ?")))
-    
-    (defun my-skeleton-pair-end (arg)
-    "Skip the char if it is an ending, otherwise insert it."
-    (interactive "*p")
-    (let ((char last-command-char))
-    (if (and (assq char my-skeleton-pair-alist)
-    (eq char (following-char)))
-    (forward-char)
-    (self-insert-command (prefix-numeric-value arg)))))
-
-    (dolist (pair my-skeleton-pair-alist)
-    (global-set-key (char-to-string (first pair))
-    'my-skeleton-pair-end)
-    ;; If the char for begin and end is the same,
-    ;; use the original skeleton
-    (global-set-key (char-to-string (rest pair))
-    'skeleton-pair-insert-maybe))
-#+end_src
-
-** LaTeX Customizations and settings
-   AUCTeX, SyncTeX, XeLaTeX, RefTeX.
+** Local LaTeX settings
 *** SyncTeX, PDF mode, Skim
 #+srcname: local-loadpath
 #+begin_src emacs-lisp
@@ -337,22 +171,9 @@ You will also need to change the values for the location of bibtex
    (add-hook 'server-switch-hook 'raise-emacs-on-aqua)
 #+end_src
 
-*** RefTeX
-#+srcname: local-loadpath
+*** Local RefTeX Settings
+#+srcname: local-reftex
 #+begin_src emacs-lisp    
-    (autoload 'reftex-mode     "reftex" "RefTeX Minor Mode" t)
-    (autoload 'turn-on-reftex  "reftex" "RefTeX Minor Mode" nil)
-    (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
-    (autoload 'reftex-index-phrase-mode "reftex-index" "Phrase mode" t)
-    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
-    (add-hook 'latex-mode-hook 'turn-on-reftex)   ; with Emacs latex mode
-
-    ;; Make RefTeX faster
-    (setq reftex-enable-partial-scans t)
-    (setq reftex-save-parse-info t)
-    (setq reftex-use-multiple-selection-buffers t)
-    (setq reftex-plug-into-AUCTeX t)
-
     ;; Make RefTex able to find my local bib files
     (setq reftex-bibpath-environment-variables
     '("/Users/kjhealy/Library/texmf/bibtex/bib"))
@@ -361,45 +182,6 @@ You will also need to change the values for the location of bibtex
     (setq reftex-default-bibliography
     '("/Users/kjhealy/Documents/bibs/socbib.bib"))
 
-    ;; Make RefTeX work with Org-Mode
-    ;; use 'C-c (' instead of 'C-c [' because the latter is already
-    ;; defined in orgmode to the add-to-agenda command.
-    (defun org-mode-reftex-setup ()
-    (load-library "reftex") 
-    (and (buffer-file-name)
-    (file-exists-p (buffer-file-name))
-    (reftex-parse-all))
-    (define-key org-mode-map (kbd "C-c (") 'reftex-citation))
-
-    (add-hook 'org-mode-hook 'org-mode-reftex-setup)
-
-    ;; RefTeX formats for biblatex (not natbib)
-    (setq reftex-cite-format
-    '(
-    (?\C-m . "\\cite[]{%l}")
-    (?t . "\\textcite{%l}")
-    (?a . "\\autocite[]{%l}")
-    (?p . "\\parencite{%l}")
-    (?f . "\\footcite[][]{%l}")
-    (?F . "\\fullcite[]{%l}")
-    (?x . "[]{%l}")
-    (?X . "{%l}")
-    ))
-
-    (setq font-latex-match-reference-keywords
-    '(("cite" "[{")
-    ("cites" "[{}]")
-    ("footcite" "[{")
-    ("footcites" "[{")
-    ("parencite" "[{")
-    ("textcite" "[{")
-    ("fullcite" "[{") 
-    ("citetitle" "[{") 
-    ("citetitles" "[{") 
-    ("headlessfullcite" "[{")))
-
-    (setq reftex-cite-prompt-optional-args nil)
-    (setq reftex-cite-cleanup-optional-args t)
 
     ;; CDLaTex minor mode: tab-trigger environments, paired paren
     ;; insertion, etc
@@ -416,9 +198,7 @@ You will also need to change the values for the location of bibtex
     ;;             )))
 #+end_src
 
-
-
-*** Custom vc commands
+*** Local vc commands
     Run the vc shellscript before running xelatex with C-c c (instead of
     C-c C-c for regular compile)
 #+srcname: vc-command
@@ -441,333 +221,7 @@ You will also need to change the values for the location of bibtex
                         (shell-command "vc")))
 #+end_src
 
-
-** R and ESS
-   Load ESS: Emacs Speaks Statistics, and several further tweaks for
- R. 
-
-*** ESS 
-#+src-name: ess-mode
-#+begin_src emacs-lisp
- (require 'ess-site)
-
-;; Remote sessions: configuring ESS for use with GNU screen and remote
-;; server. See https://stat.ethz.ch/pipermail/ess-help/2010-July/006202.html
-; used to send 'screen' keybindings to shell in emacs
-(define-key shell-mode-map (kbd "C-l") (lambda (seq) (interactive "k")
-(process-send-string nil seq)))
-(define-key inferior-ess-mode-map (kbd "C-l") (lambda (seq)
-(interactive "k") (process-send-string nil seq)))
-
-;; 2.  In xterm (or the likes), ssh to the remote server and start
-;; screen.  Detach it.  (Need to do this first as starting the initial
-;; screen in emacs shell-mode becomes very ugly with the printing;
-;; resuming the same screen session also becomes messy in xterm)
-
-;; 3.  In emacs, M-x shell.  Set:
-;; $ TERM=xterm ## give clearing capabilities to shell-mode
-
-;; 4.  ssh to remote server.  screen -r to resume the screen session.
-;; start R.  M-x ess-remote.
-
-;; 5.  Send R code from R source files like before!
-
-;; 6.  To detach or do anything screen related, precede EACH keybinding
-;; with C-l.  For example, C-a C-d to detach will now be C-l C-a C-l C-d.
-;;  Yes this is cumbersome,
- 
-#+end_src
-
-*** Make shift-enter to a lot in ESS.
- Use shift-enter to split window & launch R (if not running), execute
- highlighted region (if R running & area highlighted), or execute
- current line (and move to next line, skipping comments). Nice. See
- http://www.emacswiki.org/emacs/EmacsSpeaksStatistics,
- FelipeCsaszar. Adapted to split vertically instead of horizontally. 
-#+src-name: ess-shift-enter
-#+begin_src emacs-lisp
-(setq ess-ask-for-ess-directory nil)
-  (setq ess-local-process-name "R")
-  (setq ansi-color-for-comint-mode 'filter)
-  (setq comint-scroll-to-bottom-on-input t)
-  (setq comint-scroll-to-bottom-on-output t)
-  (setq comint-move-point-for-output t)
-  (defun my-ess-start-R ()
-    (interactive)
-    (if (not (member "*R*" (mapcar (function buffer-name) (buffer-list))))
-      (progn
-	(delete-other-windows)
-	(setq w1 (selected-window))
-	(setq w1name (buffer-name))
-	(setq w2 (split-window w1 nil t))
-	(R)
-	(set-window-buffer w2 "*R*")
-	(set-window-buffer w1 w1name))))
-  (defun my-ess-eval ()
-    (interactive)
-    (my-ess-start-R)
-    (if (and transient-mark-mode mark-active)
-	(call-interactively 'ess-eval-region)
-      (call-interactively 'ess-eval-line-and-step)))
-  (add-hook 'ess-mode-hook
-	    '(lambda()
-	       (local-set-key [(shift return)] 'my-ess-eval)))
-  (add-hook 'inferior-ess-mode-hook
-	    '(lambda()
-	       (local-set-key [C-up] 'comint-previous-input)
-	       (local-set-key [C-down] 'comint-next-input)))
-  (require 'ess-site)
-#+end_src
-
-*** R-object tooltips
- from: http://blogisticreflections.wordpress.com/2009/10/01/r-object-tooltips-in-ess/
- I have defined a function, ess-R-object-tooltip, that when
- invoked, will return a tooltip with some information about
- the object at point.  The information returned is
- determined by which R function is called.  This is controlled
- by an alist, called ess-R-object-tooltip-alist.  The default is
- given below.  The keys are the classes of R object that will
- use the associated function.  For example, when the function
- is called while point is on a factor object, a table of that
- factor will be shown in the tooltip.  The objects must of course
- exist in the associated inferior R process for this to work.
- The special key "other" in the alist defines which function
- to call when the class is not mached in the alist.  By default,
- the str function is called, which is actually a fairly useful
- default for data.frame and function objects.
- 
- The last line of this file shows my default keybinding.
-
-#+srcname: r-object-tooltips
-#+begin_src emacs-lisp
-;; the alist
-(setq ess-R-object-tooltip-alist
-      '((numeric    . "summary")
-        (factor     . "table")
-        (integer    . "summary")
-        (lm         . "summary")
-        (other      . "str")))
-
-(defun ess-R-object-tooltip ()
-  "Get info for object at point, and display it in a tooltip."
-  (interactive)
-  (let ((objname (current-word))
-        (curbuf (current-buffer))
-        (tmpbuf (get-buffer-create "**ess-R-object-tooltip**")))
-    (if objname
-        (progn
-          (ess-command (concat "class(" objname ")\n")  tmpbuf )
-          (set-buffer tmpbuf)
-          (let ((bs (buffer-string)))
-            (if (not(string-match "\(object .* not found\)\|unexpected" bs))
-                (let* ((objcls (buffer-substring
-                                (+ 2 (string-match "\".*\"" bs))
-                                (- (point-max) 2)))
-                       (myfun (cdr(assoc-string objcls
-                                                ess-R-object-tooltip-alist))))
-                  (progn
-                    (if (eq myfun nil)
-                        (setq myfun
-                              (cdr(assoc-string "other"
-                                                ess-R-object-tooltip-alist))))
-                    (ess-command (concat myfun "(" objname ")\n") tmpbuf)
-                    (let ((bs (buffer-string)))
-                      (progn
-                        (set-buffer curbuf)
-                        (tooltip-show-at-point bs 0 30)))))))))
-    (kill-buffer tmpbuf)))
-
-;; default key map
-(define-key ess-mode-map "\C-c\C-g" 'ess-R-object-tooltip)
-(provide 'ess-R-object-tooltip)
-#+end_src
-
-*** Miscellaneous R options
-#+srcname: misc-r
-#+begin_src emacs-lisp
-;; roxygen more for generating Rd and packxfages
-;; (require 'ess-roxygen)
-
-;; R-noweb mode, for Sweave files.
-(defun Rnw-mode ()
-  (require 'ess-noweb)
-  (noweb-mode)
-  (if (fboundp 'R-mode)
-      (setq noweb-default-code-mode 'R-mode)))
-
-(add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
-(add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
-
-;; Make TeX and RefTex aware of Snw and Rnw files
-(setq reftex-file-extensions
-      '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
-(setq TeX-file-extensions
-      '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
-#+end_src
-
-*** Make ESS support cacheSweave() library in R
-ESS comes with support for Sweave, e.g.,: M-n s M-n P from the Rnw
-file. But we also want to be able to conveniently use the
-cacheSweave() library, which uses a different driver. So we need a
-separate command for that. The following solution comes from [[http://blog.nguyenvq.com/2009/05/14/editingadding-on-to-sweave-features-in-ess/][Vinh
-Nguyen]] and allows for cachSweave() compilation with M-n w. 
-
-#+source: ess-cacheSweave
-#+begin_src emacs-lisp
-  
-(defun ess-swv-run-in-R2 (cmd &optional choose-process)
-  "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
-  (let* ((rnw-buf (current-buffer)))
-    (if choose-process ;; previous behavior
-    (ess-force-buffer-current "R process to load into: ")
-      ;; else
-      (update-ess-process-name-list)
-      (cond ((= 0 (length ess-process-name-list))
-         (message "no ESS processes running; starting R")
-         (sit-for 1); so the user notices before the next msgs/prompt
-         (R)
-         (set-buffer rnw-buf)
-         )
-        ((not (string= "R" (ess-make-buffer-current))); e.g. Splus, need R
-         (ess-force-buffer-current "R process to load into: "))
-       ))
-
-    (save-excursion
-      (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
-      (basic-save-buffer); do not Sweave/Stangle old version of file !
-      (let* ((sprocess (get-ess-process ess-current-process-name))
-         (sbuffer (process-buffer sprocess))
-         (rnw-file (buffer-file-name))
-         (Rnw-dir (file-name-directory rnw-file))
-         (Sw-cmd
-          (format
-           "local({..od <- getwd(); setwd(%S); %s(%S, cacheSweaveDriver()); setwd(..od) })"
-           Rnw-dir cmd rnw-file))
-         )
-    (message "%s()ing %S" cmd rnw-file)
-    (ess-execute Sw-cmd 'buffer nil nil)
-    (switch-to-buffer rnw-buf)
-    (ess-show-buffer (buffer-name sbuffer) nil)))))
-
-
-(defun ess-swv-weave2 ()
-   "Run Sweave on the current .Rnw file."
-   (interactive)
-   (ess-swv-run-in-R2 "Sweave"))
-
-(define-key noweb-minor-mode-map "\M-nw" 'ess-swv-weave2)
-
-#+end_src
-
-
-** Pandoc 
- Make Emacs see where pandoc is installed. (Emacs can't access the bash
- $PATH directly.)
-#+src-name: pandoc_mode
-#+begin_src emacs-lisp
- (setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
- (load "pandoc-mode")
- (add-hook 'markdown-mode-hook 'turn-on-pandoc)
- (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
-#+end_src
-
-** Markdown 
-#+srcname: markdown-mode
-#+begin_src emacs-lisp
-   (autoload 'markdown-mode "markdown-mode.el"
-   "Major mode for editing Markdown files" t)
-   (setq auto-mode-alist
-   (cons '("\\.Markdown" . markdown-mode) auto-mode-alist)
-   )
-   (setq auto-mode-alist
-   (cons '("\\.MarkDown" . markdown-mode) auto-mode-alist)
-   )
-   (setq auto-mode-alist
-   (cons '("\\.markdown" . markdown-mode) auto-mode-alist)
-   )
-   (setq auto-mode-alist
-   (cons '("\\.md" . markdown-mode) auto-mode-alist)
-   )
-#+end_src
-
-** Org-mode Mobile
-   Sync orgmode files with Dropbox and iPhone. 
-#+src-name: orgmode-mobile
-#+begin_src emacs-lisp
-   ;; Set to the location of your Org files on your local system
-   (setq org-directory "~/Dropbox/Org")
-   ;; Set to <your Dropbox root directory>/MobileOrg.
-   (setq org-mobile-directory "~/Dropbox/MobileOrg")
-   ;; Set to the files (or directory of files) you want sync'd
-   (setq org-agenda-files (quote ("~/Dropbox/Org")))
-   ;; Set to the name of the file where new notes will be stored
-   (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
-   
-
-#+end_src
-** Org-mode Babel
-   Babel literate programming framework for org-mode/R. You can enable
-   it for other languages, too.) 
-#+srcname: org-babel
-#+begin_src emacs-lisp 
-  (setq org-src-fontify-natively t) ;; Turn on font coloring of src snippets in org files
-  (require 'ob-R)         ;; requires R and ess-mode
-  (require 'ob-emacs-lisp)
-  (require 'ob-python)
-  (require 'ob-haskell)
-  (require 'ob-sh)
-#+end_src
-
-** Org-mode XeLaTeX Export
-   Configure org-mode to export directly to PDF using latex or
-   xelatex, compiling the bibliography as it goes, with my preferred
-   xelatex setup.
-#+source: orgmode-xelatex-export
-#+begin_src emacs-lisp
-  (require 'org-latex)
-  (setq org-export-latex-classes
-        (cons '("article"
-                "\\documentclass[11pt,article,oneside]{memoir}
-  [NO-DEFAULT-PACKAGES]
- \\input{vc} % REMOVE THIS LINE IF YOU DO NOT USE VC + GIT
-  \\usepackage{graphicx,url,rotating} 
-  \\usepackage{memoir-article-styles}
-  \\usepackage{fontspec,xunicode}
-  \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Old Style 7 Std} 
-  \\setsansfont[Mapping=tex-text]{Old Style 7 Std}  
-  \\setmonofont[Mapping=tex-text,Scale=0.8]{Pragmata} 
-  \\usepackage[american]{babel}
-  \\usepackage[babel]{csquotes}
-  \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
-  \\bibliography{socbib}
-  \\usepackage[usenames,dvipsnames]{color}
-  \\usepackage[xetex, colorlinks=true, urlcolor=BlueViolet,
-  plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
-                ("\\section{%s}" . "\\section*{%s}")
-                ("\\subsection{%s}" . "\\subsection*{%s}")
-                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-              org-export-latex-classes))
-
-(setq org-latex-to-pdf-process
-        '("xelatex -interaction nonstopmode %b"
-          "bibtex %b"
-          "xelatex -interaction nonstopmode %b"
-          "xelatex -interaction nonstopmode %b"))
-#+end_src
-
-   
-** Haskell Mode
-   Haskell. 
-#+srcname: haskell-mode
-#+begin_src emacs-lisp 
-  (load "haskell-site-file")
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-#+end_src
-
-** iBuffer
+** Local iBuffer Settings
    Manage a lot of buffers easily with C-x C-b. Already set up
    elsewhere in the starter kit. Add local configuration here, e.g.,
    display categories.
@@ -800,13 +254,13 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
 #+end_src
 
 ** Minimal mode
-   A nice clutter-free appearance with a reduced-size modeline. 
+   A nice clutter-free appearance with a reduced-size modeline and no
+   scroll bars. 
 #+source: minimal-mode
 #+begin_src emacs-lisp
   (require 'minimal)
   (global-set-key (kbd "C-c s") 'minimal-mode)
 #+end_src
-
   
 ** Final Custom elements
 #+srcname: final-custom
