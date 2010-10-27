@@ -1,0 +1,221 @@
+#+OPTIONS: toc:nil num:nil ^:nil
+#+TITLE: Starter Kit Statistics
+
+Provides settings for ESS and R. 
+
+* R and ESS
+   Load ESS: Emacs Speaks Statistics, and several further tweaks for
+ R. 
+
+** ESS 
+#+src-name: ess-mode
+#+begin_src emacs-lisp
+ (require 'ess-site)
+
+;; Remote sessions: configuring ESS for use with GNU screen and remote
+;; server. See https://stat.ethz.ch/pipermail/ess-help/2010-July/006202.html
+; used to send 'screen' keybindings to shell in emacs
+(define-key shell-mode-map (kbd "C-l") (lambda (seq) (interactive "k")
+(process-send-string nil seq)))
+(define-key inferior-ess-mode-map (kbd "C-l") (lambda (seq)
+(interactive "k") (process-send-string nil seq)))
+
+;; 2.  In xterm (or the likes), ssh to the remote server and start
+;; screen.  Detach it.  (Need to do this first as starting the initial
+;; screen in emacs shell-mode becomes very ugly with the printing;
+;; resuming the same screen session also becomes messy in xterm)
+
+;; 3.  In emacs, M-x shell.  Set:
+;; $ TERM=xterm ## give clearing capabilities to shell-mode
+
+;; 4.  ssh to remote server.  screen -r to resume the screen session.
+;; start R.  M-x ess-remote.
+
+;; 5.  Send R code from R source files like before!
+
+;; 6.  To detach or do anything screen related, precede EACH keybinding
+;; with C-l.  For example, C-a C-d to detach will now be C-l C-a C-l C-d.
+;;  Yes this is cumbersome,
+ 
+#+end_src
+
+** Make shift-enter to a lot in ESS.
+ Use shift-enter to split window & launch R (if not running), execute
+ highlighted region (if R running & area highlighted), or execute
+ current line (and move to next line, skipping comments). Nice. See
+ http://www.emacswiki.org/emacs/EmacsSpeaksStatistics,
+ FelipeCsaszar. Adapted to split vertically instead of horizontally. 
+#+src-name: ess-shift-enter
+#+begin_src emacs-lisp
+(setq ess-ask-for-ess-directory nil)
+  (setq ess-local-process-name "R")
+  (setq ansi-color-for-comint-mode 'filter)
+  (setq comint-scroll-to-bottom-on-input t)
+  (setq comint-scroll-to-bottom-on-output t)
+  (setq comint-move-point-for-output t)
+  (defun my-ess-start-R ()
+    (interactive)
+    (if (not (member "*R*" (mapcar (function buffer-name) (buffer-list))))
+      (progn
+	(delete-other-windows)
+	(setq w1 (selected-window))
+	(setq w1name (buffer-name))
+	(setq w2 (split-window w1 nil t))
+	(R)
+	(set-window-buffer w2 "*R*")
+	(set-window-buffer w1 w1name))))
+  (defun my-ess-eval ()
+    (interactive)
+    (my-ess-start-R)
+    (if (and transient-mark-mode mark-active)
+	(call-interactively 'ess-eval-region)
+      (call-interactively 'ess-eval-line-and-step)))
+  (add-hook 'ess-mode-hook
+	    '(lambda()
+	       (local-set-key [(shift return)] 'my-ess-eval)))
+  (add-hook 'inferior-ess-mode-hook
+	    '(lambda()
+	       (local-set-key [C-up] 'comint-previous-input)
+	       (local-set-key [C-down] 'comint-next-input)))
+  (require 'ess-site)
+#+end_src
+
+** R-object tooltips
+ from: http://blogisticreflections.wordpress.com/2009/10/01/r-object-tooltips-in-ess/
+ I have defined a function, ess-R-object-tooltip, that when
+ invoked, will return a tooltip with some information about
+ the object at point.  The information returned is
+ determined by which R function is called.  This is controlled
+ by an alist, called ess-R-object-tooltip-alist.  The default is
+ given below.  The keys are the classes of R object that will
+ use the associated function.  For example, when the function
+ is called while point is on a factor object, a table of that
+ factor will be shown in the tooltip.  The objects must of course
+ exist in the associated inferior R process for this to work.
+ The special key "other" in the alist defines which function
+ to call when the class is not mached in the alist.  By default,
+ the str function is called, which is actually a fairly useful
+ default for data.frame and function objects.
+ 
+ The last line of this file shows my default keybinding.
+
+#+srcname: r-object-tooltips
+#+begin_src emacs-lisp
+;; the alist
+(setq ess-R-object-tooltip-alist
+      '((numeric    . "summary")
+        (factor     . "table")
+        (integer    . "summary")
+        (lm         . "summary")
+        (other      . "str")))
+
+(defun ess-R-object-tooltip ()
+  "Get info for object at point, and display it in a tooltip."
+  (interactive)
+  (let ((objname (current-word))
+        (curbuf (current-buffer))
+        (tmpbuf (get-buffer-create "**ess-R-object-tooltip**")))
+    (if objname
+        (progn
+          (ess-command (concat "class(" objname ")\n")  tmpbuf )
+          (set-buffer tmpbuf)
+          (let ((bs (buffer-string)))
+            (if (not(string-match "\(object .* not found\)\|unexpected" bs))
+                (let* ((objcls (buffer-substring
+                                (+ 2 (string-match "\".*\"" bs))
+                                (- (point-max) 2)))
+                       (myfun (cdr(assoc-string objcls
+                                                ess-R-object-tooltip-alist))))
+                  (progn
+                    (if (eq myfun nil)
+                        (setq myfun
+                              (cdr(assoc-string "other"
+                                                ess-R-object-tooltip-alist))))
+                    (ess-command (concat myfun "(" objname ")\n") tmpbuf)
+                    (let ((bs (buffer-string)))
+                      (progn
+                        (set-buffer curbuf)
+                        (tooltip-show-at-point bs 0 30)))))))))
+    (kill-buffer tmpbuf)))
+
+;; default key map
+(define-key ess-mode-map "\C-c\C-g" 'ess-R-object-tooltip)
+(provide 'ess-R-object-tooltip)
+#+end_src
+
+** Miscellaneous R options
+#+srcname: misc-r
+#+begin_src emacs-lisp
+;; roxygen more for generating Rd and packxfages
+;; (require 'ess-roxygen)
+
+;; R-noweb mode, for Sweave files.
+(defun Rnw-mode ()
+  (require 'ess-noweb)
+  (noweb-mode)
+  (if (fboundp 'R-mode)
+      (setq noweb-default-code-mode 'R-mode)))
+
+(add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
+(add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
+
+;; Make TeX and RefTex aware of Snw and Rnw files
+(setq reftex-file-extensions
+      '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
+(setq TeX-file-extensions
+      '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
+#+end_src
+
+** Make ESS support cacheSweave() library in R
+ESS comes with support for Sweave, e.g.,: M-n s M-n P from the Rnw
+file. But we also want to be able to conveniently use the
+cacheSweave() library, which uses a different driver. So we need a
+separate command for that. The following solution comes from [[http://blog.nguyenvq.com/2009/05/14/editingadding-on-to-sweave-features-in-ess/][Vinh
+Nguyen]] and allows for cachSweave() compilation with M-n w. 
+
+#+source: ess-cacheSweave
+#+begin_src emacs-lisp
+  
+(defun ess-swv-run-in-R2 (cmd &optional choose-process)
+  "Run \\[cmd] on the current .Rnw file.  Utility function not called by user."
+  (let* ((rnw-buf (current-buffer)))
+    (if choose-process ;; previous behavior
+    (ess-force-buffer-current "R process to load into: ")
+      ;; else
+      (update-ess-process-name-list)
+      (cond ((= 0 (length ess-process-name-list))
+         (message "no ESS processes running; starting R")
+         (sit-for 1); so the user notices before the next msgs/prompt
+         (R)
+         (set-buffer rnw-buf)
+         )
+        ((not (string= "R" (ess-make-buffer-current))); e.g. Splus, need R
+         (ess-force-buffer-current "R process to load into: "))
+       ))
+
+    (save-excursion
+      (ess-execute (format "require(tools)")) ;; Make sure tools is loaded.
+      (basic-save-buffer); do not Sweave/Stangle old version of file !
+      (let* ((sprocess (get-ess-process ess-current-process-name))
+         (sbuffer (process-buffer sprocess))
+         (rnw-file (buffer-file-name))
+         (Rnw-dir (file-name-directory rnw-file))
+         (Sw-cmd
+          (format
+           "local({..od <- getwd(); setwd(%S); %s(%S, cacheSweaveDriver()); setwd(..od) })"
+           Rnw-dir cmd rnw-file))
+         )
+    (message "%s()ing %S" cmd rnw-file)
+    (ess-execute Sw-cmd 'buffer nil nil)
+    (switch-to-buffer rnw-buf)
+    (ess-show-buffer (buffer-name sbuffer) nil)))))
+
+
+(defun ess-swv-weave2 ()
+   "Run Sweave on the current .Rnw file."
+   (interactive)
+   (ess-swv-run-in-R2 "Sweave"))
+
+(define-key noweb-minor-mode-map "\M-nw" 'ess-swv-weave2)
+
+#+end_src
