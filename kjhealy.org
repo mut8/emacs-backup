@@ -1,11 +1,11 @@
 #+OPTIONS: toc:nil num:nil ^:nil
 #+TITLE: Starter Kit kjhealy customizations
 
-This is my add-on to the [[file:starter-kit.org][Emacs Starter Kit]]. It provides some
-additional settings useful for social scientists, together with some
-other personal customizations I find helpful. This org-mode file
-documents these additions and provides the code to implement them. See
-the [[file:starter-kit.org][main starter-kit file]] for further information. 
+This is file provides some additional settings of the sort that many
+users may want to change or swap out. See the [[file:starter-kit.org][main starter-kit file]] for further
+information on the starter-kit as a whole. General social-science
+customizations are in the [[file:starter-kit-stats.org][Stats]], [[file:starter-kit-latex.org][LaTeX]], and [[file:starter-kit-text.org][Text]] org files in this
+kit. 
 
 * Starter Kit kjhealy
 YOU MUST CHANGE THE NAME OF THIS FILE to the value of the Emacs
