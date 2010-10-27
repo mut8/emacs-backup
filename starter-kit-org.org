@@ -74,7 +74,6 @@ for use by code blocks in *any* emacs file.  See the actual
        "org"
        (expand-file-name "src" dotfiles-dir))))))
 #+end_src
-
 ** Speed keys
 Speed commands enable single-letter commands in Org-mode files when
 the point is at the beginning of a headline, or at the beginning of a
@@ -125,6 +124,61 @@ much more like reading and editing of code using its major mode.
 #+begin_src emacs-lisp
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
+#+end_src
+
+** Org-mode Mobile
+   Sync orgmode files with Dropbox and iPhone. 
+#+src-name: orgmode-mobile
+#+begin_src emacs-lisp
+   ;; Set to the location of your Org files on your local system
+   (setq org-directory "~/Dropbox/Org")
+   ;; Set to <your Dropbox root directory>/MobileOrg.
+   (setq org-mobile-directory "~/Dropbox/MobileOrg")
+   ;; Set to the files (or directory of files) you want sync'd
+   (setq org-agenda-files (quote ("~/Dropbox/Org")))
+   ;; Set to the name of the file where new notes will be stored
+   (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+   
+
+#+end_src
+
+** Org-mode XeLaTeX Export
+   Configure org-mode to export directly to PDF using latex or
+   xelatex, compiling the bibliography as it goes, with my preferred
+   xelatex setup.
+#+source: orgmode-xelatex-export
+#+begin_src emacs-lisp
+  (require 'org-latex)
+  (setq org-export-latex-classes
+        (cons '("article"
+                "\\documentclass[11pt,article,oneside]{memoir}
+  [NO-DEFAULT-PACKAGES]
+ \\input{vc} % REMOVE THIS LINE IF YOU DO NOT USE VC + GIT
+  \\usepackage{graphicx,url,rotating} 
+  \\usepackage{memoir-article-styles}
+  \\usepackage{fontspec,xunicode}
+  \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Old Style 7 Std} 
+  \\setsansfont[Mapping=tex-text]{Old Style 7 Std}  
+  \\setmonofont[Mapping=tex-text,Scale=0.8]{Pragmata} 
+  \\usepackage[american]{babel}
+  \\usepackage[babel]{csquotes}
+  \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
+  \\bibliography{socbib}
+  \\usepackage[usenames,dvipsnames]{color}
+  \\usepackage[xetex, colorlinks=true, urlcolor=BlueViolet,
+  plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
+                ("\\section{%s}" . "\\section*{%s}")
+                ("\\subsection{%s}" . "\\subsection*{%s}")
+                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+              org-export-latex-classes))
+
+(setq org-latex-to-pdf-process
+        '("xelatex -interaction nonstopmode %b"
+          "bibtex %b"
+          "xelatex -interaction nonstopmode %b"
+          "xelatex -interaction nonstopmode %b"))
 #+end_src
 
 ** Ensure the Latest Org-mode manual is in the info directory
