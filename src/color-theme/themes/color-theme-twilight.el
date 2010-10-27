@@ -85,6 +85,9 @@
      (font-latex-string-face ((t (:foreground "#4A70A1")))) ;; quotes
      (font-latex-match-reference-keywords ((t (:foreground "#8A848B")))) ;; content in \ref{} and \cite{}
 
+     (flyspell-incorrect ((t (:weight normal :foreground "firebrick"))))
+     (flyspell-duplicate ((t (:weight normal :foreground "palegoldenrod"))))
+     
      (org-level-1 ((t (:foreground "dodger blue" :height 1.5))))
      (org-level-2 ((t (:foreground "#6ac214" :height 1.2))))
      (org-level-3 ((t (:foreground "#edd400" :height 1.1))))
