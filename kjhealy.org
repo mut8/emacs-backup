@@ -1,5 +1,5 @@
 #+OPTIONS: toc:nil num:nil ^:nil
-#+TITLE: Starter Kit kjhealy customizations
+#+TITLE: Starter Kit Local User Settings
 
 This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
 
