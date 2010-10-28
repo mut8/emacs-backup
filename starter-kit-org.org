@@ -126,22 +126,6 @@ much more like reading and editing of code using its major mode.
   (setq org-src-tab-acts-natively t)
 #+end_src
 
-** Org-mode Mobile
-   Sync orgmode files with Dropbox and iPhone. 
-#+src-name: orgmode-mobile
-#+begin_src emacs-lisp
-   ;; Set to the location of your Org files on your local system
-   (setq org-directory "~/Dropbox/Org")
-   ;; Set to <your Dropbox root directory>/MobileOrg.
-   (setq org-mobile-directory "~/Dropbox/MobileOrg")
-   ;; Set to the files (or directory of files) you want sync'd
-   (setq org-agenda-files (quote ("~/Dropbox/Org")))
-   ;; Set to the name of the file where new notes will be stored
-   (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
-   
-
-#+end_src
-
 ** Org-mode XeLaTeX Export
    Configure org-mode to export directly to PDF using latex or
    xelatex, compiling the bibliography as it goes, with my preferred
