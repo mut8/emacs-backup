@@ -213,7 +213,7 @@ When windows get out of order, you can rotate them.
 #+source: rotate-windows
 #+begin_src emacs-lisp
    (defun rotate-windows ()
-   "Rotate your windows" (interactive) (cond ((not (> (count-windows) 1)) (message "You can't rotate a single window!"))
+     "Rotate your windows" (interactive) (cond ((not (> (count-windows) 1)) (message "You can't rotate a single window!"))
   (t
    (setq i 1)
    (setq numWindows (count-windows))
@@ -232,6 +232,6 @@ When windows get out of order, you can rotate them.
        (set-window-start w2 s1)
        (setq i (1+ i)))))))
 
-  (define-key global-map "\C-cw" 'rotate-windows)
+  (global-set-key (kbd "C-c <right>") 'rotate-windows)
 #+end_src
   
