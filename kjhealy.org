@@ -1,11 +1,18 @@
 #+OPTIONS: toc:nil num:nil ^:nil
 #+TITLE: Starter Kit kjhealy customizations
 
-This is file provides some additional settings of the sort that many
-users may want to change or swap out. See the [[file:starter-kit.org][main starter-kit file]] for further
-information on the starter-kit as a whole. General social-science
-customizations are in the [[file:starter-kit-stats.org][Stats]], [[file:starter-kit-latex.org][LaTeX]], and [[file:starter-kit-text.org][Text]] org files in this
-kit. 
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+
+General social-science customizations are in the [[file:starter-kit-stats.org][Stats]], [[file:starter-kit-latex.org][LaTeX]], and
+[[file:starter-kit-text.org][Text]] org files included in this starter kit. This file provides some
+additional useful settings, but ones that are specific to your
+particular configuration, including things like the location of your
+bibtex files, org-mode mobile settings and so on. Users will need to
+change the relevant details as described below, together with the name
+of this file, or simply remove these settings if they are unneeded.
+
+See the [[file:starter-kit.org][main starter-kit file]] for further information on the
+starter-kit as a whole. 
 
 * Starter Kit kjhealy
 YOU MUST CHANGE THE NAME OF THIS FILE to the value of the Emacs
@@ -236,6 +243,22 @@ You will also need to change the values for the location of bibtex
        '(lambda ()
        (ibuffer-auto-mode 1)
        (ibuffer-switch-to-saved-filter-groups "home")))
+#+end_src
+
+** Local Org-mode Mobile Settings
+   Sync orgmode files with Dropbox and iPhone. 
+#+src-name: orgmode-mobile
+#+begin_src emacs-lisp
+   ;; Set to the location of your Org files on your local system
+   (setq org-directory "~/Dropbox/Org")
+   ;; Set to <your Dropbox root directory>/MobileOrg.
+   (setq org-mobile-directory "~/Dropbox/MobileOrg")
+   ;; Set to the files (or directory of files) you want sync'd
+   (setq org-agenda-files (quote ("~/Dropbox/Org")))
+   ;; Set to the name of the file where new notes will be stored
+   (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+   
+
 #+end_src
 
 ** Minimal mode
