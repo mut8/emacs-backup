@@ -16,11 +16,16 @@ brighter; it simply makes everything else vanish.
   :CUSTOM_ID: introduction
   :END:
 
-This should provide a saner set of defaults than you get normally with
-Emacs. It's intended for beginners, but provides a good elisp
-initialization structure for all levels of users. This particular
-version of the kit includes settings useful for researchers in the
-social sciences.
+The Emacs Starter Kit for the Social Sciences is maintained by [[http://kieranhealy.org][Kieran
+Healy]]. The original version was written by [[http://github.com/technomancy/emacs-starter-kit/tree][Phil Hagelberg]]. This
+version is more directly descended from [[http://eschulte.github.com/emacs-starter-kit/][Eric Schulte's]] excellent
+org-mode implementation. 
+
+The goal of this kit is to provide a saner set of defaults than you
+get normally with Emacs. It's intended for beginners, but provides a
+good elisp initialization structure for all levels of users. This
+particular version of the kit includes settings useful for researchers
+in the social sciences.
 
 The main advantage of this Emacs Starter Kit are
 - better default settings
@@ -49,9 +54,9 @@ The [[http://emacswiki.org][Emacs Wiki]] is also very handy.
 Installation instructions for the social-science version of the kit
 can also be found at [[http://kjhealy.github.com/emacs-starter-kit/]]
 
-0.  - Install Mac OS X's suite of Developer Tools. These came with
-     your Mac on an install DVD of their own. Alternatively, [[http://developer.apple.com/technologies/xcode.html][download
-     the most recent version]] from Apple directly.
+0.   - Install Mac OS X's suite of Developer Tools. These came with your
+     Mac on an install DVD of their own. Alternatively, [[http://developer.apple.com/technologies/xcode.html][download the
+     most recent version]] from Apple directly.
 
    - Install Git. Either compile it from source if you know what
      you're doing or [[http://code.google.com/p/git-osx-installer/downloads/list?can%3D3][install it directly]]. 
@@ -565,7 +570,7 @@ Frequently asked questions.
 
 Please share anything that you have come across which you think could
 be helpful, either in the form of a pull request, a patch, or just an
-email to me http://github.com/eschulte.
+email to me http://github.com/kjhealy.
 
 
 
