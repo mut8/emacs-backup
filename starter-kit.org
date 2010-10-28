@@ -40,7 +40,7 @@ The latest version is at
 ** Learning
    :PROPERTIES:
    :CUSTOM_ID: learning
-   :END
+   :END:
 
 This won't teach you Emacs, but it'll make it easier to get
 comfortable. To access the tutorial, press control-h followed by t.
