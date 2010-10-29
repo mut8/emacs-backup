@@ -301,8 +301,8 @@ You will also need to change the values for the location of bibtex
 #+end_src
 
 ** Minimal mode
-   A nice clutter-free appearance with a reduced-size modeline and no
-   scroll bars. 
+   A nice clutter-free appearance with a reduced-size modeline, no
+   scroll bars, and no fringe indicators. 
 #+source: minimal-mode
 #+begin_src emacs-lisp
   (require 'minimal)
