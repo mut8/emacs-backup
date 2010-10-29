@@ -9,10 +9,14 @@ This file provides settings for ESS and R.
    Load ESS: Emacs Speaks Statistics, and several further tweaks for
  R. 
 
-** ESS 
+** Load ESS 
 #+src-name: ess-mode
 #+begin_src emacs-lisp
  (require 'ess-site)
+#+end_src
+
+#+src-name: ess-with-screen
+#+begin_src emacs-lisp
 
 ;; Remote sessions: configuring ESS for use with GNU screen and remote
 ;; server. See https://stat.ethz.ch/pipermail/ess-help/2010-July/006202.html
@@ -21,25 +25,27 @@ This file provides settings for ESS and R.
 (process-send-string nil seq)))
 (define-key inferior-ess-mode-map (kbd "C-l") (lambda (seq)
 (interactive "k") (process-send-string nil seq)))
-
-;; 2.  In xterm (or the likes), ssh to the remote server and start
-;; screen.  Detach it.  (Need to do this first as starting the initial
-;; screen in emacs shell-mode becomes very ugly with the printing;
-;; resuming the same screen session also becomes messy in xterm)
-
-;; 3.  In emacs, M-x shell.  Set:
-;; $ TERM=xterm ## give clearing capabilities to shell-mode
-
-;; 4.  ssh to remote server.  screen -r to resume the screen session.
-;; start R.  M-x ess-remote.
-
-;; 5.  Send R code from R source files like before!
-
-;; 6.  To detach or do anything screen related, precede EACH keybinding
-;; with C-l.  For example, C-a C-d to detach will now be C-l C-a C-l C-d.
-;;  Yes this is cumbersome,
- 
 #+end_src
+
+How this works: 
+  - In xterm (or the likes), ssh to the remote server and start screen.
+ Detach it.  (Need to do this first as starting the initial screen in
+ emacs shell-mode becomes very ugly with the printing; resuming the
+ same screen session also becomes messy in xterm) 
+  - In emacs, do  =M-x shell=.  Set:
+#src-name: xterm-set 
+#+source: xterm-set
+#+begin_src sh
+  TERM=xterm ## give clearing capabilities to shell-mode  
+#+end_src
+  - ssh to remote server.  =screen -r= to resume the screen session.
+ start R.  Then do =M-x ess-remote=.
+  - Send R code from R source files like before.
+  - To detach or do anything screen related, precede EACH keybinding
+ with =C-l=.  For example, =C-a C-d= to detach will now be =C-l C-a C-l C-d=.
+  Yes this is cumbersome.
+ 
+
 
 ** Make shift-enter to a lot in ESS.
  Use shift-enter to split window & launch R (if not running), execute
