@@ -50,7 +50,7 @@ will load the =railscasts= color theme when Emacs starts.
   (setq visible-bell t
         echo-keystrokes 0.1
         font-lock-maximum-decoration t
-        setq font-lock-verbose nil
+        font-lock-verbose nil
         inhibit-startup-message t
         transient-mark-mode t
         color-theme-is-global t
