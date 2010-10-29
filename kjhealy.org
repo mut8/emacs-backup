@@ -69,7 +69,7 @@ You will also need to change the values for the location of bibtex
   (global-hl-line-mode 1)
 #+end_src
 
-*** Full Screen Hacks
+*** Run Emacs in Full Screen
     What works depends on the flavor of emacs you are using,
     unfortunately. Choose as appropriate. 
 #+srcname: fullscreen
