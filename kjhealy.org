@@ -216,6 +216,17 @@ You will also need to change the values for the location of bibtex
                         (shell-command "vc")))
 #+end_src
 
+** Local Pandoc Support 
+ Make Emacs see where pandoc is installed. (Emacs can't access the bash
+ $PATH directly.)
+#+src-name: pandoc_mode
+#+begin_src emacs-lisp
+ (setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
+ (load "pandoc-mode")
+ (add-hook 'markdown-mode-hook 'turn-on-pandoc)
+ (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+#+end_src
+
 ** Local iBuffer Settings
    Manage a lot of buffers easily with C-x C-b. Already set up
    elsewhere in the starter kit. Add local configuration here, e.g.,
