@@ -147,19 +147,6 @@ Mardown and Pandoc, as well as spellchecking and line-wrapping.
 #+end_src
 
 
-
-
-** Pandoc 
- Make Emacs see where pandoc is installed. (Emacs can't access the bash
- $PATH directly.)
-#+src-name: pandoc_mode
-#+begin_src emacs-lisp
- (setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
- (load "pandoc-mode")
- (add-hook 'markdown-mode-hook 'turn-on-pandoc)
- (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
-#+end_src
-
 ** Markdown 
 #+srcname: markdown-mode
 #+begin_src emacs-lisp
