@@ -118,7 +118,8 @@ Key Bindings.
   (global-set-key (kbd "C-x C-M") 'smex-major-mode-commands)
   ;; This is your old M-x.
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-  
+  (setq smex-show-unbound-commands t)
+  (smex-auto-update 30)
 #+end_src
     
 ** Fetch the contents at a URL, display it raw.
