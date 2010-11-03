@@ -12,7 +12,7 @@
 	url = http://jblevins.org/git/markdown-mode.git
 [submodule "src/org"]
 	path = src/org
-	url = http://repo.or.cz/org-mode.git
+	url = git://repo.or.cz/org-mode.git
 [submodule "src/smex"]
 	path = src/smex
 	url = http://github.com/nonsequitur/smex.git
