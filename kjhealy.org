@@ -291,7 +291,7 @@ You will also need to change the values for the location of bibtex
   \\usepackage{memoir-article-styles}
   \\usepackage{fontspec,xunicode}
   \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Old Style 7 Std} 
-  \\setsansfont[Mapping=tex-text]{Old Style 7 Std}  
+  \\setsansfont[Mapping=tex-text]{Myriad Pro}  
   \\setmonofont[Mapping=tex-text,Scale=0.8]{Pragmata} 
   \\usepackage[american]{babel}
   \\usepackage[babel]{csquotes}
