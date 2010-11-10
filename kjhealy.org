@@ -322,6 +322,22 @@ You will also need to change the values for the location of bibtex
   (require 'minimal)
   (global-set-key (kbd "C-c s") 'minimal-mode)
 #+end_src
+
+** PeepOpen Application
+   An alternative to C-x C-f, native to Mac OS X, sold by PeepCode. See http://peepcode.com/products/peepopen. 
+
+#+source: peepopen
+#+begin_src emacs-lisp
+  (require 'textmate)
+  (add-to-list 'load-path "~/.emacs.d/vendor/")
+  (require 'peepopen)
+  (textmate-mode)
+    
+  ;; use this to open files in the existing frame:
+  (setq ns-pop-up-frames nil) 
+ 
+#+end_src
+ 
   
 ** Final Custom elements
 #+srcname: final-custom
