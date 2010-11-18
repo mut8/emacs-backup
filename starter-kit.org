@@ -362,6 +362,9 @@ Load up [[http://tromey.com/elpa/][ELPA]], the Emacs Lisp package manager
   (starter-kit-load "starter-kit-elpa.org")
 #+end_src
 
+#+results: starter-kit-elpa
+: loaded /home/eschulte/.emacs.d/starter-kit-elpa.el
+
 *** Work around OS X bug
 
 Work around a bug on OS X where system-name is FQDN
@@ -574,7 +577,7 @@ Frequently asked questions.
 
 Please share anything that you have come across which you think could
 be helpful, either in the form of a pull request, a patch, or just an
-email to me http://github.com/kjhealy.
+email to me http://github.com/eschulte.
 
 
 
