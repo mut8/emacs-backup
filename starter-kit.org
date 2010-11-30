@@ -336,9 +336,15 @@ backport some functionality to Emacs 22 if needed
   (require 'dominating-file)
 #+end_src
 
-
-
 *** Function for loading/compiling starter-kit-*
+#+srcname: starter-kit-load
+#+begin_src emacs-lisp 
+  (defun starter-kit-load (file)
+    "This function is to be used to load starter-kit-*.org files."
+    (org-babel-load-file (expand-file-name file
+                                           dotfiles-dir)))
+#+end_src
+
 #+source: starter-kit-compile
 #+begin_src emacs-lisp
   (defun starter-kit-compile (&optional arg)
@@ -369,7 +375,7 @@ backport some functionality to Emacs 22 if needed
 *** Starter Kit aspell
 aspell workaround in [[file:starter-kit-aspell.org][starter-kit-aspell]]
 #+begin_src emacs-lisp
-  (starter-kit-compile "starter-kit-aspell.org")
+  (starter-kit-load "starter-kit-aspell.org")
 #+end_src
 
 *** ELPA (Emacs Lisp Package Manager)
