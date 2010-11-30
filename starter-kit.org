@@ -373,18 +373,20 @@ aspell workaround in [[file:starter-kit-aspell.org][starter-kit-aspell]]
 #+end_src
 
 *** ELPA (Emacs Lisp Package Manager)
-
 Load up [[http://tromey.com/elpa/][ELPA]], the Emacs Lisp package manager
 
 #+srcname: starter-kit-elpa
 #+begin_src emacs-lisp 
   (require 'package)
+  (add-to-list 'package-archives '("original" . "http://tromey.com/elpa/"))
+  (add-to-list 'package-archives
+               '("technomancy" . "http://repo.technomancy.us/emacs/") t)
   (package-initialize)
   (starter-kit-load "starter-kit-elpa.org")
 #+end_src
 
 #+results: starter-kit-elpa
-: loaded /home/eschulte/.emacs.d/starter-kit-elpa.el
+: loaded starter-kit-elpa.el
 
 *** Work around OS X bug
 
