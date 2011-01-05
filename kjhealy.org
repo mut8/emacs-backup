@@ -29,7 +29,7 @@ You will also need to change the values for the location of bibtex
  settings. *Search for 'kjhealy' in this file* to find the paths that
  need to be updated. Change them as needed or comment them out if you
  don't use these features.
- 
+
 ** Miscellaneous Settings and starter-kit overrides
 *** Window size
 #+srcname: window_size
@@ -95,7 +95,7 @@ You will also need to change the values for the location of bibtex
   ;; (if my-fullscreen-p
   ;; (restore-frame)
   ;; (maximize-frame)))
-  ;; (global-set-key (kbd "C-c m") 'my-toggle-fullscreen)
+  ;; (global-set-key (kbd "C-c f") 'my-toggle-fullscreen)
   
   ;; OPTION 4
   ;; For use with Yamamoto Mitsuharu's Carbon-patched Emacs 23. (This
@@ -106,6 +106,18 @@ You will also need to change the values for the location of bibtex
                            (if (frame-parameter f 'fullscreen) nil 'fullboth)))
     (global-set-key (kbd "C-c f") 'fullscreen)
     (add-hook 'after-make-frame-functions 'fullscreen)
+  
+  ;; OPTION 5
+  ;; Internal to emacs; also seems not to work on os x
+  ;; (defun toggle-fullscreen (&optional f)
+  ;;    (interactive)
+  ;;    (let ((current-value (frame-parameter nil 'fullscreen)))
+  ;;         (set-frame-parameter nil 'fullscreen
+  ;;                              (if (equal 'fullboth current-value)
+  ;;                                  (if (boundp 'old-fullscreen) old-fullscreen nil)
+  ;;                                  (progn (setq old-fullscreen current-value)
+  ;;                                         'fullboth)))))
+  ;;  (global-set-key (kbd "C-c f") 'toggle-fullscreen)
   
 #+end_src
 
@@ -314,6 +326,49 @@ You will also need to change the values for the location of bibtex
           "xelatex -interaction nonstopmode %b"))
 #+end_src
 
+** Local Org-mode org-capture settings
+   Set up a notes file and easy capture arrangement. 
+
+#+source: org-capture
+#+begin_src emacs-lisp tangle:no
+  (setq org-default-notes-file (concat org-directory "notes.org"))
+  (define-key global-map "\C-cp" 'org-capture) ;; p for Pinboard
+  (setq org-capture-templates 
+    `(
+      ("n" "Notes" entry (file+datetree 
+                          ,(concat org-directory "notes.org"))
+       "* %^{Description} %^g %? Added: %U") 
+      ))
+  (defadvice org-capture-finalize 
+    (after delete-capture-frame activate)  
+    "Advise capture-finalize to close the frame"  
+    (if (equal "capture" (frame-parameter nil 'name))  
+        (delete-frame)))  
+      
+  (defadvice org-capture-destroy 
+    (after delete-capture-frame activate)  
+    "Advise capture-destroy to close the frame"  
+    (if (equal "capture" (frame-parameter nil 'name))  
+        (delete-frame)))  
+      
+  ;; make the frame contain a single window. by default org-capture  
+  ;; splits the window.  
+  (add-hook 'org-capture-mode-hook  
+            'delete-other-windows)  
+      
+  (defun make-capture-frame ()  
+    "Create a new frame and run org-capture."  
+    (interactive)  
+    (make-frame '((name . "capture") 
+                  (width . 120) 
+                    (height . 15)))  
+    (select-frame-by-name "capture") 
+    (setq word-wrap 1)
+    (setq truncate-lines nil)
+    (org-capture))  
+#+end_src
+
+
 ** Minimal mode
    A nice clutter-free appearance with a reduced-size modeline, no
    scroll bars, and no fringe indicators. 
@@ -327,7 +382,7 @@ You will also need to change the values for the location of bibtex
    An alternative to C-x C-f, native to Mac OS X, sold by PeepCode. See http://peepcode.com/products/peepopen. 
 
 #+source: peepopen
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp tangle:no
   (require 'textmate)
   (add-to-list 'load-path "~/.emacs.d/vendor/")
   (require 'peepopen)
