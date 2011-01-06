@@ -233,9 +233,9 @@ static char *gnus-pointer[] = {
           `(zenburn-background-1 ((t (:background ,zenburn-bg+1))))
           `(zenburn-background-2 ((t (:background ,zenburn-bg+2))))
 
-          `(zenburn-primary-1 ((t (:foreground ,zenburn-yellow))))
-          `(zenburn-primary-2 ((t (:foreground ,zenburn-orange))))
-          '(zenburn-primary-3 ((t (:foreground "#dfdfbf"))))
+          `(zenburn-primary-1 ((t (:foreground ,zenburn-yellow :weight bold))))
+          `(zenburn-primary-2 ((t (:foreground ,zenburn-orange :weight bold))))
+          '(zenburn-primary-3 ((t (:foreground "#dfdfbf" :weight bold))))
           '(zenburn-primary-4 ((t (:foreground "#dca3a3"))))
           '(zenburn-primary-5 ((t (:foreground "#94bff3"))))
 
