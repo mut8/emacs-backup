@@ -54,19 +54,21 @@ You will also need to change the values for the location of bibtex
 *** Color Theme and Line Highlighting
 #+srcname: local-settings
 #+begin_src emacs-lisp
-  ;; Color Theme from vendor directory
-  (require 'color-theme)
-  (load-file
-  "~/.emacs.d/src/color-theme/themes/color-theme-twilight.el")
-  (load-file
-  "~/.emacs.d/src/color-theme/themes/color-theme-tangosoft.el") 
-  (if window-system
-    (color-theme-twilight)   ;; Emacs started in own window
-    (color-theme-tangosoft) ;; Emacs started in tty
-    )
-  
-  ;; Highlight current line (twilight theme builds in support for this)
-  (global-hl-line-mode 1)
+   ;; Color Theme from vendor directory
+   (require 'color-theme)
+   (load-file
+   "~/.emacs.d/src/color-theme/themes/color-theme-twilight.el")
+   (load-file
+    "~/.emacs.d/src/color-theme/themes/zenburn.el") 
+   (load-file
+   "~/.emacs.d/src/color-theme/themes/color-theme-tangosoft.el") 
+   (if window-system
+     (color-theme-zenburn)   ;; Emacs started in own window
+     (color-theme-tangosoft) ;; Emacs started in tty
+     )
+   
+   ;; Highlight current line (twilight theme builds in support for this)
+   (global-hl-line-mode 1)
 #+end_src
 
 *** Run Emacs in Full Screen
@@ -100,7 +102,7 @@ You will also need to change the values for the location of bibtex
   ;; OPTION 4
   ;; For use with Yamamoto Mitsuharu's Carbon-patched Emacs 23. (This
   ;; is what I use.)
-  (defun fullscreen (&optional f)
+    (defun fullscreen (&optional f)
       (interactive)
       (set-frame-parameter f 'fullscreen
                            (if (frame-parameter f 'fullscreen) nil 'fullboth)))
@@ -143,18 +145,18 @@ You will also need to change the values for the location of bibtex
     Used with Mitsuharu Yamamoto's carbon-patched 23.1.94, which turns
     off support for default mac bindings. 
 #+srcname: mac-keys
-#+begin_src emacs-lisp tangle:no
-    (setq mac-command-modifier 'alt mac-option-modifier 'meta)
-    (require 'redo+)
-    (require 'mac-key-mode)
-    (mac-key-mode 1)
-   ;;(add-hook 'mac-key-mode-hook
-   ;;     (lambda()
-   ;;       (interactive)
-   ;;       (if mac-key-mode
-   ;;           (setq mac-option-modifier 'meta)
-   ;;           (setq mac-option-modifier nil)
-   ;;           )))
+#+begin_src emacs-lisp tangle: no
+   (setq mac-command-modifier 'alt mac-option-modifier 'meta)
+   (require 'redo+)
+   (require 'mac-key-mode)
+   (mac-key-mode 1)
+   (add-hook 'mac-key-mode-hook
+       (lambda()
+         (interactive)
+         (if mac-key-mode
+             (setq mac-option-modifier 'meta)
+             (setq mac-option-modifier nil)
+             )))
 #+end_src
 
 ** Local LaTeX settings
