@@ -326,49 +326,6 @@ You will also need to change the values for the location of bibtex
           "xelatex -interaction nonstopmode %b"))
 #+end_src
 
-** Local Org-mode org-capture settings
-   Set up a notes file and easy capture arrangement. 
-
-#+source: org-capture
-#+begin_src emacs-lisp tangle:no
-  (setq org-default-notes-file (concat org-directory "notes.org"))
-  (define-key global-map "\C-cp" 'org-capture) ;; p for Pinboard
-  (setq org-capture-templates 
-    `(
-      ("n" "Notes" entry (file+datetree 
-                          ,(concat org-directory "notes.org"))
-       "* %^{Description} %^g %? Added: %U") 
-      ))
-  (defadvice org-capture-finalize 
-    (after delete-capture-frame activate)  
-    "Advise capture-finalize to close the frame"  
-    (if (equal "capture" (frame-parameter nil 'name))  
-        (delete-frame)))  
-      
-  (defadvice org-capture-destroy 
-    (after delete-capture-frame activate)  
-    "Advise capture-destroy to close the frame"  
-    (if (equal "capture" (frame-parameter nil 'name))  
-        (delete-frame)))  
-      
-  ;; make the frame contain a single window. by default org-capture  
-  ;; splits the window.  
-  (add-hook 'org-capture-mode-hook  
-            'delete-other-windows)  
-      
-  (defun make-capture-frame ()  
-    "Create a new frame and run org-capture."  
-    (interactive)  
-    (make-frame '((name . "capture") 
-                  (width . 120) 
-                    (height . 15)))  
-    (select-frame-by-name "capture") 
-    (setq word-wrap 1)
-    (setq truncate-lines nil)
-    (org-capture))  
-#+end_src
-
-
 ** Minimal mode
    A nice clutter-free appearance with a reduced-size modeline, no
    scroll bars, and no fringe indicators. 
@@ -378,23 +335,6 @@ You will also need to change the values for the location of bibtex
   (global-set-key (kbd "C-c s") 'minimal-mode)
 #+end_src
 
-** PeepOpen Application
-   An alternative to C-x C-f, native to Mac OS X, sold by PeepCode. See http://peepcode.com/products/peepopen. 
-
-#+source: peepopen
-#+begin_src emacs-lisp tangle:no
-  (require 'textmate)
-  (add-to-list 'load-path "~/.emacs.d/vendor/")
-  (require 'peepopen)
-  (textmate-mode)
-    
-  ;; use this to open files in the existing frame:
-  (setq ns-pop-up-frames nil) 
-  
-  ;; force C-c t to peepopen
-  (global-set-key (kbd "C-c t") 'peepopen-goto-file-gui)
-#+end_src
- 
   
 ** Final Custom elements
 #+srcname: final-custom
