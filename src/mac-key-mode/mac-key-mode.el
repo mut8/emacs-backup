@@ -73,11 +73,10 @@
   :group 'mac
   :version "22.3")
 (defconst mac-key-mode-lighter
-  (char-to-string 343416) ;; the command mark
+;;  (char-to-string 343416) ;; the command mark
 ;;  (char-to-string 323935) ;; the Apple mark
 ;;  (char-to-string (ucs-to-char 63743)) ;; the Apple mark
-  "A lighter string which is displayed in the modeline
-when `mac-key-mode' is on.")
+  "Mac")
 
 (defcustom mac-key-mode-hook nil
   "The hook to run when mac-key-mode is toggled."
