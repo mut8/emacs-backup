@@ -770,9 +770,9 @@ static char *gnus-pointer[] = {
           '(keywiz-wrong ((t (:inherit font-lock-warning))))
           '(keywiz-command ((t (:inherit zenburn-primary-2))))
           
-          '(font-latex-sectioning-0-face ((t (:foreground "dodger blue" :height 4))))
-          '(font-latex-sectioning-1-face ((t (:foreground "dodger blue" :height 2.5))))
-          '(font-latex-sectioning-2-face ((t (:foreground "dodger blue" :height 1.5))))
+          '(font-latex-sectioning-0-face ((t (:foreground "#8cd0d3" :height 4))))
+          '(font-latex-sectioning-1-face ((t (:foreground "#8cd0d3" :height 2.5))))
+          '(font-latex-sectioning-2-face ((t (:foreground "#8cd0d3" :height 1.5))))
           '(font-latex-sectioning-3-face ((t (:foreground "#edd400" :height 1.2))))
           '(font-latex-sectioning-4-face ((t (:foreground "#edd400" :height 1.0))))
           '(font-latex-bold ((t (:inherit bold))))
