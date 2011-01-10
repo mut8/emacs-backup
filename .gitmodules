@@ -7,12 +7,6 @@
 [submodule "src/auctex-src"]
 	path = src/auctex-src
 	url = http://github.com/kjhealy/auctex.git
-[submodule "src/markdown"]
-	path = src/markdown
-	url = http://jblevins.org/git/markdown-mode.git
 [submodule "src/org"]
 	path = src/org
 	url = git://repo.or.cz/org-mode.git
-[submodule "src/smex"]
-	path = src/smex
-	url = http://github.com/nonsequitur/smex.git
