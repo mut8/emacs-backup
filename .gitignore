@@ -34,3 +34,7 @@ src/var
 src/auctex-src/*elc
 ## org stuff
 .org-id-locations
+/src/pandoc/.manual.text.default.pandoc
+/src/pandoc/.manual.text.html.pandoc
+/src/pandoc/.manual.text.latex.pandoc
+/src/pandoc/.manual.text.texinfo.pandoc
