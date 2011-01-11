@@ -57,11 +57,11 @@ You will also need to change the values for the location of bibtex
    ;; Color Theme from vendor directory
    (require 'color-theme)
    (load-file
-   "~/.emacs.d/src/color-theme/themes/color-theme-twilight.el")
+   "~/.emacs.d/src/color-theme-themes/color-theme-twilight.el")
    (load-file
-    "~/.emacs.d/src/color-theme/themes/zenburn.el") 
+    "~/.emacs.d/src/color-theme-themes/zenburnish.el") 
    (load-file
-   "~/.emacs.d/src/color-theme/themes/color-theme-tangosoft.el") 
+   "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el") 
    (if window-system
      (color-theme-zenburn)   ;; Emacs started in own window
      (color-theme-tangosoft) ;; Emacs started in tty
