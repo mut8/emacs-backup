@@ -22,6 +22,7 @@ The following packages should always be installed
                                      'highline
                                      'textmate
                                      'smex
+                                     'ess
                                      )
     "Libraries that should be installed by default.")
 #+end_src
