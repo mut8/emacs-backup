@@ -100,27 +100,13 @@ can also be found at [[http://kjhealy.github.com/emacs-starter-kit/]]
    cd ~/.emacs.d/src/org/
    make
    #+end_src
-6. build [[http://www.gnu.org/software/auctex/][auctex]] -- for installlation help see the [[http://www.gnu.org/software/auctex/manual/auctex/Installation.html#Installation][auctex installation
-   instructions]], auctex requires a working TeX installation. Replace
-   USERNAME with your login name (from 0.3 above). This command should
-   all be typed on one line. It assumes your Emacs is in the main
-   /Applications/ folder.
-   #+begin_src sh
-     cd ~/.emacs.d/src/auctex-src
-     ./configure --prefix=/Users/USERNAME/.emacs.d/src 
-          --without-texmf-dir 
-          --with-emacs=/Applications/Emacs.app/Contents/MacOS/Emacs
-          --with-lispdir=/Users/USERNAME/.emacs.d/src
-     make
-     make install
-   #+end_src
-7. Finally, change the name of the starter kit's =kjhealy.org= to that
+6. Finally, change the name of the starter kit's =kjhealy.org= to that
    of =<USERNAME>.org= or =<SYSTEMNAME>.org=, based on the information
    you noted above with the =whoami= and =hostname= commands. These
    files are where you can add in any of your own existing or future
    customizations without breaking the starter kit's overall setup.
 
-8. Launch Emacs!
+7. Launch Emacs!
 
 After setup you may need to restart Emacs a couple of times while it
 downloads packages from [[* Emacs Lisp Package Archive][ELPA]] -- errors parsing html from
@@ -128,6 +114,10 @@ downloads packages from [[* Emacs Lisp Package Archive][ELPA]] -- errors parsing
 
 If you are missing some autoloads after an update (should manifest
 itself as "void function: foobar" errors) try M-x regen-autoloads.
+
+Once everything starts up cleanly, if you wish you can do =M-x
+starter-kit-compile= to byte-compile the starter kit files (for
+slightly faster loading).
 
 If you want to keep your regular ~/.emacs.d in place and just launch a
 single instance using the starter kit, try the following invocation:
