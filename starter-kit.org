@@ -16,10 +16,10 @@ brighter; it simply makes everything else vanish.
   :CUSTOM_ID: introduction
   :END:
 
-The Emacs Starter Kit for the Social Sciences is maintained by [[http://kieranhealy.org][Kieran
-Healy]]. The original version was written by [[http://github.com/technomancy/emacs-starter-kit/tree][Phil Hagelberg]]. This
-version is more directly descended from [[http://eschulte.github.com/emacs-starter-kit/][Eric Schulte's]] excellent
-org-mode implementation. 
+The Emacs Starter Kit for the Social Sciences is maintained by
+[[http://kieranhealy.org][Kieran Healy]]. The original version was
+written by [[http://github.com/technomancy/emacs-starter-kit/tree][Phil Hagelberg]]. This version is more directly descended
+from [[http://eschulte.github.com/emacs-starter-kit/][Eric Schulte's]] excellent org-mode implementation.
 
 The goal of this kit is to provide a saner set of defaults than you
 get normally with Emacs. It's intended for beginners, but provides a
