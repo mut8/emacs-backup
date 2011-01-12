@@ -6,4 +6,4 @@
 	url = http://github.com/eschulte/yasnippet-org-mode.git
 [submodule "src/org"]
 	path = src/org
-	url = git://repo.or.cz/org-mode.git
+	url = http://orgmode.org/org-mode.git
