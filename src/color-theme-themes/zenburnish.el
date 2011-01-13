@@ -198,7 +198,7 @@ static char *gnus-pointer[] = {
                   clauses)))))))
 
 ;;; autoload
-(defun color-theme-zenburn ()
+(defun color-theme-zenburnish ()
   "Just some alien fruit salad to keep you in the zone."
   (interactive)
   (color-theme-install
