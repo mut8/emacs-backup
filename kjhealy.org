@@ -63,7 +63,7 @@ You will also need to change the values for the location of bibtex
    (load-file
    "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el") 
    (if window-system
-     (color-theme-zenburn)   ;; Emacs started in own window
+     (color-theme-zenburnish)   ;; Emacs started in own window
      (color-theme-tangosoft) ;; Emacs started in tty
      )
    
