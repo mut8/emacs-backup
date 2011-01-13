@@ -1364,9 +1364,9 @@ static char *gnus-pointer[] = {
        ))
     )))
 
-(defalias 'zenburn #'color-theme-zenburn)
+(defalias 'zenburnish #'color-theme-zenburnish)
 
-(provide 'zenburn)
+(provide 'zenburnish)
 
 ;; Local Variables:
 ;; time-stamp-format: "%:y-%02m-%02d %02H:%02M"
