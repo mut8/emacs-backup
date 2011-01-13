@@ -203,7 +203,7 @@ static char *gnus-pointer[] = {
   (interactive)
   (color-theme-install
    (append
-    (list 'color-theme-zenburn
+    (list 'color-theme-zenburnish
           `((background-color . ,zenburn-bg)
             (background-mode . dark)
             (border-color . ,zenburn-border)
