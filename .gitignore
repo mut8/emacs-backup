@@ -38,3 +38,4 @@ src/auctex-src/*elc
 /src/pandoc/.manual.text.html.pandoc
 /src/pandoc/.manual.text.latex.pandoc
 /src/pandoc/.manual.text.texinfo.pandoc
+/ac-comphist.dat
