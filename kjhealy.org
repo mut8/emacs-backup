@@ -289,6 +289,15 @@ You will also need to change the values for the location of bibtex
 
 #+end_src
 
+** Local Org-mode Babel Settings
+   Configure org-mode so that when you edit source code in an indirect buffer (with C-c '), the buffer is opened in the current window. That way, your window organization isn't broken when switching.
+
+#+source: orgmode-indirect-buffer-settings
+#+begin_src emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+end_src
+
+
 ** Local Org-mode XeLaTeX Export Settings
    Configure org-mode to export directly to PDF using latex or
    xelatex, compiling the bibliography as it goes, with my preferred
@@ -335,6 +344,22 @@ You will also need to change the values for the location of bibtex
 #+begin_src emacs-lisp
   (require 'minimal)
   (global-set-key (kbd "C-c s") 'minimal-mode)
+#+end_src
+
+** Autocomplete mode
+   Powerful autocompletion; experimentally added. 
+
+#+source: auto-complete
+#+begin_src emacs-lisp
+  ;; compile it if the .el file is newer 
+  (byte-recompile-directory "~/.emacs.d/src/auto-complete")
+  (require 'auto-complete-config)
+  (add-to-list 'ac-dictionary-directories "~/.emacs.d/src/auto-complete/ac-dict")
+  (ac-config-default)
+  (require 'ac-R)
+  (setq ac-auto-start 4)
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (setq ac-auto-show-menu 0.8)
 #+end_src
 
   
