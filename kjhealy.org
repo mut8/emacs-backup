@@ -353,6 +353,7 @@ You will also need to change the values for the location of bibtex
 #+begin_src emacs-lisp
   ;; compile it if the .el file is newer 
   (byte-recompile-directory "~/.emacs.d/src/auto-complete")
+  (byte-recompile-directory "~/.emacs.d/src/auto-complete/ac-dict/ess")
   (require 'auto-complete-config)
   (add-to-list 'ac-dictionary-directories "~/.emacs.d/src/auto-complete/ac-dict")
   (ac-config-default)
