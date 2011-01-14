@@ -346,7 +346,7 @@ You will also need to change the values for the location of bibtex
   (global-set-key (kbd "C-c s") 'minimal-mode)
 #+end_src
 
-** Autocomplete mode
+** Auto-complete mode
    Powerful autocompletion; experimentally added. 
 
 #+source: auto-complete
@@ -361,7 +361,8 @@ You will also need to change the values for the location of bibtex
   (setq ac-auto-start 4)
   (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
   (setq ac-auto-show-menu 0.8)
-  (set-face-background 'ac-candidate-face "#3a3a3a")
+  ;; consistent  with zenburnish theme
+  (set-face-background 'ac-candidate-face "#366060")
   (set-face-background 'ac-selection-face "#8cd0d3")
   (set-face-foreground 'ac-selection-face "#1f1f1f")
   
