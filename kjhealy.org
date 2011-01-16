@@ -321,6 +321,7 @@ You will also need to change the values for the location of bibtex
   \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
   \\bibliography{socbib}
   \\usepackage[usenames,dvipsnames]{color}
+  \\usepackage{listings}
   \\usepackage[xetex, colorlinks=true, urlcolor=BlueViolet,
   plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
                 ("\\section{%s}" . "\\section*{%s}")
