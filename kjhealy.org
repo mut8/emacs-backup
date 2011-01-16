@@ -306,6 +306,7 @@ You will also need to change the values for the location of bibtex
 #+begin_src emacs-lisp
   (require 'org-latex)
   (add-to-list 'org-export-latex-packages-alist '("" "listings"))
+  (add-to-list 'org-export-latex-packages-alist '("" "color"))
   (setq org-export-latex-classes
         (cons '("article"
                 "\\documentclass[11pt,article,oneside]{memoir}
@@ -321,8 +322,6 @@ You will also need to change the values for the location of bibtex
   \\usepackage[babel]{csquotes}
   \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
   \\bibliography{socbib}
-  \\usepackage[usenames,dvipsnames]{color}
-  \\usepackage{listings}
   \\usepackage[xetex, colorlinks=true, urlcolor=BlueViolet,
   plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
                 ("\\section{%s}" . "\\section*{%s}")
