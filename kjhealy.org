@@ -305,6 +305,7 @@ You will also need to change the values for the location of bibtex
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
   (require 'org-latex)
+  (add-to-list 'org-export-latex-packages-alist '("" "listings"))
   (setq org-export-latex-classes
         (cons '("article"
                 "\\documentclass[11pt,article,oneside]{memoir}
