@@ -314,8 +314,8 @@ You will also need to change the values for the location of bibtex
   \\usepackage{memoir-article-styles}
   \\usepackage{fontspec,xunicode}
   \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Old Style 7 Std} 
-  \\setsansfont[Mapping=tex-text]{Calluna Sans}  
-  \\setmonofont[Mapping=tex-text,MatchLowercase]{Pragmata} 
+  \\setsansfont[Mapping=tex-text]{DinPro-Bold}  
+  \\setmonofont[Mapping=tex-text,MatchLowercase]{PragmataPro} 
   \\usepackage[american]{babel}
   \\usepackage[babel]{csquotes}
   \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
