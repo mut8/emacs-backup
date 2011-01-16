@@ -18,6 +18,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+begin_src emacs-lisp
 (require 'org-install)
 (setq org-completion-use-ido t)
+(require 'org-special-blocks)
 ;; (if window-system (require 'org-mouse))
 
 ;; Compatibility with WindMove
