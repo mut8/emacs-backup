@@ -27,7 +27,10 @@ You will also need to change the values for the location of bibtex
  databases, pandoc and orgmode-mobile specified below, and some other
  settings. *Search for 'kjhealy' in this file* to find the paths that
  need to be updated. Change them as needed or comment them out if you
- don't use these features.
+ don't use these features. Finally, the [[*Local%20Org-mode%20XeLaTeX%20Export%20Settings][Local Org-mode XeLaTeX Export
+ Settings]] section below has references to fonts that you may not have
+ available on your system. Change the references as appropriate or
+ simply comment out the lines.
 
 ** Miscellaneous Settings and starter-kit overrides
 *** Window size
@@ -300,46 +303,50 @@ You will also need to change the values for the location of bibtex
 ** Local Org-mode XeLaTeX Export Settings
    Configure org-mode to export directly to PDF using latex or
    xelatex, compiling the bibliography as it goes, with my preferred
-   xelatex setup.
+   xelatex setup. There is a good deal of local stuff in the
+   org-export-latex-classes section that you will need to adjust or
+   remove depending on your preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
-  (require 'org-latex)
-  (setq org-export-latex-listings t)
-  ;; (add-to-list 'org-export-latex-packages-alist '("" "listings"))
-  ;; (add-to-list 'org-export-latex-packages-alist '("" "color"))
-  (setq org-export-latex-classes
-        (cons '("article"
-                "\\documentclass[11pt,article,oneside]{memoir}
-  [NO-DEFAULT-PACKAGES]
- \\input{vc} % REMOVE THIS LINE IF YOU DO NOT USE VC + GIT
-  \\usepackage{graphicx,url,rotating} 
-  \\usepackage{memoir-article-styles}
-  \\usepackage{fontspec,xunicode}
-  \\setsansfont[Mapping=tex-text]{DINPro-Bold}  
-  \\setmonofont[Mapping=tex-text,Scale=MatchLowercase]{PragmataPro} 
-  \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Minion Pro} 
-  \\usepackage[american]{babel}
-  \\usepackage[babel]{csquotes}
-  \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
-  \\bibliography{socbib}
-  \\usepackage{listings}
-  \\usepackage{listings-sweave-xelatex}
-  \\usepackage[svgnames]{xcolor}
-  \\usepackage{soul}
-  \\usepackage[xetex, colorlinks=true, urlcolor=FireBrick,
-  plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
-                ("\\section{%s}" . "\\section*{%s}")
-                ("\\subsection{%s}" . "\\subsection*{%s}")
-                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-              org-export-latex-classes))
-
-(setq org-latex-to-pdf-process
-        '("xelatex -interaction nonstopmode %b"
-          "bibtex %b"
-          "xelatex -interaction nonstopmode %b"
-          "xelatex -interaction nonstopmode %b"))
+    (require 'org-latex)
+    (setq org-export-latex-listings t)
+    ;; (add-to-list 'org-export-latex-packages-alist '("" "listings"))
+    ;; (add-to-list 'org-export-latex-packages-alist '("" "color"))
+    (setq org-export-latex-classes
+          (cons '("article"
+                  "\\documentclass[11pt,article,oneside]{memoir}
+    [NO-DEFAULT-PACKAGES]
+   \\input{vc} % REMOVE THIS LINE IF YOU DO NOT USE VC + GIT
+    \\usepackage{graphicx,url,rotating} 
+    \\usepackage{memoir-article-styles} % Available at https://github.com/kjhealy/latex-custom-kjh
+    \\usepackage{fontspec,xunicode}
+    %%% Change or remove the following three lines if you do not have these fonts installed
+    \\setsansfont[Mapping=tex-text,BoldFont={DINPro-Medium},ItalicFont={DIN-RegularItalic}]{DINPro-Medium}  
+    \\setmonofont[Mapping=tex-text,Scale=MatchLowercase]{PragmataPro} 
+    \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Minion Pro} 
+    \\usepackage[american]{babel}
+    \\usepackage[babel]{csquotes}
+    \\usepackage[style=authoryear-comp-ajs, 
+                 abbreviate=true]{biblatex} % Available at https://github.com/kjhealy/latex-custom-kjh
+    \\bibliography{socbib} % Available at https://github.com/kjhealy/socbibs
+    \\usepackage{listings}
+    \\usepackage{listings-sweave-xelatex} % Available at https://github.com/kjhealy/latex-custom-kjh
+    \\usepackage[svgnames]{xcolor}
+    \\usepackage{soul}
+    \\usepackage[xetex, colorlinks=true, urlcolor=FireBrick,
+    plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
+                  ("\\section{%s}" . "\\section*{%s}")
+                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                org-export-latex-classes))
+  
+  (setq org-latex-to-pdf-process
+          '("xelatex -interaction nonstopmode %b"
+            "bibtex %b"
+            "xelatex -interaction nonstopmode %b"
+            "xelatex -interaction nonstopmode %b"))
 #+end_src
 
 ** Minimal mode
