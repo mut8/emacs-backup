@@ -317,7 +317,7 @@ You will also need to change the values for the location of bibtex
   \\usepackage{fontspec,xunicode}
   \\setsansfont[Mapping=tex-text]{DINPro-Bold}  
   \\setmonofont[Mapping=tex-text,Scale=MatchLowercase]{PragmataPro} 
-  \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Old Style 7 Std} 
+  \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Minion Pro} 
   \\usepackage[american]{babel}
   \\usepackage[babel]{csquotes}
   \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
