@@ -857,7 +857,7 @@ static char *gnus-pointer[] = {
           '(org-level-1 ((t (:foreground "#dfaf8f" :height 1.5))))         ;; zenburn-orange
           '(org-level-2 ((t (:foreground "#f0dfaf" :height 1.2))))         ;; zenburn-yellow
           '(org-level-3 ((t (:foreground "#8cd0d3" :height 1.1))))         ;; zenburn-blue
-          '(org-level-4 ((t (:foreground "#93e0e3" :height 1.1))))         ;; zenburn-cyan
+          '(org-level-4 ((t (:foreground "#5f7f5f" :height 1.1))))         ;; zenburn-green-1
           '(org-level-5 ((t (:foreground "#7cb8bb" :height 1.1))))         ;; zenburn-blue-1
           '(org-level-6 ((t (:foreground "#6ca0a3"))))                     ;; zenburn-blue-2
           '(org-level-7 ((t (:foreground "#5c888b"))))                     ;; zenburn-blue-3
