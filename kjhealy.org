@@ -308,46 +308,91 @@ You will also need to change the values for the location of bibtex
    remove depending on your preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
-      (require 'org-latex)
-      (setq org-export-latex-listings t)
-      ;; (add-to-list 'org-export-latex-packages-alist '("" "listings"))
-      ;; (add-to-list 'org-export-latex-packages-alist '("" "color"))
-      (setq org-export-latex-classes
-            (cons '("article"
-                    "\\documentclass[11pt,article,oneside]{memoir}
-      [NO-DEFAULT-PACKAGES]
-     \\input{vc} % REMOVE THIS LINE IF YOU DO NOT USE VC + GIT
-      \\usepackage{graphicx,url,rotating} 
-      \\usepackage{memoir-article-styles} % Available at https://github.com/kjhealy/latex-custom-kjh
-      \\usepackage{fontspec,xunicode}
-      %%% Change or remove the following three lines if you do not have these fonts installed
-      \\setsansfont[Mapping=tex-text,BoldFont={Unit-Bold},ItalicFont={Unit-Regular}]{Unit-Bold}  
-      \\setmonofont[Mapping=tex-text,Scale=MatchLowercase]{PragmataPro} 
-      \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Minion Pro} 
-      \\usepackage[american]{babel}
-      \\usepackage[babel]{csquotes}
-      \\usepackage[style=authoryear-comp-ajs, 
-                   abbreviate=true]{biblatex} % Available at https://github.com/kjhealy/latex-custom-kjh
-      \\bibliography{socbib} % Available at https://github.com/kjhealy/socbibs
-      \\usepackage{listings}
-      \\usepackage{listings-sweave-xelatex} % Available at https://github.com/kjhealy/latex-custom-kjh
-      \\usepackage[svgnames]{xcolor}
-      \\usepackage{soul}
-      \\usepackage[xetex, colorlinks=true, urlcolor=FireBrick,
-      plainpages=false, pdfpagelabels, bookmarksnumbered]{hyperref}"
-                    ("\\section{%s}" . "\\section*{%s}")
-                    ("\\subsection{%s}" . "\\subsection*{%s}")
-                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-                  org-export-latex-classes))
+    (require 'org-latex)
+    (setq org-export-latex-listings t)
+    ;; taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+    (defun my-auto-tex-cmd ()
+      "Automatically select the tex command to apply."
+      (let ((texcmd) (bibtexcmd) (glossariescmd) (dvi2pdfcmd))
+        ;; default command
+        (setq texcmd "pdflatex -interaction nonstopmode %f;")
+        ;; latex -> .dvi (for .eps images)
+        (if (string-match "LATEX_CMD: latex" (buffer-string))
+            (progn
+              (setq texcmd "latex -interaction nonstopmode %f;")
+              (setq dvi2pdfcmd "dvips %b.dvi; ps2pdf %b.ps"))
+          ;; xelatex -> .pdf
+          (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+              (setq texcmd "xelatex -interaction nonstopmode %f;")))
+        ;; first tex compilation command
+        (setq org-latex-to-pdf-process (list texcmd))
+        ;; look for glossaries call
+        (if (string-match "\\\\makeglossaries" (buffer-string))
+            (progn
+              (setq glossariescmd "makeindex -s %b.ist -t %b.glg -o %b.gls %b.glo;")
+              (setq org-latex-to-pdf-process
+                    (nconc org-latex-to-pdf-process (list glossariescmd)))))
+        ;; look for bibtex call
+        (if (string-match "\\\\printbibliography" (buffer-string))
+            (progn
+              (setq bibtexcmd (concat "bibtex %b; " texcmd))
+              (setq org-latex-to-pdf-process
+                    (nconc org-latex-to-pdf-process (list bibtexcmd)))))
+        
+        ;; last tex compilation command
+        (setq org-latex-to-pdf-process
+              (nconc org-latex-to-pdf-process (list texcmd)))
+        ;; dvi -> pdf
+        (if dvi2pdfcmd
+            (setq org-latex-to-pdf-process
+                  (nconc org-latex-to-pdf-process (list dvi2pdfcmd))))))
     
-    (setq org-latex-to-pdf-process
-            '("xelatex -interaction nonstopmode %b"
-              "bibtex %b"
-              "xelatex -interaction nonstopmode %b"
-              "bibtex %b"
-              "xelatex -interaction nonstopmode %b"))
+    (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+     
+    ;; Default packages included in every tex file, pdflatex or xelatex
+    (setq org-export-latex-packages-alist
+          '(("" "graphicx" t)
+            ("" "longtable" nil)
+            ("" "float" nil)))
+    
+    ;; Custom packages
+    (defun my-auto-tex-parameters ()
+      "Automatically select the tex packages."
+      ;; Default pdflatex
+      (setq org-export-latex-default-packages-alist
+            '(("AUTO" "inputenc" t)))
+      ;; Look for xelatex call
+      (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+          (setq org-export-latex-default-packages-alist
+                '(("" "fontspec" t)
+                  ("" "xunicode" t)
+                  ("" "url" t)
+                  ("" "rotating" t)
+                  ("" "memoir-article-styles" t)
+                  ("american" "babel" t)
+                  ("babel" "csquotes" t)
+                  ("style=authoryear-comp-ajs, 
+                     abbreviate=true" "biblatex" nil)
+                  ("" "listings" nil)
+                  ("" "listings-sweave-xelatex" nil)
+                  ("svgnames" "xcolor" t)
+                  ("" "soul" t)
+                  ("xetex, colorlinks=true, urlcolor=FireBrick, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
+                  )))
+    
+      (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+          (setq org-export-latex-classes
+                (cons '("article"
+                       "\\documentclass[11pt,article,oneside]{memoir} 
+\\input{vc}"
+                       ("\\section{%s}" . "\\section*{%s}")
+                       ("\\subsection{%s}" . "\\subsection*{%s}")
+                       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                       ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                      org-export-latex-classes))))  
+    
+    (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
 #+end_src
 
 ** Minimal mode
