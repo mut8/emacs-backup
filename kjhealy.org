@@ -308,9 +308,22 @@ You will also need to change the values for the location of bibtex
    remove depending on your preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
-    (require 'org-latex)
-    (setq org-export-latex-listings t)
-    ;; taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+  (require 'org-latex)
+    
+  ;; To get xelatex/bibtex working properly, we need to keep the .aux file.
+  ;; So we'll hang on to the output files
+  (setq org-export-pdf-remove-logfiles nil)
+  (defun org-mode-reftex-setup ()
+    (load-library "reftex")
+    (and (buffer-file-name)
+    (file-exists-p (buffer-file-name))
+    (reftex-parse-all))
+    (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+    )
+  (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+  
+  (setq org-export-latex-listings t)
+  ;; taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
     (defun my-auto-tex-cmd ()
       "Automatically select the tex command to apply."
       (let ((texcmd) (bibtexcmd) (glossariescmd) (dvi2pdfcmd))
@@ -332,8 +345,8 @@ You will also need to change the values for the location of bibtex
               (setq glossariescmd "makeindex -s %b.ist -t %b.glg -o %b.gls %b.glo;")
               (setq org-latex-to-pdf-process
                     (nconc org-latex-to-pdf-process (list glossariescmd)))))
-        ;; look for bibtex call
-        (if (string-match "\\\\printbibliography" (buffer-string))
+        ;; run bibtex
+        (if (string-match "LATEX_CMD: xelatex" (buffer-string))
             (progn
               (setq bibtexcmd (concat "bibtex %b; " texcmd))
               (setq org-latex-to-pdf-process
@@ -348,13 +361,13 @@ You will also need to change the values for the location of bibtex
                   (nconc org-latex-to-pdf-process (list dvi2pdfcmd))))))
     
     (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
-     
+    
     ;; Default packages included in every tex file, pdflatex or xelatex
     (setq org-export-latex-packages-alist
           '(("" "graphicx" t)
             ("" "longtable" nil)
             ("" "float" nil)))
-    
+  
     ;; Custom packages
     (defun my-auto-tex-parameters ()
       "Automatically select the tex packages."
@@ -371,25 +384,25 @@ You will also need to change the values for the location of bibtex
                   ("" "memoir-article-styles" t)
                   ("american" "babel" t)
                   ("babel" "csquotes" t)
-                  ("style=authoryear-comp-ajs, 
-                     abbreviate=true" "biblatex" nil)
                   ("" "listings" nil)
                   ("" "listings-sweave-xelatex" nil)
                   ("svgnames" "xcolor" t)
                   ("" "soul" t)
                   ("xetex, colorlinks=true, urlcolor=FireBrick, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
                   )))
-    
+      
       (if (string-match "LATEX_CMD: xelatex" (buffer-string))
           (setq org-export-latex-classes
                 (cons '("article"
-                       "\\documentclass[11pt,article,oneside]{memoir} 
-\\input{vc}"
-                       ("\\section{%s}" . "\\section*{%s}")
-                       ("\\subsection{%s}" . "\\subsection*{%s}")
-                       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                       ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                        "\\documentclass[11pt,article,oneside]{memoir}
+\\input{vc}
+\\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
+\\bibliography{socbib}"
+                        ("\\section{%s}" . "\\section*{%s}")
+                        ("\\subsection{%s}" . "\\subsection*{%s}")
+                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
                       org-export-latex-classes))))  
     
     (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
