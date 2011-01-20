@@ -321,7 +321,7 @@ You will also need to change the values for the location of bibtex
     \\usepackage{memoir-article-styles} % Available at https://github.com/kjhealy/latex-custom-kjh
     \\usepackage{fontspec,xunicode}
     %%% Change or remove the following three lines if you do not have these fonts installed
-    \\setsansfont[Mapping=tex-text,BoldFont={DINPro-Medium},ItalicFont={DIN-RegularItalic}]{DINPro-Medium}  
+    \\setsansfont[Mapping=tex-text,BoldFont={Unit-Bold},ItalicFont={Unit-Regular}]{Unit-Bold}  
     \\setmonofont[Mapping=tex-text,Scale=MatchLowercase]{PragmataPro} 
     \\setromanfont[Mapping=tex-text,Numbers=OldStyle]{Minion Pro} 
     \\usepackage[american]{babel}
