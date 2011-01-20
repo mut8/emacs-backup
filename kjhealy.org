@@ -313,13 +313,6 @@ You will also need to change the values for the location of bibtex
   ;; To get xelatex/bibtex working properly, we need to keep the .aux file.
   ;; So we'll hang on to the output files
   (setq org-export-pdf-remove-logfiles nil)
-  (defun org-mode-reftex-setup ()
-    (load-library "reftex")
-    (and (buffer-file-name)
-    (file-exists-p (buffer-file-name))
-    (reftex-parse-all))
-    (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-    )
   (add-hook 'org-mode-hook 'org-mode-reftex-setup)
   
   (setq org-export-latex-listings t)
