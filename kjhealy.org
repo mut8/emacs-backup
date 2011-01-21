@@ -303,9 +303,9 @@ You will also need to change the values for the location of bibtex
 ** Local Org-mode XeLaTeX Export Settings
    Configure org-mode to export directly to PDF using latex or
    xelatex, compiling the bibliography as it goes, with my preferred
-   xelatex setup. There is a good deal of local stuff in the
-   org-export-latex-classes section that you will need to adjust or
-   remove depending on your preferences and local configuration.
+   xelatex setup. There is a good deal of local stuff in this section
+   that you will need to adjust or remove depending on your
+   preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
     (require 'org-latex)
