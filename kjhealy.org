@@ -316,16 +316,17 @@ You will also need to change the values for the location of bibtex
     (defun my-auto-tex-cmd ()
       "When exporting from .org with latex, automatically run latex,
        pdflatex, or xelatex as appropriate, using latexmk."
+      (let ((texcmd)))
       ;; default command: oldstyle latex via dvi
-      (setq texcmd "latexmk -c -f -dvi -pdfps -quiet %f;")        
+      (setq texcmd "latexmk -c -f -dvi -pdfps -quiet %b")        
       ;; pdflatex -> .pdf
       (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-          (setq texcmd "latexmk -c -f -pdf -quiet %f;"))
+          (setq texcmd "latexmk -c -f -pdf -quiet %b"))
       ;; xelatex -> .pdf
       (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-          (setq texcmd "latex -c -f -pdf -pdflatex=xelatex -quiet %f;"))
+          (setq texcmd "latexmk -c -f -pdflatex=xelatex -pdf -quiet %b"))
       ;; LaTeX compilation command
-        (setq org-latex-to-pdf-process (texcmd)))
+      (setq org-latex-to-pdf-process (list texcmd)))
   
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
   
