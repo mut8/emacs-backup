@@ -330,19 +330,32 @@ You will also need to change the values for the location of bibtex
   
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
   
-  ;; Default packages included in every tex file, pdflatex or xelatex
+  ;; Default packages included in /every/ tex file, latex, pdflatex or xelatex
   (setq org-export-latex-packages-alist
         '(("" "graphicx" t)
               ("" "longtable" nil)
               ("" "float" nil)))
     
-      ;; Custom packages
-      (defun my-auto-tex-parameters ()
-        "Automatically select the tex packages."
-        ;; Default pdflatex
+  ;; Custom packages
+  (defun my-auto-tex-parameters ()
+        "Automatically select the tex packages to include."
+        ;; default packages for ordinary latex or pdflatex export
         (setq org-export-latex-default-packages-alist
-              '(("AUTO" "inputenc" t)))
-        ;; Look for xelatex call
+              '(("AUTO" "inputenc" t)
+                ("T1"   "fontenc"   t)
+                (""     "fixltx2e"  nil)
+                (""     "wrapfig"   nil)
+                (""     "soul"      t)
+                (""     "textcomp"  t)
+                (""     "marvosym"  t)
+                (""     "wasysym"   t)
+                (""     "latexsym"  t)
+                (""     "amssymb"   t)
+                (""     "hyperref"  nil)))
+    
+        ;; Packages to include when xelatex is used
+        ;; (see https://github.com/kjhealy/latex-custom-kjh for the 
+        ;; non-standard ones.)
         (if (string-match "LATEX_CMD: xelatex" (buffer-string))
             (setq org-export-latex-default-packages-alist
                   '(("" "fontspec" t)
@@ -373,7 +386,7 @@ You will also need to change the values for the location of bibtex
                           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
                         org-export-latex-classes))))  
       
-      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+  (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)¢
 #+end_src
 
 ** Minimal mode
