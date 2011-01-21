@@ -318,13 +318,13 @@ You will also need to change the values for the location of bibtex
        pdflatex, or xelatex as appropriate, using latexmk."
       (let ((texcmd)))
       ;; default command: oldstyle latex via dvi
-      (setq texcmd "latexmk -c -f -dvi -pdfps -quiet %b")        
+      (setq texcmd "latexmk -dvi -pdfps -quiet %f")        
       ;; pdflatex -> .pdf
       (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-          (setq texcmd "latexmk -c -f -pdf -quiet %b"))
+          (setq texcmd "latexmk -pdf -quiet %f"))
       ;; xelatex -> .pdf
       (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-          (setq texcmd "latexmk -c -f -pdflatex=xelatex -pdf -quiet %b"))
+          (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
       ;; LaTeX compilation command
       (setq org-latex-to-pdf-process (list texcmd)))
   
