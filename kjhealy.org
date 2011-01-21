@@ -310,20 +310,21 @@ You will also need to change the values for the location of bibtex
 #+begin_src emacs-lisp
     (require 'org-latex)
     (setq org-export-latex-listings t)
-
+  
     ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
     ;; but adapted to use latexmk 4.22 or higher.  
     (defun my-auto-tex-cmd ()
-      "Automatically run latex, pdflatex, or xelatex."
-        ;; default command: oldstyle latex via dvi
-        (setq texcmd "latexmk -c -f -dvi -pdfps -quiet %f;")        
-        ;; pdflatex -> .pdf
-        (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+      "When exporting from .org with latex, automatically run latex,
+       pdflatex, or xelatex as appropriate, using latexmk."
+      ;; default command: oldstyle latex via dvi
+      (setq texcmd "latexmk -c -f -dvi -pdfps -quiet %f;")        
+      ;; pdflatex -> .pdf
+      (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
           (setq texcmd "latexmk -c -f -pdf -quiet %f;"))
-        ;; xelatex -> .pdf
-        (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-              (setq texcmd "latex -c -f -pdf -pdflatex=xelatex -quiet %f;"))
-        ;; LaTeX compilation command
+      ;; xelatex -> .pdf
+      (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+          (setq texcmd "latex -c -f -pdf -pdflatex=xelatex -quiet %f;"))
+      ;; LaTeX compilation command
         (setq org-latex-to-pdf-process (texcmd)))
   
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
