@@ -308,97 +308,70 @@ You will also need to change the values for the location of bibtex
    remove depending on your preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
-  (require 'org-latex)
-    
-  ;; To get xelatex/bibtex working properly, we need to keep the .aux file.
-  ;; So we'll hang on to the output files
-  (setq org-export-pdf-remove-logfiles nil)
-  (add-hook 'org-mode-hook 'org-mode-reftex-setup)
-  
-  (setq org-export-latex-listings t)
-  ;; taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+    (require 'org-latex)
+    (setq org-export-latex-listings t)
+
+    ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+    ;; but adapted to use latexmk 4.22 or higher.  
     (defun my-auto-tex-cmd ()
-      "Automatically select the tex command to apply."
-      (let ((texcmd) (bibtexcmd) (glossariescmd) (dvi2pdfcmd))
-        ;; default command
-        (setq texcmd "pdflatex -interaction nonstopmode %f;")
-        ;; latex -> .dvi (for .eps images)
-        (if (string-match "LATEX_CMD: latex" (buffer-string))
-            (progn
-              (setq texcmd "latex -interaction nonstopmode %f;")
-              (setq dvi2pdfcmd "dvips %b.dvi; ps2pdf %b.ps"))
-          ;; xelatex -> .pdf
-          (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-              (setq texcmd "xelatex -interaction nonstopmode %f;")))
-        ;; first tex compilation command
-        (setq org-latex-to-pdf-process (list texcmd))
-        ;; look for glossaries call
-        (if (string-match "\\\\makeglossaries" (buffer-string))
-            (progn
-              (setq glossariescmd "makeindex -s %b.ist -t %b.glg -o %b.gls %b.glo;")
-              (setq org-latex-to-pdf-process
-                    (nconc org-latex-to-pdf-process (list glossariescmd)))))
-        ;; run bibtex
+      "Automatically run latex, pdflatex, or xelatex."
+        ;; default command: oldstyle latex via dvi
+        (setq texcmd "latexmk -c -f -dvi -pdfps -quiet %f;")        
+        ;; pdflatex -> .pdf
+        (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+          (setq texcmd "latexmk -c -f -pdf -quiet %f;"))
+        ;; xelatex -> .pdf
         (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-            (progn
-              (setq bibtexcmd (concat "bibtex %b; " texcmd))
-              (setq org-latex-to-pdf-process
-                    (nconc org-latex-to-pdf-process (list bibtexcmd)))))
-        
-        ;; last tex compilation command
-        (setq org-latex-to-pdf-process
-              (nconc org-latex-to-pdf-process (list texcmd)))
-        ;; dvi -> pdf
-        (if dvi2pdfcmd
-            (setq org-latex-to-pdf-process
-                  (nconc org-latex-to-pdf-process (list dvi2pdfcmd))))))
-    
-    (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
-    
-    ;; Default packages included in every tex file, pdflatex or xelatex
-    (setq org-export-latex-packages-alist
-          '(("" "graphicx" t)
-            ("" "longtable" nil)
-            ("" "float" nil)))
+              (setq texcmd "latex -c -f -pdf -pdflatex=xelatex -quiet %f;"))
+        ;; LaTeX compilation command
+        (setq org-latex-to-pdf-process (texcmd)))
   
-    ;; Custom packages
-    (defun my-auto-tex-parameters ()
-      "Automatically select the tex packages."
-      ;; Default pdflatex
-      (setq org-export-latex-default-packages-alist
-            '(("AUTO" "inputenc" t)))
-      ;; Look for xelatex call
-      (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-          (setq org-export-latex-default-packages-alist
-                '(("" "fontspec" t)
-                  ("" "xunicode" t)
-                  ("" "url" t)
-                  ("" "rotating" t)
-                  ("" "memoir-article-styles" t)
-                  ("american" "babel" t)
-                  ("babel" "csquotes" t)
-                  ("" "listings" nil)
-                  ("" "listings-sweave-xelatex" nil)
-                  ("svgnames" "xcolor" t)
-                  ("" "soul" t)
-                  ("xetex, colorlinks=true, urlcolor=FireBrick, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
-                  )))
-      
-      (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-          (setq org-export-latex-classes
-                (cons '("article"
-                        "\\documentclass[11pt,article,oneside]{memoir}
-\\input{vc}
-\\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
-\\bibliography{socbib}"
-                        ("\\section{%s}" . "\\section*{%s}")
-                        ("\\subsection{%s}" . "\\subsection*{%s}")
-                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-                      org-export-latex-classes))))  
+  (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+  
+  ;; Default packages included in every tex file, pdflatex or xelatex
+  (setq org-export-latex-packages-alist
+        '(("" "graphicx" t)
+              ("" "longtable" nil)
+              ("" "float" nil)))
     
-    (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+      ;; Custom packages
+      (defun my-auto-tex-parameters ()
+        "Automatically select the tex packages."
+        ;; Default pdflatex
+        (setq org-export-latex-default-packages-alist
+              '(("AUTO" "inputenc" t)))
+        ;; Look for xelatex call
+        (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+            (setq org-export-latex-default-packages-alist
+                  '(("" "fontspec" t)
+                    ("" "xunicode" t)
+                    ("" "url" t)
+                    ("" "rotating" t)
+                    ("" "memoir-article-styles" t)
+                    ("american" "babel" t)
+                    ("babel" "csquotes" t)
+                    ("" "listings" nil)
+                    ("" "listings-sweave-xelatex" nil)
+                    ("svgnames" "xcolor" t)
+                    ("" "soul" t)
+                    ("xetex, colorlinks=true, urlcolor=FireBrick, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
+                    )))
+        
+        (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+            (setq org-export-latex-classes
+                  (cons '("article"
+                          "\\documentclass[11pt,article,oneside]{memoir}
+  \\input{vc}
+  \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
+  \\bibliography{socbib}"
+                          ("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                        org-export-latex-classes))))  
+      
+      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
 #+end_src
 
 ** Minimal mode
