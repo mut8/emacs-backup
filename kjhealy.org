@@ -307,8 +307,10 @@ You will also need to change the values for the location of bibtex
    preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
-    (require 'org-latex)
-    (setq org-export-latex-listings t)
+  (require 'org-latex)  
+  ;; Choose either listings or minted for exporting source code blocks
+  ;; (setq org-export-latex-listings t)
+  (setq org-export-latex-listings 'minted)
   
     ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
     ;; but adapted to use latexmk 4.22 or higher.  
@@ -320,10 +322,10 @@ You will also need to change the values for the location of bibtex
       (setq texcmd "latexmk -dvi -pdfps -quiet %f")        
       ;; pdflatex -> .pdf
       (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-          (setq texcmd "latexmk -pdf -quiet %f"))
+          (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf -quiet %f"))
       ;; xelatex -> .pdf
       (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-          (setq texcmd "latexmk -pdflatex=xelatex -pdf -quiet %f"))
+          (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf -quiet %f"))
       ;; LaTeX compilation command
       (setq org-latex-to-pdf-process (list texcmd)))
   
@@ -333,7 +335,8 @@ You will also need to change the values for the location of bibtex
   (setq org-export-latex-packages-alist
         '(("" "graphicx" t)
               ("" "longtable" nil)
-              ("" "float" nil)))
+              ("" "float" nil)
+              ("" "minted" nil)))
     
   ;; Custom packages
   (defun my-auto-tex-parameters ()
@@ -364,8 +367,6 @@ You will also need to change the values for the location of bibtex
                     ("" "memoir-article-styles" t)
                     ("american" "babel" t)
                     ("babel" "csquotes" t)
-                    ("" "listings" nil)
-                    ("" "listings-sweave-xelatex" nil)
                     ("svgnames" "xcolor" t)
                     ("" "soul" t)
                     ("xetex, colorlinks=true, urlcolor=FireBrick, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
