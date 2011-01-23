@@ -308,8 +308,11 @@ You will also need to change the values for the location of bibtex
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
   (require 'org-latex)  
-  ;; Choose either listings or minted for exporting source code blocks
+  ;; Choose either listings or minted for exporting source code blocks.
+  ;; Using minted (as here) requires pygments be installed. To use the
+  ;; default listings package instead, use
   ;; (setq org-export-latex-listings t)
+  ;; and change references to "minted" below to "listings"
   (setq org-export-latex-listings 'minted)
   
     ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
