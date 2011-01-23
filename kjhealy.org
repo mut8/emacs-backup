@@ -377,8 +377,6 @@ You will also need to change the values for the location of bibtex
                           "\\documentclass[11pt,article,oneside]{memoir}
   \\input{vc}
   \\usepackage{etoolbox}
-  \\ifundef{\\abstract}{}{\\patchcmd{\\abstract}%
-    {\\quotation}{\\quotation\\noindent\\ignorespaces}{}{}}
   \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
   \\bibliography{socbib}"
                           ("\\section{%s}" . "\\section*{%s}")
