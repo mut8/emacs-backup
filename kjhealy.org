@@ -322,13 +322,13 @@ You will also need to change the values for the location of bibtex
        pdflatex, or xelatex as appropriate, using latexmk."
       (let ((texcmd)))
       ;; default command: pdflatex 
-      (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf -quiet %f")        
+      (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
       ;; pdflatex -> .pdf
       (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-          (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf -quiet %f"))
+          (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
       ;; xelatex -> .pdf
       (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-          (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf -quiet %f"))
+          (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
       ;; LaTeX compilation command
       (setq org-latex-to-pdf-process (list texcmd)))
   
