@@ -321,8 +321,8 @@ You will also need to change the values for the location of bibtex
       "When exporting from .org with latex, automatically run latex,
        pdflatex, or xelatex as appropriate, using latexmk."
       (let ((texcmd)))
-      ;; default command: oldstyle latex via dvi
-      (setq texcmd "latexmk -dvi -pdfps -quiet %f")        
+      ;; default command: pdflatex 
+      (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf -quiet %f")        
       ;; pdflatex -> .pdf
       (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
           (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf -quiet %f"))
