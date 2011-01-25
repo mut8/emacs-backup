@@ -390,7 +390,7 @@ You will also need to change the values for the location of bibtex
                           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
                         org-export-latex-classes))))  
       
-  (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)
+  (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
 #+end_src
 
 ** Minimal mode
