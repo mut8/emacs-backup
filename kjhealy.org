@@ -132,20 +132,6 @@ You will also need to change the values for the location of bibtex
 (setq windmove-wrap-around t)
 #+end_src
 
-*** Winner mode
-    Remember the previous window configurations and jump back to them
-    as needed (as when, e.g., some other mode messes with your working
-    layout.) Redbind the default keys to C-c-up and C-c-down as we
-    already use C-c-right for rotating windows.
-
-#+source: local-winner-mode
-#+begin_src emacs-lisp
-  (winner-mode 1)
-  (global-set-key (kbd "C-c <up>") 'winner-undo)
-  (global-set-key (kbd "C-c <down>") 'winner-redo)
-#+end_src
-
-
 *** Resizing inside the frame
 #+srcname: resize-splits
 #+begin_src emacs-lisp
