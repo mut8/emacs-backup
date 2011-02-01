@@ -940,6 +940,8 @@ static char *gnus-pointer[] = {
 
           '(magit-section-title ((t (:inherit zenburn-primary-1))))
           '(magit-branch ((t (:inherit zenburn-primary-2))))
+          '(magit-diff-add ((t (:inherit zenburn-green+1))))
+          '(magit-diff-del ((t (:inherit zenburn-red+1))))
 
           '(flyspell-duplicate ((t (:inherit zenburn-primary-1))))
           '(flyspell-incorrect ((t (:inherit font-lock-warning))))
