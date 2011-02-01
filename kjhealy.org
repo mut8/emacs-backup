@@ -451,7 +451,8 @@ You will also need to change the values for the location of bibtex
   ;; minimize fringe
   (setq-default indicate-empty-lines nil)
   
-  ;; Tweak to ergo keybindings for commenting regions of text
+  ;; Add keybindings for commenting regions of text
+  (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
   (global-set-key (kbd "M-'") 'comment-or-uncomment-region)
   
   ;; Base dir
