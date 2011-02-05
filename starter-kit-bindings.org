@@ -247,7 +247,7 @@ When windows get out of order, you can rotate them.
        (set-window-start w2 s1)
        (setq i (1+ i)))))))
 
-  (global-set-key (kbd "C-c <right>") 'rotate-windows)
+  (global-set-key (kbd "C-c m") 'rotate-windows)
 #+end_src
 
 ** CUA mode for rectangle editing
