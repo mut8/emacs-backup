@@ -412,7 +412,9 @@ You will also need to change the values for the location of bibtex
   (byte-recompile-directory "~/.emacs.d/src/auto-complete/dict/ess")
   (require 'auto-complete-config)
   (add-to-list 'ac-dictionary-directories "~/.emacs.d/src/auto-complete/dict")
+  (setq ac-modes (append ac-modes '(org-mode))) 
   (ac-config-default)
+  (define-key ac-complete-mode-map [tab] 'ac-expand)
   (require 'ac-R)
   (setq ac-auto-start 4)
   (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
@@ -424,7 +426,7 @@ You will also need to change the values for the location of bibtex
   
 #+end_src
 
-  
+
 ** Final Custom elements
 #+srcname: final-custom
 #+begin_src emacs-lisp
