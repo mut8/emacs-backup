@@ -274,7 +274,15 @@ You will also need to change the values for the location of bibtex
        (ibuffer-switch-to-saved-filter-groups "home")))
 #+end_src
 
-** Local Org-mode Mobile Settings
+** Local Org-mode Settings
+*** Org-mode Archive Settings
+    Where archived projects and tasks go.
+#+source: orgmode-archive
+#+begin_src emacs-lisp
+  (setq org-archive-location "~/Dropbox/Org/archive.org::From %s")
+#+end_src
+
+*** Local Org-mode Mobile Settings
    Sync orgmode files with Dropbox and iPhone. 
 #+src-name: orgmode-mobile
 #+begin_src emacs-lisp
@@ -290,7 +298,7 @@ You will also need to change the values for the location of bibtex
 
 #+end_src
 
-** Local Org-mode Babel Settings
+*** Local Org-mode Babel Settings
    Configure org-mode so that when you edit source code in an indirect buffer (with C-c '), the buffer is opened in the current window. That way, your window organization isn't broken when switching.
 
 #+source: orgmode-indirect-buffer-settings
@@ -298,8 +306,7 @@ You will also need to change the values for the location of bibtex
   (setq org-src-window-setup 'current-window)
 #+end_src
 
-
-** Local Org-mode XeLaTeX Export Settings
+*** Local Org-mode XeLaTeX Export Settings
    Configure org-mode to export directly to PDF using latex or
    xelatex, compiling the bibliography as it goes, with my preferred
    xelatex setup. There is a good deal of local stuff in this section
@@ -392,6 +399,7 @@ You will also need to change the values for the location of bibtex
       
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
 #+end_src
+
 
 ** Minimal mode
    A nice clutter-free appearance with a reduced-size modeline, no
