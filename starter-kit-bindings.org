@@ -221,6 +221,14 @@ Rgrep is infinitely useful in multi-file projects.
   (global-set-key (kbd "C-c <down>") 'winner-redo)
 #+end_src
 
+** Don't Use Suspend Frame
+By default C-z is bound to "Suspend Frame", which minimizes Emacs. I find this of no use. Bind it to "Undo" instead. 
+
+#+source: disable-suspend-frame
+#+begin_src emacs-lisp
+  ;; I can't remember ever having meant to use C-z to suspend the frame
+  (global-set-key (kbd "C-z") 'undo)
+#+end_src
 
 ** Rotate Windows in a Frame
 When windows get out of order, you can rotate them.
