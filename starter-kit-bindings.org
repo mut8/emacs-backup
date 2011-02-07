@@ -166,12 +166,6 @@ Key Bindings.
     (let ((case-fold-search isearch-case-fold-search))
       (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
 #+end_src
-
-** Closing
-#+begin_src emacs-lisp 
-(provide 'starter-kit-bindings)
-;;; starter-kit-bindings.el ends here
-#+end_src
 ** Org-mode
 Two global binding for Org-mode (see [[file:starter-kit-org.org][starter-kit-org]])
 
@@ -324,5 +318,11 @@ Sometimes very useful (but we don't use the core cua keys.)
 ;; and down; lines scrolled outside the top or bottom of the rectangle
 ;; are lost, but can be recovered using [C-z].
   
+#+end_src
+
+** Closing
+#+begin_src emacs-lisp 
+(provide 'starter-kit-bindings)
+;;; starter-kit-bindings.el ends here
 #+end_src
   
