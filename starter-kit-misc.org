@@ -96,10 +96,11 @@ Set this to whatever browser you use e.g...
 #+end_src
 
 ** No Menu Bar
-You really don't need this; trust me.
+Activate this segment if you want to turn the menu off in normal
+windows. 
 #+srcname: starter-kit-no-menu
-#+begin_src emacs-lisp 
-(menu-bar-mode -1)
+#+begin_src emacs-lisp :tangle no
+ (menu-bar-mode -1)
 #+end_src
 
 ** Save a list of recent files visited.
