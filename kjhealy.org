@@ -488,7 +488,9 @@ buffers in specific modes (ess, etc) are saved.
   '(TeX-engine (quote xetex))
   '(TeX-view-program-list (quote (("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b"))))
   '(TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "Skim") (output-html "xdg-open"))))
-  ;; '(cdlatex-paired-parens "$[{(")
+  '(show-paren-mode t)
+  '(blink-cursor-mode nil)
+  '(text-mode-hook (quote (text-mode-hook-identify)))
   )
 #+end_src
    
