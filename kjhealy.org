@@ -13,7 +13,7 @@ See the [[file:starter-kit.org][main starter-kit file]] for further information 
 starter-kit as a whole. 
 
 * Starter Kit kjhealy
-YOU MUST CHANGE THE NAME OF THIS FILE to the value of the Emacs
+/You must change the name of this file/ to the value of the Emacs
  variable =user-login-name= OR =system-name=, so that it will be
  picked up by =init.el= when Emacs starts up, and be loaded
  properly. To find the current value of these variables on your
@@ -461,7 +461,6 @@ buffers in specific modes (ess, etc) are saved.
   (set-face-foreground 'ac-selection-face "#1f1f1f")
   
 #+end_src
-
 
 ** Final Custom elements
 #+srcname: final-custom
