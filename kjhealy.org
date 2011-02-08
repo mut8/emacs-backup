@@ -429,7 +429,6 @@ buffers in specific modes (ess, etc) are saved.
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
 #+end_src
 
-
 ** Minimal mode
    A nice clutter-free appearance with a reduced-size modeline, no
    scroll bars, and no fringe indicators. 
