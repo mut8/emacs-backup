@@ -46,7 +46,6 @@ How this works:
   Yes this is cumbersome.
  
 
-
 ** Make shift-enter to a lot in ESS.
  Use shift-enter to split window & launch R (if not running), execute
  highlighted region (if R running & area highlighted), or execute
@@ -151,29 +150,6 @@ How this works:
 (provide 'ess-R-object-tooltip)
 #+end_src
 
-** Miscellaneous R options
-#+srcname: misc-r
-#+begin_src emacs-lisp
-;; roxygen more for generating Rd and packxfages
-;; (require 'ess-roxygen)
-
-;; R-noweb mode, for Sweave files.
-(defun Rnw-mode ()
-  (require 'ess-noweb)
-  (noweb-mode)
-  (if (fboundp 'R-mode)
-      (setq noweb-default-code-mode 'R-mode)))
-
-(add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
-(add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
-
-;; Make TeX and RefTex aware of Snw and Rnw files
-(setq reftex-file-extensions
-      '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
-(setq TeX-file-extensions
-      '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
-#+end_src
-
 ** Make ESS support cacheSweave() library in R
 ESS comes with support for Sweave, e.g.,: M-n s M-n P from the Rnw
 file. But we also want to be able to conveniently use the
@@ -226,4 +202,27 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
 
 (define-key noweb-minor-mode-map "\M-nw" 'ess-swv-weave2)
 
+#+end_src
+
+** Miscellaneous R options
+#+srcname: misc-r
+#+begin_src emacs-lisp
+;; roxygen more for generating Rd and packxfages
+;; (require 'ess-roxygen)
+
+;; R-noweb mode, for Sweave files.
+(defun Rnw-mode ()
+  (require 'ess-noweb)
+  (noweb-mode)
+  (if (fboundp 'R-mode)
+      (setq noweb-default-code-mode 'R-mode)))
+
+(add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
+(add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
+
+;; Make TeX and RefTex aware of Snw and Rnw files
+(setq reftex-file-extensions
+      '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
+(setq TeX-file-extensions
+      '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
 #+end_src
