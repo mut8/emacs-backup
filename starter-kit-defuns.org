@@ -153,7 +153,7 @@ a lambda doesn't already exist in the list.
 
 #+source: cleanup-buffer-on-save
 #+begin_src emacs-lisp
-  
+  ;; Credit: Alex Ott
   (defun cleanup-buffer-hook ()
     "A hook for cleanup-buffer. cleanup-buffer-modes should be a list
     of modes you want the cleanup-buffer function applied to routinely. "
