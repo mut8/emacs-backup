@@ -175,6 +175,20 @@ Internal to emacs; also seems not to work on OS X.
              )))
 #+end_src
 
+*** Cleanup Buffer on every save
+The =cleanup-buffer= function and hook are defined in
+[[file:starter-kit-defuns.org][starter-kit-defuns.org]]. It tidies up the whitespace in a buffer in
+various ways. Here we make emacs apply it automatically every time
+buffers in specific modes (ess, etc) are saved.
+
+#+source: cleanup-buffer-when
+#+begin_src emacs-lisp
+  (setq cleanup-buffer-modes 
+        '(haskell-mode emacs-lisp-mode lisp-mode scheme-mode
+                       ess-mode erlang-mode clojure-mode ruby-mode))  
+#+end_src
+
+
 ** Local LaTeX settings
 *** SyncTeX, PDF mode, Skim
 #+srcname: local-loadpath
