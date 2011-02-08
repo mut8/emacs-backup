@@ -34,7 +34,7 @@ You will also need to change the values for the location of bibtex
 ** Miscellaneous Settings and starter-kit overrides
 *** Window size
 #+srcname: window_size
-#+begin_src emacs-lisp tangle: no
+#+begin_src emacs-lisp :tangle no
     (setq default-frame-alist
     '(
     ; frame width and height
