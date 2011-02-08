@@ -462,6 +462,17 @@ buffers in specific modes (ess, etc) are saved.
   
 #+end_src
 
+** IRC
+Sometimes useful for getting help on R or Emacs. 
+#+source: rirc-configuration
+#+begin_src emacs-lisp
+  ;; connect to irc on invocation but don't autojoin any channels
+  (require 'rcirc)
+  (add-to-list 'rcirc-server-alist
+                       '("irc.freenode.net"))
+#+end_src
+
+
 ** Final Custom elements
 #+srcname: final-custom
 #+begin_src emacs-lisp
