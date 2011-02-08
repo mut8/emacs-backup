@@ -151,6 +151,22 @@ a lambda doesn't already exist in the list.
   (delete-trailing-whitespace))
 #+end_src
 
+#+source: cleanup-buffer-on-save
+#+begin_src emacs-lisp
+  
+  (defun cleanup-buffer-hook ()
+    "A hook for cleanup-buffer. cleanup-buffer-modes should be a list
+    of modes you want the cleanup-buffer function applied to routinely. "
+    (when (member major-mode cleanup-buffer-modes)
+      (cleanup-buffer)))
+  ;; now files int he modes listed in cleanup-buffer-mode will be
+  ;; automatically cleaned every time they are saved. 
+  (add-hook 'before-save-hook 'cleanup-buffer-hook)
+  
+#+end_src
+
+
+
 #+srcname: starter-kit-recentf-ido-find-file
 #+begin_src emacs-lisp 
 (defun recentf-ido-find-file ()
