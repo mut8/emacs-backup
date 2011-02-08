@@ -5,7 +5,7 @@ General social-science customizations are in the [[file:starter-kit-stats.org][S
 [[file:starter-kit-text.org][Text]] org files included in this starter kit. This file provides some
 additional useful settings, but ones that are specific to your
 particular configuration, including things like the location of your
-bibtex files, org-mode mobile settings and so on. Users will need to
+bibtex files, org-mode mobile settings, and so on. Users will need to
 change the relevant details as described below, together with the name
 of this file, or simply remove these settings if they are unneeded.
 
@@ -187,7 +187,6 @@ buffers in specific modes (ess, etc) are saved.
         '(haskell-mode emacs-lisp-mode lisp-mode scheme-mode
                        ess-mode erlang-mode clojure-mode ruby-mode))  
 #+end_src
-
 
 ** Local LaTeX settings
 *** SyncTeX, PDF mode, Skim
