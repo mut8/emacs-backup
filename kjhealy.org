@@ -74,54 +74,69 @@ You will also need to change the values for the location of bibtex
 
 *** Run Emacs in Full Screen
     What works depends on the flavor of emacs you are using,
-    unfortunately. Choose as appropriate. 
-#+srcname: fullscreen
-#+begin_src emacs-lisp 
-  ;; OPTION 1
-  ;; require maxframe package to conveniently maxmimize the window
-  ;; with M-x MFA. Doesn't work with Emacs 23 on Mac. 
-  ;;(require 'maxframe)
-  ;;(global-set-key (kbd "C-c m") 'x-maximize-frame)
+    unfortunately. Choose as appropriate from the following options: 
+
+**** Option 1
+Require maxframe package to conveniently maxmimize the window. Doesn't work with Emacs 23 on Mac.
+
+#+srcname: fullscreen-1
+#+begin_src emacs-lisp :tangle no
+  (require 'maxframe)
+  (global-set-key (kbd "C-c m") 'x-maximize-frame)  
+#+end_src
+
+**** Option 2
+Fullscreen toggle -- Only works with the (now slightly out-of-date)
+patched emacs build at =git://github.com/typester/emacs.git=.
+
+#+source: fullscreen-2
+#+begin_src emacs-lisp :tangle no
+  (global-set-key (kbd "C-c m") 'ns-toggle-fullscreen)
+#+end_src
+
+**** Option 3  
+Fullscreen toggle using maxframe.el. 
+#+source: fullscreen-3
+#+begin_src emacs-lisp :tangle no
   
-  ;; OPTION 2
-  ;; Fullscreen toggle -- Only works with patched emacs build at 
-  ;; git://github.com/typester/emacs.git
-  ;; (global-set-key (kbd "C-c m") 'ns-toggle-fullscreen)
-  
-  ;; OPTION 3
-  ;; Fullscreen toggle -- using maxframe.el
-  ;; (require 'maxframe)
-  ;; (defvar my-fullscreen-p t "Check if fullscreen is on or off")
-  ;; (defun my-toggle-fullscreen ()
-  ;; (interactive)
-  ;; (setq my-fullscreen-p (not my-fullscreen-p))
-  ;; (if my-fullscreen-p
-  ;; (restore-frame)
-  ;; (maximize-frame)))
-  ;; (global-set-key (kbd "C-c f") 'my-toggle-fullscreen)
-  
-  ;; OPTION 4
-  ;; For use with Yamamoto Mitsuharu's Carbon-patched Emacs 23. (This
-  ;; is what I use.)
+ (require 'maxframe)
+ (defvar my-fullscreen-p t "Check if fullscreen is on or off")
+ (defun my-toggle-fullscreen ()
+ (interactive)
+ (setq my-fullscreen-p (not my-fullscreen-p))
+ (if my-fullscreen-p
+ (restore-frame)
+ (maximize-frame)))
+ (global-set-key (kbd "C-c f") 'my-toggle-fullscreen)    
+#+end_src
+
+**** Option 4
+For use with Yamamoto Mitsuharu's Carbon-patched Emacs 23. (This is
+    what I use, but it requires you compile a custom Emacs.)
+
+#+source: fullscreen-4
+#+begin_src emacs-lisp
     (defun fullscreen (&optional f)
       (interactive)
       (set-frame-parameter f 'fullscreen
                            (if (frame-parameter f 'fullscreen) nil 'fullboth)))
     (global-set-key (kbd "C-c f") 'fullscreen)
     (add-hook 'after-make-frame-functions 'fullscreen)
-  
-  ;; OPTION 5
-  ;; Internal to emacs; also seems not to work on os x
-  ;; (defun toggle-fullscreen (&optional f)
-  ;;    (interactive)
-  ;;    (let ((current-value (frame-parameter nil 'fullscreen)))
-  ;;         (set-frame-parameter nil 'fullscreen
-  ;;                              (if (equal 'fullboth current-value)
-  ;;                                  (if (boundp 'old-fullscreen) old-fullscreen nil)
-  ;;                                  (progn (setq old-fullscreen current-value)
-  ;;                                         'fullboth)))))
-  ;;  (global-set-key (kbd "C-c f") 'toggle-fullscreen)
-  
+#+end_src
+
+**** Option 5  
+Internal to emacs; also seems not to work on OS X.
+#+source: fullscreen-5
+#+begin_src emacs-lisp :tangle no
+ (defun toggle-fullscreen (&optional f)
+    (interactive)
+    (let ((current-value (frame-parameter nil 'fullscreen)))
+         (set-frame-parameter nil 'fullscreen
+                              (if (equal 'fullboth current-value)
+                                  (if (boundp 'old-fullscreen) old-fullscreen nil)
+                                  (progn (setq old-fullscreen current-value)
+                                         'fullboth)))))
+  (global-set-key (kbd "C-c f") 'toggle-fullscreen)  
 #+end_src
 
 *** Windmove
