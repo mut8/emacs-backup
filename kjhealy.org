@@ -454,6 +454,7 @@ buffers in specific modes (ess, etc) are saved.
   (define-key ac-complete-mode-map [tab] 'ac-expand)
   (require 'ac-R)
   (setq ac-auto-start 4)
+  (ac-flyspell-workaround)
   (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
   (setq ac-auto-show-menu 0.8)
   ;; consistent  with zenburnish theme
