@@ -44,8 +44,33 @@ How this works:
   - To detach or do anything screen related, precede EACH keybinding
  with =C-l=.  For example, =C-a C-d= to detach will now be =C-l C-a C-l C-d=.
   Yes this is cumbersome.
- 
 
+** Define Rnw-mode and make LaTeX aware of it. 
+#+srcname: misc-r
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
+(add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
+
+;; Make TeX and RefTex aware of Snw and Rnw files
+(setq reftex-file-extensions
+      '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
+(setq TeX-file-extensions
+      '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
+
+;; Lets you do 'C-c C-c Sweave' from your Rnw file
+(add-hook 'Rnw-mode-hook
+	  (lambda ()
+	    (add-to-list 'TeX-command-list
+			 '("Sweave" "R CMD Sweave %s"
+			   TeX-run-command nil (latex-mode) :help "Run Sweave") t)
+	    (add-to-list 'TeX-command-list
+			 '("LatexSweave" "%l %(mode) %s"
+			   TeX-run-TeX nil (latex-mode) :help "Run Latex after Sweave") t)
+	    (setq TeX-command-default "Sweave")))
+
+
+#+end_src
+ 
 ** Make shift-enter to a lot in ESS.
  Use shift-enter to split window & launch R (if not running), execute
  highlighted region (if R running & area highlighted), or execute
@@ -205,27 +230,4 @@ Nguyen]] and allows for cachSweave() compilation with M-n w.
 
 (define-key noweb-minor-mode-map "\M-nw" 'ess-swv-weave2)
 
-#+end_src
-
-** Miscellaneous R options
-#+srcname: misc-r
-#+begin_src emacs-lisp
-;; roxygen more for generating Rd and packxfages
-;; (require 'ess-roxygen)
-
-;; R-noweb mode, for Sweave files.
-(defun Rnw-mode ()
-  (require 'ess-noweb)
-  (noweb-mode)
-  (if (fboundp 'R-mode)
-      (setq noweb-default-code-mode 'R-mode)))
-
-(add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
-(add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
-
-;; Make TeX and RefTex aware of Snw and Rnw files
-(setq reftex-file-extensions
-      '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
-(setq TeX-file-extensions
-      '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
 #+end_src
