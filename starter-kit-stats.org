@@ -84,6 +84,9 @@ How this works:
 	    '(lambda()
 	       (local-set-key [C-up] 'comint-previous-input)
 	       (local-set-key [C-down] 'comint-next-input)))
+ (add-hook 'Rnw-mode-hook 
+          '(lambda() 
+             (local-set-key [(shift return)] 'my-ess-eval))) 
   (require 'ess-site)
 #+end_src
 
