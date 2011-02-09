@@ -21,7 +21,7 @@ starter-kit as a whole.
  [RET]=. For example, on my system =user-login-name= is 'kjhealy', so
  this file is named =kjhealy.org=, and when Emacs starts up with the
  starter kit it creates the file =kjhealy.el=.
-
+ 
 You will also need to change the values for the location of bibtex
  databases, pandoc and orgmode-mobile specified below, and some other
  settings. *Search for 'kjhealy' in this file* to find the paths that
@@ -189,6 +189,15 @@ buffers in specific modes (ess, etc) are saved.
 #+end_src
 
 ** Local LaTeX settings
+*** In-text Smart Quotes (XeLaTeX only)
+    Redefine TeX-open-quote and TeX-close-quote to be smart quotes by default. Below, in the local org-mode settings, we'll also map the relevant function to a key we can use in org-mode, too. If you don't use XeLaTeX for processing all your =.tex= files, you should disable this option.
+
+#+source: smart-quotes
+#+begin_src emacs-lisp
+  (setq TeX-open-quote "“")
+  (setq TeX-close-quote "”")
+#+end_src
+
 *** SyncTeX, PDF mode, Skim
 #+srcname: local-loadpath
 #+begin_src emacs-lisp
@@ -303,7 +312,17 @@ buffers in specific modes (ess, etc) are saved.
 #+end_src
 
 ** Local Org-mode Settings
-*** Org-mode Archive Settings
+*** Local Org-mode Smart-quote binding
+When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
+#+source: org-mode-smartquote-key
+#+begin_src emacs-lisp
+  (defun enable-tex-quotes-in-org-mode ()
+      (local-set-key (kbd "C-\"") 'TeX-insert-quote))
+  
+  (add-hook 'org-mode-hook 'enable-tex-quotes-in-org-mode)
+#+end_src
+
+*** Local Org-mode Archive Settings
     Where archived projects and tasks go.
 #+source: orgmode-archive
 #+begin_src emacs-lisp
@@ -504,6 +523,7 @@ Sometimes useful for getting help on R or Emacs.
   '(text-mode-hook (quote (text-mode-hook-identify)))
   )
 #+end_src
+   
    
    
    
