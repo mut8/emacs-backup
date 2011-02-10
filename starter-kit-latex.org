@@ -84,6 +84,44 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
       (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
 #+end_src
 
+*** Configure Biber
+Allow AucTeX to use biber as well as/instead of bibtex.
+#+source: setup-biber
+#+begin_src emacs-lisp
+  ;; Biber under AUCTeX
+  (defun TeX-run-Biber (name command file)
+    "Create a process for NAME using COMMAND to format FILE with Biber." 
+   (let ((process (TeX-run-command name command file)))
+      (setq TeX-sentinel-function 'TeX-Biber-sentinel)
+      (if TeX-process-asynchronous
+          process
+        (TeX-synchronous-sentinel name file process))))
+  
+  (defun TeX-Biber-sentinel (process name)
+    "Cleanup TeX output buffer after running Biber."
+    (goto-char (point-max))
+    (cond
+     ;; Check whether Biber reports any warnings or errors.
+     ((re-search-backward (concat
+                           "^(There \\(?:was\\|were\\) \\([0-9]+\\) "
+                           "\\(warnings?\\|error messages?\\))") nil t)
+      ;; Tell the user their number so that she sees whether the
+      ;; situation is getting better or worse.
+      (message (concat "Biber finished with %s %s. "
+                       "Type `%s' to display output.")
+               (match-string 1) (match-string 2)
+               (substitute-command-keys
+                "\\\\[TeX-recenter-output-buffer]")))
+     (t
+      (message (concat "Biber finished successfully. "
+                       "Run LaTeX again to get citations right."))))
+    (setq TeX-command-next TeX-command-default))
+
+(add-to-list 'TeX-command-list (quote ("Biber" "biber %s" TeX-run-Biber nil t :help "Run Biber")))
+
+
+#+end_src
+
 *** Set a Path to Executables (optional)
     - The location of the LaTeX excecutables is system
       dependent. AUCTeX calls everything through a shell, so you may
