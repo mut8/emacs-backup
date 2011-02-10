@@ -117,7 +117,7 @@ Allow AucTeX to use biber as well as/instead of bibtex.
                        "Run LaTeX again to get citations right."))))
     (setq TeX-command-next TeX-command-default))
 
-(add-to-list 'TeX-command-list (quote ("Biber" "biber %s" TeX-run-Biber nil t :help "Run Biber")))
+'(add-to-list 'TeX-command-list (quote ("Biber" "biber %s" TeX-run-Biber nil t :help "Run Biber")))
 
 
 #+end_src
