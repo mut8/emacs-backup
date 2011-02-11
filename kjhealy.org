@@ -315,9 +315,9 @@ buffers in specific modes (ess, etc) are saved.
 *** Local Org-mode Smart-quote binding
 When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
 #+source: org-mode-smartquote-key
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun enable-tex-quotes-in-org-mode ()
-      (local-set-key (kbd "C-\"") 'TeX-insert-quote))
+    (local-set-key (kbd "C-\"") 'TeX-insert-quote))
   
   (add-hook 'org-mode-hook 'enable-tex-quotes-in-org-mode)
 #+end_src
