@@ -302,12 +302,15 @@ buffers in specific modes (ess, etc) are saved.
 When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
 #+source: org-mode-smartquote-key
 #+begin_src emacs-lisp :tangle no
-  (add-hook 'org-mode-hook 'smart-quote-init)
-
-  (defun smart-quote-init ()
+  (add-hook 'org-mode-hook 'smart-quote-keys)
+  
+  (defun smart-quote-keys ()
     (require 'typopunct)
     (typopunct-change-language 'english)
-    (typopunct-mode 1))
+    (local-set-key (kbd "C-c \'") 'typopunct-insert-single-quotation-mark)
+    (local-set-key (kbd "C-c \"") 'typopunct-insert-quotation-mark)
+    )
+    
   
   
 #+end_src
