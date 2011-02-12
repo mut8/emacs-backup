@@ -1,6 +1,6 @@
 * Overview
 This is the Emacs Starter Kit for the Social Sciences, maintained by
-Kieran Healy. The most recent version can be found at
+[[http://kieranhealy.org][Kieran Healy]]. The most recent version can be found at
 [[http://github.com/kjhealy/emacs-starter-kit/]]. The original version of
 the kit (aimed at software developers) was written by Phil Hagelberg
 and is located at
