@@ -1,13 +1,13 @@
 * Overview
 This is the Emacs Starter Kit for the Social Sciences, maintained by
 Kieran Healy. The most recent version can be found at
-http://github.com/kjhealy/emacs-starter-kit/. The original version of
+[[http://github.com/kjhealy/emacs-starter-kit/]]. The original version of
 the kit (aimed at software developers) was written by Phil Hagelberg
 and is located at
-http://github.com/technomancy/emacs-starter-kit/. This version
+[[http://github.com/technomancy/emacs-starter-kit/]]. This version
 descends directly from the "Literate Programming" fork created by Eric
 Schulte. /That/ version is located at
-http://github.com/eschulte/emacs-starter-kit. Hagelberg and Schulte
+[[http://github.com/eschulte/emacs-starter-kit]]. Hagelberg and Schulte
 did the overwhelming majority of the work you see here.
 
 The Starter Kit provides a saner set of defaults than you get normally
