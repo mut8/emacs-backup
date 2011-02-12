@@ -1,3 +1,4 @@
+* Overview
 This is the Emacs Starter Kit for the Social Sciences, maintained by
 Kieran Healy. The most recent version can be found at
 http://github.com/kjhealy/emacs-starter-kit/. The original version of
@@ -23,6 +24,7 @@ The main advantage of this Emacs Starter Kit are
 - an organizational directory structure
 - git provides for version control, backup, and sharing
 
+* Latest Version
 The latest version is at http://github.com/kjhealy/emacs-starter-kit/
 
 For more information including use and installation instructions see
