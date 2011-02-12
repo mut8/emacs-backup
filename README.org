@@ -15,7 +15,9 @@ with Emacs. It's intended for beginners, but provides a good elisp
 initialization structure for all levels of users. The target audience
 for this version is graduate students and researchers working in the
 social sciences, writing papers using LaTeX and doing data analysis
-with R, Stata, or SAS.
+with R, Stata, or SAS. I've written a companion discussion giving an
+overview of why you might want to use the starter-kit (or something
+like it) called [[http://www.kieranhealy.org/files/misc/workflow-apps.pdf][Choosing Your Workflow Applications]].
 
 The main advantage of this Emacs Starter Kit are
 - better default settings
