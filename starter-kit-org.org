@@ -116,7 +116,7 @@ The next block makes org-babel aware that a lower-case 'r' in a =src= block head
 #+source: add-r
 #+begin_src emacs-lisp
     (add-to-list 'org-src-lang-modes
-                 '("r" . R))
+                 '("r" . ess-mode))
 #+end_src
 
 
