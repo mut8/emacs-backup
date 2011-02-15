@@ -428,7 +428,8 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
                           "\\documentclass[11pt,article,oneside]{memoir}
 \\input{vc}
 \\usepackage{etoolbox}
-\\usepackage[authordate,backend=biber,babel=hyphen,bibencoding=inputenc,strict]{biblatex-chicago}\\bibliography{socbib}"
+\\usepackage[authordate,backend=biber,babel=hyphen,bibencoding=inputenc,strict]{biblatex-chicago}
+\\bibliography{socbib}"
                           ("\\section{%s}" . "\\section*{%s}")
                           ("\\subsection{%s}" . "\\subsection*{%s}")
                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
