@@ -362,22 +362,22 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
   ;; and change references to "minted" below to "listings"
   (setq org-export-latex-listings 'minted)
   
-    ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
-    ;; but adapted to use latexmk 4.22 or higher.  
-    (defun my-auto-tex-cmd ()
-      "When exporting from .org with latex, automatically run latex,
+  ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+  ;; but adapted to use latexmk 4.22 or higher.  
+  (defun my-auto-tex-cmd ()
+    "When exporting from .org with latex, automatically run latex,
        pdflatex, or xelatex as appropriate, using latexmk."
-      (let ((texcmd)))
-      ;; default command: pdflatex 
-      (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
-      ;; pdflatex -> .pdf
-      (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-          (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
-      ;; xelatex -> .pdf
-      (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-          (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
-      ;; LaTeX compilation command
-      (setq org-latex-to-pdf-process (list texcmd)))
+    (let ((texcmd)))
+    ;; default command: pdflatex 
+    (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
+    ;; pdflatex -> .pdf
+    (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+        (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
+    ;; xelatex -> .pdf
+    (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+        (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
+    ;; LaTeX compilation command
+    (setq org-latex-to-pdf-process (list texcmd)))
   
   (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
   
@@ -419,17 +419,16 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
                     ("babel" "csquotes" t)
                     ("svgnames" "xcolor" t)
                     ("" "soul" t)
-                    ("xetex, colorlinks=true, urlcolor=FireBrick, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
+                    ("xetex, colorlinks=true, urlcolor=DarkSlateBlue, citecolor=DarkSlateBlue, filecolor=DarkSlateBlue, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
                     )))
         
         (if (string-match "LATEX_CMD: xelatex" (buffer-string))
             (setq org-export-latex-classes
                   (cons '("article"
                           "\\documentclass[11pt,article,oneside]{memoir}
-  \\input{vc}
-  \\usepackage{etoolbox}
-  \\usepackage[style=authoryear-comp-ajs, abbreviate=true]{biblatex}
-  \\bibliography{socbib}"
+\\input{vc}
+\\usepackage{etoolbox}
+\\usepackage[authordate,backend=biber,babel=hyphen,bibencoding=inputenc,strict]{biblatex-chicago}\\bibliography{socbib}"
                           ("\\section{%s}" . "\\section*{%s}")
                           ("\\subsection{%s}" . "\\subsection*{%s}")
                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
