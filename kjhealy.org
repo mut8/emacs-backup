@@ -364,9 +364,9 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
   
   ;; default settings for minted code blocks
   (setq org-export-latex-minted-options
-        '(("frame" "single")
+        '(;("frame" "single")
           ("bgcolor" "bg") ; bg will need to be defined in the preamble of your document
-          ("fontsize" "\\scriptsize")
+          ("fontsize" "\\small")
           ))
   
     
