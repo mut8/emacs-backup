@@ -354,103 +354,129 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
    preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
-    (require 'org-latex)   
-    ;; Choose either listings or minted for exporting source code blocks.
-    ;; Using minted (as here) requires pygments be installed. To use the
-    ;; default listings package instead, use
-    ;; (setq org-export-latex-listings t)
-    ;; and change references to "minted" below to "listings"
-    (setq org-export-latex-listings 'minted)
-    
-    ;; default settings for minted code blocks
-    (setq org-export-latex-minted-options
-          '(;("frame" "single")
-            ("bgcolor" "bg") ; bg will need to be defined in the preamble of your document
-            ("fontsize" "\\small")
-            ))
-    
-      
-    ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
-    ;; but adapted to use latexmk 4.22 or higher.  
-      (defun my-auto-tex-cmd ()
-        "When exporting from .org with latex, automatically run latex,
-           pdflatex, or xelatex as appropriate, using latexmk."
-        (let ((texcmd)))
-        ;; default command: pdflatex 
-        (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
-        ;; pdflatex -> .pdf
-        (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-            (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
-        ;; xelatex -> .pdf
-        (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-            (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
-        ;; LaTeX compilation command
-        (setq org-latex-to-pdf-process (list texcmd)))
-      
-      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
-      
-      ;; Default packages included in /every/ tex file, latex, pdflatex or xelatex
-      (setq org-export-latex-packages-alist
-            '(("" "graphicx" t)
-                  ("" "longtable" nil)
-                  ("" "float" nil)
-                  ("" "minted" nil)))
+        (require 'org-latex)   
+        ;; Choose either listings or minted for exporting source code blocks.
+        ;; Using minted (as here) requires pygments be installed. To use the
+        ;; default listings package instead, use
+        ;; (setq org-export-latex-listings t)
+        ;; and change references to "minted" below to "listings"
+        (setq org-export-latex-listings 'minted)
         
-      ;; Custom packages
-      (defun my-auto-tex-parameters ()
-            "Automatically select the tex packages to include."
-            ;; default packages for ordinary latex or pdflatex export
-            (setq org-export-latex-default-packages-alist
-                  '(("AUTO" "inputenc" t)
-                    ("T1"   "fontenc"   t)
-                    (""     "fixltx2e"  nil)
-                    (""     "wrapfig"   nil)
-                    (""     "soul"      t)
-                    (""     "textcomp"  t)
-                    (""     "marvosym"  t)
-                    (""     "wasysym"   t)
-                    (""     "latexsym"  t)
-                    (""     "amssymb"   t)
-                    (""     "hyperref"  nil)))
+        ;; default settings for minted code blocks
+        (setq org-export-latex-minted-options
+              '(;("frame" "single")
+                ("bgcolor" "bg") ; bg will need to be defined in the preamble of your document
+                ("fontsize" "\\small")
+                ))
         
-            ;; Packages to include when xelatex is used
-            ;; (see https://github.com/kjhealy/latex-custom-kjh for the 
-            ;; non-standard ones.)
-            (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-                (setq org-export-latex-default-packages-alist
-                      '(("" "fontspec" t)
-                        ("" "xunicode" t)
-                        ("" "url" t)
-                        ("" "rotating" t)
-                        ("" "memoir-article-styles" t)
-                        ("american" "babel" t)
-                        ("babel" "csquotes" t)
-                        ("svgnames" "xcolor" t)
-                        ("" "soul" t)
-                        ("xetex, colorlinks=true, urlcolor=DarkSlateBlue, citecolor=DarkSlateBlue, filecolor=DarkSlateBlue, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
-                        )))
-            
-            (if (string-match "LATEX_CMD: xelatex" (buffer-string))
-                (setq org-export-latex-classes
-                      (cons '("article"
-                              "\\documentclass[11pt,article,oneside]{memoir}
-    \\input{vc} % vc package 
-    \\usepackage{etoolbox}
-    \\usepackage[authordate, backend=biber, babel=hyphen, bibencoding=inputenc, strict, isbn=false]{biblatex-chicago} % biblatex setup
-    \\addbibresource{socbib} % bibliography
-    %% these tweak the biblatex-chicago format to conform to AJS style.
-    \\DeclareFieldFormat[article]{title}{\\mkbibquote{#1}}
-    \\DeclareFieldFormat[book]{title}{%
-    \\mkbibemph{#1}\\isdot} % for books
-  \\DeclareFieldFormat{booktitle}{\\mkbibemph{#1}} % for edited volumes"
-                              ("\\section{%s}" . "\\section*{%s}")
-                              ("\\subsection{%s}" . "\\subsection*{%s}")
-                              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                              ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                              ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-                            org-export-latex-classes))))  
           
-      (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
+        ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+        ;; but adapted to use latexmk 4.22 or higher.  
+          (defun my-auto-tex-cmd ()
+            "When exporting from .org with latex, automatically run latex,
+               pdflatex, or xelatex as appropriate, using latexmk."
+            (let ((texcmd)))
+            ;; default command: pdflatex 
+            (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
+            ;; pdflatex -> .pdf
+            (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+                (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
+            ;; xelatex -> .pdf
+            (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
+            ;; LaTeX compilation command
+            (setq org-latex-to-pdf-process (list texcmd)))
+          
+          (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+          
+          ;; Default packages included in /every/ tex file, latex, pdflatex or xelatex
+          (setq org-export-latex-packages-alist
+                '(("" "graphicx" t)
+                      ("" "longtable" nil)
+                      ("" "float" nil)
+                      ("" "minted" nil)))
+            
+          ;; Custom packages
+          (defun my-auto-tex-parameters ()
+                "Automatically select the tex packages to include."
+                ;; default packages for ordinary latex or pdflatex export
+                (setq org-export-latex-default-packages-alist
+                      '(("AUTO" "inputenc" t)
+                        ("T1" "fontenc" t)
+                        (""     "fixltx2e"  nil)
+                        (""     "wrapfig"   nil)
+                        (""     "soul"      t)
+                        (""     "textcomp"  t)
+                        (""     "memoir-article-styles"  t)
+                        ("american"     "babel"  t)
+                        ("babel"     "csquotes"  t)
+                        ("svgnames"     "xcolor"  t)
+    ;;                    (""     "marvosym"  t)
+    ;;                    (""     "wasysym"   t)
+    ;;                    (""     "latexsym"  t)
+                        (""     "MinionPro"  t)
+                        ("scaled=0.7"     "beramono"  t)
+                        ("config=mt-pmn" "microtype" t)
+                        ("colorlinks=true, urlcolor=DarkSlateBlue, citecolor=DarkSlateBlue, filecolor=DarkSlateBlue, plainpages=false, pdfpagelabels, bookmarksnumbered"     "hyperref"  nil)))        
+                ;; Packages to include when xelatex is used
+                ;; (see https://github.com/kjhealy/latex-custom-kjh for the 
+                ;; non-standard ones.)
+                (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                    (setq org-export-latex-default-packages-alist
+                          '(("" "fontspec" t)
+                            ("" "xunicode" t)
+                            ("" "url" t)
+                            ("" "rotating" t)
+                            ("" "memoir-article-styles" t)
+                            ("american" "babel" t)
+                            ("babel" "csquotes" t)
+                            ("svgnames" "xcolor" t)
+                            ("" "soul" t)
+                            ("xetex, colorlinks=true, urlcolor=DarkSlateBlue, citecolor=DarkSlateBlue, filecolor=DarkSlateBlue, plainpages=false, pdfpagelabels, bookmarksnumbered" "hyperref" nil)
+                            )))
+                
+    
+                (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+                    (setq org-export-latex-classes
+                          (cons '("article"
+                                  "\\documentclass[11pt,article,oneside]{memoir}
+  \\input{vc} % vc package 
+  \\usepackage{etoolbox}
+  \\usepackage[authordate, backend=biber, babel=hyphen, bibencoding=inputenc, strict, isbn=false]{biblatex-chicago} % biblatex setup
+  \\bibliography{socbib} % bibliography
+  %% these tweak the biblatex-chicago format to conform to AJS style.
+  \\DeclareFieldFormat[article]{title}{\\mkbibquote{#1}}
+  \\DeclareFieldFormat[book]{title}{%
+  \\mkbibemph{#1}\\isdot} % for books
+  \\DeclareFieldFormat{booktitle}{\\mkbibemph{#1}} % for edited volumes"
+                                  ("\\section{%s}" . "\\section*{%s}")
+                                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                                org-export-latex-classes)))
+    
+                (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                    (setq org-export-latex-classes
+                          (cons '("article"
+                                  "\\documentclass[11pt,article,oneside]{memoir}
+        \\input{vc} % vc package 
+        \\usepackage{etoolbox}
+        \\usepackage[authordate, backend=biber, babel=hyphen, bibencoding=inputenc, strict, isbn=false]{biblatex-chicago} % biblatex setup
+        \\addbibresource{socbib} % bibliography
+        %% these tweak the biblatex-chicago format to conform to AJS style.
+        \\DeclareFieldFormat[article]{title}{\\mkbibquote{#1}}
+        \\DeclareFieldFormat[book]{title}{%
+        \\mkbibemph{#1}\\isdot} % for books
+      \\DeclareFieldFormat{booktitle}{\\mkbibemph{#1}} % for edited volumes"
+                                  ("\\section{%s}" . "\\section*{%s}")
+                                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                                org-export-latex-classes))))  
+              
+          (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
 #+end_src
 
 ** Minimal mode
