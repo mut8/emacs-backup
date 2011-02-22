@@ -400,11 +400,11 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
                   ;; default packages for ordinary latex or pdflatex export
                   (setq org-export-latex-default-packages-alist
                         '(("AUTO" "inputenc" t)
-                          ("" "org-preamble-pdflatex" t)))        
+                          ("minted,minion" "org-preamble-pdflatex" t)))        
                   ;; Packages to include when xelatex is used
                   (if (string-match "LATEX_CMD: xelatex" (buffer-string))
                       (setq org-export-latex-default-packages-alist
-                            '(("" "org-preamble-xelatex" t) )))
+                            '(("minted" "org-preamble-xelatex" t) )))
                   
       
                   (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
