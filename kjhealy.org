@@ -346,62 +346,62 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
   (setq org-src-window-setup 'current-window)
 #+end_src
 
-*** Local Org-mode XeLaTeX Export Settings
+*** Local Org-mode XeLaTeX and pdfLaTeX Export Settings
    Configure org-mode to export directly to PDF using pdflatex or
    xelatex, compiling the bibliography as it goes, with my preferred
    setup in each case. There is a good deal of local stuff in this section. The required style files used below are available at https://github.com/kjhealy/latex-custom-kjh. You may need to adjust or remove some of these settings depending on your
    preferences and local configuration.
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
-          (require 'org-latex)   
-          ;; Choose either listings or minted for exporting source code blocks.
-          ;; Using minted (as here) requires pygments be installed. To use the
-          ;; default listings package instead, use
-          ;; (setq org-export-latex-listings t)
-          ;; and change references to "minted" below to "listings"
-          (setq org-export-latex-listings 'minted)
+  (require 'org-latex)   
+  ;; Choose either listings or minted for exporting source code blocks.
+  ;; Using minted (as here) requires pygments be installed. To use the
+  ;; default listings package instead, use
+  ;; (setq org-export-latex-listings t)
+  ;; and change references to "minted" below to "listings"
+  (setq org-export-latex-listings 'minted)
           
-          ;; default settings for minted code blocks
-          (setq org-export-latex-minted-options
-                '(;("frame" "single")
-                  ("bgcolor" "bg") ; bg will need to be defined in the preamble of your document. It's defined in org-preamble-pdflatex.sty and org-preamble-xelatex.sty below.
-                  ("fontsize" "\\small")
-                  ))
+  ;; default settings for minted code blocks
+  (setq org-export-latex-minted-options
+        '(;("frame" "single")
+          ("bgcolor" "bg") ; bg will need to be defined in the preamble of your document. It's defined in org-preamble-pdflatex.sty and org-preamble-xelatex.sty below.
+          ("fontsize" "\\small")
+          ))
           
             
-          ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
-          ;; but adapted to use latexmk 4.22 or higher.  
-            (defun my-auto-tex-cmd ()
-              "When exporting from .org with latex, automatically run latex,
+  ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+  ;; but adapted to use latexmk 4.22 or higher.  
+  (defun my-auto-tex-cmd ()
+    "When exporting from .org with latex, automatically run latex,
                  pdflatex, or xelatex as appropriate, using latexmk."
-              (let ((texcmd)))
-              ;; default command: pdflatex 
-              (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
-              ;; pdflatex -> .pdf
-              (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
-                  (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
-              ;; xelatex -> .pdf
+    (let ((texcmd)))
+    ;; default command: pdflatex 
+    (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
+    ;; pdflatex -> .pdf
+    (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+        (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
+    ;; xelatex -> .pdf
               (if (string-match "LATEX_CMD: xelatex" (buffer-string))
                   (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
               ;; LaTeX compilation command
               (setq org-latex-to-pdf-process (list texcmd)))
             
-            (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+  (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
             
-            ;; Default packages included in /every/ tex file, latex, pdflatex or xelatex
-            (setq org-export-latex-packages-alist
+  ;; Default packages included in /every/ tex file, latex, pdflatex or xelatex
+  (setq org-export-latex-packages-alist
                   '(("" "graphicx" t)
                         ("" "longtable" nil)
                         ("" "float" )))
               
-            ;; Custom packages
-            (defun my-auto-tex-parameters ()
-                  "Automatically select the tex packages to include. See https://github.com/kjhealy/latex-custom-kjh for the support files included here."
-                  ;; default packages for ordinary latex or pdflatex export
-                  (setq org-export-latex-default-packages-alist
-                        '(("AUTO" "inputenc" t)
-                          ("minted,minion" "org-preamble-pdflatex" t)))        
-                  ;; Packages to include when xelatex is used
+  ;; Custom packages
+  (defun my-auto-tex-parameters ()
+    "Automatically select the tex packages to include. See https://github.com/kjhealy/latex-custom-kjh for the support files included here."
+    ;; default packages for ordinary latex or pdflatex export
+    (setq org-export-latex-default-packages-alist
+          '(("AUTO" "inputenc" t)
+            ("minted,minion" "org-preamble-pdflatex" t)))        
+    ;; Packages to include when xelatex is used
                   (if (string-match "LATEX_CMD: xelatex" (buffer-string))
                       (setq org-export-latex-default-packages-alist
                             '(("minted" "org-preamble-xelatex" t) )))
