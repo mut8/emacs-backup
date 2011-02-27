@@ -165,6 +165,12 @@ a lambda doesn't already exist in the list.
   
 #+end_src
 
+#+source: cleanup-buffer-when
+#+begin_src emacs-lisp
+  (setq cleanup-buffer-modes 
+        '(haskell-mode emacs-lisp-mode lisp-mode scheme-mode
+                       ess-mode erlang-mode clojure-mode ruby-mode))  
+#+end_src
 
 
 #+srcname: starter-kit-recentf-ido-find-file
