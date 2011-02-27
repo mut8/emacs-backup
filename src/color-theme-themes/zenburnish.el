@@ -150,13 +150,8 @@ to values."
   '(unless (zenburn-format-spec-works-p)
      (zenburn-define-format-spec)))
 
-(setq-default mode-line-buffer-identification
-              (list (propertize "%12b" 'face
-                                (list :weight 'bold
-                                      :foreground zenburn-yellow))))
-(setq-default mode-line-frame-identification "")
 (setq-default erc-mode-line-format
-              (concat (propertize "%t" 'face
+              (concat (propertize "%S" 'face
                                   (list :weight 'bold
                                         :foreground zenburn-yellow))
                       " %a"))
@@ -294,6 +289,8 @@ static char *gnus-pointer[] = {
             ((t (:foreground ,zenburn-yellow))))
           '(font-lock-warning
             ((t (:inherit zenburn-highlight-alerting))))
+
+          '(sh-heredoc ((t (:inherit font-lock-string))))
 
           '(fixme-face ((t (:foreground "#dcdccc" :background "#3f3f3f"
                                         :weight bold :box nil)))) ; Colours taken from vim ":hl Todo"
@@ -510,6 +507,8 @@ static char *gnus-pointer[] = {
           '(custom-variable-tag
             ((t (:inherit zenburn-primary-2))))
 
+          `(mode-line-buffer-id ((t (:foreground ,zenburn-yellow :weight bold))))
+
           '(dictionary-button ((t (:inherit fancy-widget-button))))
           '(dictionary-reference ((t (:inherit zenburn-primary-1))))
           '(dictionary-word-entry ((t (:inherit font-lock-keyword))))
@@ -539,7 +538,7 @@ static char *gnus-pointer[] = {
           `(ediff-odd-diff-B ((t (:background ,zenburn-bg+1))))
           `(ediff-odd-diff-C ((t (:background ,zenburn-bg+1))))
 
-          `(ediff-fine-diff-A ((t (:background "#668b8b"))))
+          `(ediff-fine-diff-A ((t (:background "#668b8b" :foreground ,zenburn-fg))))
           `(ediff-fine-diff-Ancestor ((t (:background "#668b8b" :foreground ,zenburn-fg))))
           `(ediff-fine-diff-B ((t (:background "#668b8b" :foreground ,zenburn-fg))))
           `(ediff-fine-diff-C ((t (:background "#668b8b" :foreground ,zenburn-fg))))
@@ -769,7 +768,7 @@ static char *gnus-pointer[] = {
           '(keywiz-right ((t (:inherit zenburn-primary-1))))
           '(keywiz-wrong ((t (:inherit font-lock-warning))))
           '(keywiz-command ((t (:inherit zenburn-primary-2))))
-          
+
           '(font-latex-sectioning-0-face ((t (:foreground "#8cd0d3" :height 4))))
           '(font-latex-sectioning-1-face ((t (:foreground "#8cd0d3" :height 2.5))))
           '(font-latex-sectioning-2-face ((t (:foreground "#8cd0d3" :height 1.5))))
@@ -886,6 +885,10 @@ static char *gnus-pointer[] = {
           '(outline-1 ((t (:inherit outline-2 :height 1.0))))
 
           '(setnu-line-number ((t (:inherit zenburn-lowlight-2))))
+
+          `(smerge-mine ((t (:inherit font-lock-default-face))))
+          `(smerge-other ((t (:inherit font-lock-default-face))))
+          `(smerge-refined-change ((t (:background "#668b8b" :foreground ,zenburn-fg))))
 
           '(speedbar-button ((t (:inherit zenburn-primary-1))))
           '(speedbar-file ((t (:inherit zenburn-primary-2))))
