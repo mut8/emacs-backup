@@ -41,21 +41,17 @@ You will also need to change the values for the location of bibtex
 *** Color Theme and Line Highlighting
 #+srcname: local-settings
 #+begin_src emacs-lisp
-   ;; Color Theme from vendor directory
-   (require 'color-theme)
-   (load-file
-   "~/.emacs.d/src/color-theme-themes/color-theme-twilight.el")
-   (load-file
-    "~/.emacs.d/src/color-theme-themes/zenburnish.el") 
-   (load-file
-   "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el") 
-   (if window-system
-     (color-theme-zenburnish)   ;; Emacs started in own window
-     (color-theme-tangosoft) ;; Emacs started in tty
-     )
-   
-   ;; Highlight current line (twilight theme builds in support for this)
-   (global-hl-line-mode 1)
+  ;; Color Theme from vendor directory
+  (require 'zenburnish)
+  (load-file
+  "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el") 
+  (if window-system
+    (color-theme-zenburnish)   ;; Emacs started in own window
+    (color-theme-tangosoft) ;; Emacs started in tty
+    )
+  
+  ;; Highlight current line (twilight theme builds in support for this)
+  (global-hl-line-mode 1)
 #+end_src
 
 *** Run Emacs in Full Screen
@@ -159,19 +155,6 @@ Internal to emacs; also seems not to work on OS X.
              (setq mac-option-modifier 'meta)
              (setq mac-option-modifier nil)
              )))
-#+end_src
-
-*** Cleanup Buffer on every save
-The =cleanup-buffer= function and hook are defined in
-[[file:starter-kit-defuns.org][starter-kit-defuns.org]]. It tidies up the whitespace in a buffer in
-various ways. Here we make emacs apply it automatically every time
-buffers in specific modes (ess, etc) are saved.
-
-#+source: cleanup-buffer-when
-#+begin_src emacs-lisp
-  (setq cleanup-buffer-modes 
-        '(haskell-mode emacs-lisp-mode lisp-mode scheme-mode
-                       ess-mode erlang-mode clojure-mode ruby-mode))  
 #+end_src
 
 ** Local LaTeX settings
