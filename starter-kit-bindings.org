@@ -84,6 +84,21 @@ Key Bindings.
 (global-set-key (kbd "C-x ^") 'join-line)
 #+end_src
 
+** Mark text between parentheses (a sexp) for selection
+ Mark text between parentheses. From [[http://stackoverflow.com/questions/5194417/how-to-mark-the-text-between-the-parentheses-in-emacs][this Stackoverflow answer]]. 
+#+source: backward-up-sexp
+#+begin_src emacs-lisp
+(defun backward-up-sexp (arg)
+  (interactive "p")
+  (let ((ppss (syntax-ppss)))
+    (cond ((elt ppss 3)
+           (goto-char (elt ppss 8))
+           (backward-up-sexp (1- arg)))
+          ((backward-up-list arg)))))
+
+(global-set-key [remap backward-up-list] 'backward-up-sexp)  
+#+end_src
+
 ** Start eshell or switch to it if it's active.
 #+begin_src emacs-lisp 
 (global-set-key (kbd "C-x m") 'eshell)
