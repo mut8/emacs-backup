@@ -42,16 +42,25 @@ You will also need to change the values for the location of bibtex
 #+srcname: local-settings
 #+begin_src emacs-lisp
   ;; Color Theme from vendor directory
-  (require 'zenburnish)
-  (load-file
-  "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el") 
-  (if window-system
-    (color-theme-zenburnish)   ;; Emacs started in own window
-    (color-theme-tangosoft) ;; Emacs started in tty
-    )
+  (require 'color-theme-solarized)
+  (color-theme-solarized 'dark)
+  
+  ;; Define a shortcut to switch between dark and light versions of solarized
+  (global-set-key (kbd "C-c l") 'color-theme-solarized)
+  
+  ;; (color-theme-solarized 'light)
+  ;; (require 'zenburnish)
+  ;; (load-file
+  ;; "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el") 
+  ;; (if window-system
+  ;;   (color-theme-zenburnish)   ;; Emacs started in own window
+  ;;   (color-theme-tangosoft) ;; Emacs started in tty
+  ;;   )
+  
+  
   
   ;; Highlight current line (twilight theme builds in support for this)
-  (global-hl-line-mode 1)
+  ;; (global-hl-line-mode 1)
 #+end_src
 
 *** Run Emacs in Full Screen

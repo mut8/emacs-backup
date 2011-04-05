@@ -33,7 +33,7 @@ Support for editing list dialects including [[* Emacs Lisp][Emacs Lisp]], [[* Sc
   : ;;   '(define-key paredit-mode-map (kbd ";")   'self-insert-command))
 
 ** Non-obtrusive parenthesis faces
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp tangle: no
 (defface esk-paren-face
    '((((class color) (background dark))
       (:foreground "grey50"))

@@ -45,13 +45,13 @@
 ;; Set default font. First one found is selected.
 (cond
  ((font-existsp "PragmataPro")
-  (set-face-attribute 'default nil :background "#1E1E1E" :foreground "#CACACA" :height 141 :font "PragmataPro"))
+  (set-face-attribute 'default nil :height 141 :font "PragmataPro"))
  ((font-existsp "Menlo")
-  (set-face-attribute 'default nil :background "#1E1E1E" :foreground "#CACACA" :height 141 :font "Menlo"))
+  (set-face-attribute 'default nil :height 141 :font "Menlo"))
  ((font-existsp "Consolas")
-  (set-face-attribute 'default nil :background "#1E1E1E" :foreground "#CACACA" :height 141 :font "Consolas"))
+  (set-face-attribute 'default nil :height 141 :font "Consolas"))
  ((font-existsp "Inconsolata")
-  (set-face-attribute 'default nil :background "#1E1E1E" :foreground "#CACACA" :height 141 :font "Inconsolata"))
+  (set-face-attribute 'default nil :height 141 :font "Inconsolata"))
  )
 
 ;; Load up Org Mode and Babel
