@@ -56,7 +56,7 @@ You will also need to change the values for the location of bibtex
   
   
   ;; Highlight current line (twilight theme builds in support for this)
-  (global-hl-line-mode 1)
+  ;; (global-hl-line-mode 1)
 #+end_src
 
 *** Run Emacs in Full Screen
