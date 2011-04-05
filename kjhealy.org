@@ -44,6 +44,10 @@ You will also need to change the values for the location of bibtex
   ;; Color Theme from vendor directory
   (require 'color-theme-solarized)
   (color-theme-solarized 'dark)
+  
+  ;; Define a shortcut to switch between dark and light versions of solarized
+  (global-set-key (kbd "C-c l") 'color-theme-solarized)
+  
   ;; (color-theme-solarized 'light)
   ;; (require 'zenburnish)
   ;; (load-file
