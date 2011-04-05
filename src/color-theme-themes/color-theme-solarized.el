@@ -65,7 +65,7 @@ Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized."
        (default ((t (:foreground ,base0))))
        (cursor ((t (:foreground ,base0 :background ,base03 :inverse-video t))))
        (escape-glyph-face ((t (:foreground ,red))))
-       (fringe ((t (:foreground ,base01 :background ,base02))))
+       (fringe ((t (:foreground ,base02 :background ,base03))))
        (header-line ((t (:foreground ,base0 :background ,base2))))
        (highlight ((t (:background ,base02))))
        (isearch ((t (:foreground ,yellow :inverse-video t))))
@@ -124,9 +124,25 @@ Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized."
        (org-hide ((t (:foreground ,base03))))
        (org-todo ((t (:foreground ,red :bold t))))
        (org-done ((t (:foreground ,green :bold t))))
+       (org-level-1 ((t (:foreground ,blue :height 1.5))))
+       (org-level-2 ((t (:foreground ,yellow  :height 1.2))))
+       (org-level-3 ((t (:foreground ,orange :height 1.1))))
+       (org-level-4 ((t (:foregound ,green :height 1.1))))
+       (org-level-5 ((t (:height 1.1))))
+
+       ;; latex
+       (font-latex-sectioning-0-face ((t (:foreground ,blue :height 4))))
+       (font-latex-sectioning-1-face ((t (:foregound ,blue  :height 2.5))))
+       (font-latex-sectioning-2-face ((t (:foreground ,yellow :height 1.5))))
+       (font-latex-sectioning-3-face ((t (:foreground ,green :height 1.2))))
+       (font-latex-sectioning-4-face ((t (:height ,orange 1.0))))
+       (font-latex-bold ((t (:inherit bold))))
+
        ;; show-paren
        (show-paren-match-face ((t (:background ,cyan :foreground ,base3))))
-       (show-paren-mismatch-face ((t (:background ,red :foreground ,base3))))))))
+       (show-paren-match-face ((t (:background ,cyan :foreground ,base3))))))))
+
+
 
 (defun color-theme-solarized-dark ()
   (interactive)
