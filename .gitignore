@@ -40,3 +40,5 @@ src/auctex-src/*elc
 /src/pandoc/.manual.text.texinfo.pandoc
 /ac-comphist.dat
 /.#starter-kit-latex.org
+/index.org
+/vc-git.awk
