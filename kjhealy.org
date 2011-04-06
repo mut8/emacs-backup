@@ -1,3 +1,6 @@
+#+TITLE: Local User Customizations
+#+OPTIONS: toc:nil num:nil ^:nil
+
 * Starter Kit kjhealy
 /You must change the name of this file/ to the value of the Emacs
  variable =user-login-name= OR =system-name=, so that it will be
@@ -240,13 +243,16 @@ Internal to emacs; also seems not to work on OS X.
 
     Or just run vc alone --- this is useful when writing LaTeX files
     using org-mode. (See the org-mode customizations below).
+
 #+source: vc-alone
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c v")
                       (lambda ()
                         (interactive)
                         (shell-command "vc")))
+
 #+end_src
+
 
 ** Local Pandoc Support 
  Make Emacs see where pandoc is installed. (Emacs can't access the bash
@@ -345,6 +351,7 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
    xelatex, compiling the bibliography as it goes, with my preferred
    setup in each case. There is a good deal of local stuff in this section. The required style files used below are available at https://github.com/kjhealy/latex-custom-kjh. You may need to adjust or remove some of these settings depending on your
    preferences and local configuration.
+
 #+source: orgmode-xelatex-export
 #+begin_src emacs-lisp
   (require 'org-latex)   
@@ -427,6 +434,29 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
                 
             (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
 #+end_src
+
+*** Local Org-mode HTML export Settings
+Create =html= files form the =org= sources, to help with documentation. 
+
+#+source: html-export-settings
+#+begin_src emacs-lisp
+  (setq org-publish-project-alist
+         '(("org"
+            :base-directory "~/.emacs.d/"
+            :publishing-directory "~/Documents/websites/kjhhome/esk/"
+            :auto-sitemap t
+            :sitemap-filename "index.org"
+            :sitemap-title "Documentation for the Starter Kit"
+            :section-numbers nil
+            :table-of-contents nil
+            :style "<link rel=\"stylesheet\"
+                   href=\"../css/blueprint/screen.css\"
+                   type=\"text/css\"/>")))
+  
+    (setq org-export-html-style-extra "<link rel=\"stylesheet\" href=\"../css/blueprint/print.css\" type=\"text/css\" media=\"print\"> <!--[if IE]><link rel=\"stylesheet\" href=\"../css/blueprint/ie.css\" type=\"text/css\" media=\"screen,projection\"><![endif]-->")    
+  
+#+end_src
+
 
 ** Minimal mode
    A nice clutter-free appearance with a reduced-size modeline, no
