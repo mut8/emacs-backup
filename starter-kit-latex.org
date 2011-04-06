@@ -1,5 +1,5 @@
 #+TITLE: Starter Kit LaTeX
-#+OPTIONS: toc:nil num:nil ^:nil
+#+OPTIONS: toc:nil H:2 num:nil ^:nil
 
 This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
 
