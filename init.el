@@ -44,6 +44,7 @@
 
 ;; Set default font. First one found is selected.
 (cond
+ ((eq window-system nil) nil)
  ((font-existsp "PragmataPro")
   (set-face-attribute 'default nil :height 141 :font "PragmataPro"))
  ((font-existsp "Menlo")
