@@ -21,19 +21,9 @@ You will also need to change the values for the location of bibtex
  simply comment out the lines.
 
 ** Miscellaneous Settings and starter-kit overrides
-*** Window size
-#+srcname: window_size
-#+begin_src emacs-lisp :tangle no
-    (setq default-frame-alist
-    '(
-    ; frame width and height
-    (width             . 100)
-    (height            . 50)
-    )
-    )
-#+end_src
-
 *** Recent File Menu
+Turn on the recent file menu. 
+
 #+srcname: local-loadpath
 #+begin_src emacs-lisp
     ;; recent file menu
@@ -42,6 +32,8 @@ You will also need to change the values for the location of bibtex
 #+end_src
 
 *** Color Theme and Line Highlighting
+The Starter Kit uses Ethan Schoonover's /Solarized/ color theme. You can easily switch between light and dark versions of the theme. Some other useful themes are included in the =src/color-theme-themes/= directory of the kit. 
+
 #+srcname: local-settings
 #+begin_src emacs-lisp
   ;; Color Theme from vendor directory
@@ -52,25 +44,14 @@ You will also need to change the values for the location of bibtex
   
   ;; Define a shortcut to switch between dark and light versions of solarized
   (global-set-key (kbd "C-c l") 'color-theme-solarized)
-  
-  ;; (color-theme-solarized 'light)
-  ;; (require 'zenburnish)
-  ;; (load-file
-  ;; "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el") 
-  ;; (if window-system
-  ;;   (color-theme-zenburnish)   ;; Emacs started in own window
-  ;;   (color-theme-tangosoft) ;; Emacs started in tty
-  ;;   )
-  
-  
-  
-  ;; Highlight current line (twilight theme builds in support for this)
-  ;; (global-hl-line-mode 1)
+
 #+end_src
 
 *** Run Emacs in Full Screen
-    What works depends on the flavor of emacs you are using,
-    unfortunately. Choose as appropriate from the following options: 
+  I find it very useful to run Emacs in full-screen mode. There is no
+    completely satisfactory way to accomplish this on Mac OS X. What
+    works depends on the flavor of emacs you are using,
+    unfortunately. Choose as appropriate from the following options:
 
 **** Option 1
 Require maxframe package to conveniently maxmimize the window. Doesn't work with Emacs 23 on Mac.
@@ -136,14 +117,16 @@ Internal to emacs; also seems not to work on OS X.
 #+end_src
 
 *** Windmove
-    If you don't set this, you keep getting elisp errors when you try
-    to wrap around. 
+    Tweak to Windmove setup. Without this, you keep getting elisp
+    errors when you try to wrap around.
 #+srcname: local-windmove
 #+begin_src emacs-lisp
 (setq windmove-wrap-around t)
 #+end_src
 
 *** Resizing inside the frame
+When your frame (i.e., the main Emacs window) is split into different parts (e.g. using =C-x 2= or =C-x 3=) we sometimes want to resize these parts dynamically. This defines =Shift-C-[arrow keys]= so you can do this. 
+ 
 #+srcname: resize-splits
 #+begin_src emacs-lisp
   ;; resizing 'windows' (i.e., inside the frame)
@@ -154,8 +137,8 @@ Internal to emacs; also seems not to work on OS X.
 #+end_src
 
 *** Mac Key mode
-    Used with Mitsuharu Yamamoto's carbon-patched 23.1.94, which turns
-    off support for default mac bindings. 
+    Used with Mitsuharu Yamamoto's carbon-patched Emacs, which turns
+    off support for default mac bindings. Turned off by default.
 #+srcname: mac-keys
 #+begin_src emacs-lisp tangle: no
    (setq mac-command-modifier 'alt mac-option-modifier 'meta)
@@ -182,6 +165,8 @@ Internal to emacs; also seems not to work on OS X.
 #+end_src
 
 *** SyncTeX, PDF mode, Skim
+Set up AUCTeX to work with the Skim PDF viewer.
+
 #+srcname: local-loadpath
 #+begin_src emacs-lisp
    ;; Synctex with Skim
@@ -202,6 +187,8 @@ Internal to emacs; also seems not to work on OS X.
 #+end_src
 
 *** Local RefTeX Settings
+Tell RefTeX where the bibliography files are. 
+
 #+srcname: local-reftex
 #+begin_src emacs-lisp    
     ;; Make RefTex able to find my local bib files
@@ -230,7 +217,8 @@ Internal to emacs; also seems not to work on OS X.
 
 *** Local vc commands
     Run the vc shellscript before running xelatex with C-c c (instead of
-    C-c C-c for regular compile)
+    C-c C-c for regular compile).
+
 #+srcname: vc-command
 #+begin_src emacs-lisp
     (fset 'run-vc-then-xelatex
@@ -299,7 +287,8 @@ Internal to emacs; also seems not to work on OS X.
 
 ** Local Org-mode Settings
 *** Local Org-mode Smart-quote binding
-When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
+When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by default. 
+
 #+source: org-mode-smartquote-key
 #+begin_src emacs-lisp :tangle no
   (add-hook 'org-mode-hook 'smart-quote-keys)
@@ -436,7 +425,7 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=.
 #+end_src
 
 *** Local Org-mode HTML export Settings
-Create =html= files form the =org= sources, to help with documentation. 
+Create =html= files form the =org= sources, to help with documentation. To set up org-mode for publishing projects to HTML you will need to change these settings, as they apply only to the Starter Kit. 
 
 #+source: html-export-settings
 #+begin_src emacs-lisp
@@ -446,11 +435,11 @@ Create =html= files form the =org= sources, to help with documentation.
             :publishing-directory "~/Documents/websites/kjhhome/esk/"
             :auto-sitemap t
             :sitemap-filename "index.org"
-            :sitemap-title "Documentation for the Starter Kit"
+            :sitemap-title "Emacs Starter Kit for the Social Sciences: Documentation"
             :section-numbers nil
             :table-of-contents nil
             :style "<link rel=\"stylesheet\"
-                   href=\"../css/blueprint/screen.css\"
+                   href=\"../css/blueprint/org-screen.css\"
                    type=\"text/css\"/>")))
   
     (setq org-export-html-style-extra "<link rel=\"stylesheet\" href=\"../css/blueprint/print.css\" type=\"text/css\" media=\"print\"> <!--[if IE]><link rel=\"stylesheet\" href=\"../css/blueprint/ie.css\" type=\"text/css\" media=\"screen,projection\"><![endif]-->")    
@@ -460,7 +449,8 @@ Create =html= files form the =org= sources, to help with documentation.
 
 ** Minimal mode
    A nice clutter-free appearance with a reduced-size modeline, no
-   scroll bars, and no fringe indicators. 
+   scroll bars, and no fringe indicators. Useful in conjunction with running Emacs full-screen. 
+
 #+source: minimal-mode
 #+begin_src emacs-lisp
   (require 'minimal)
@@ -468,7 +458,9 @@ Create =html= files form the =org= sources, to help with documentation.
 #+end_src
 
 ** Auto-complete mode
-   Powerful autocompletion; experimentally added. 
+   Powerful autocompletion; experimentally added. Will pop-up
+   autocomplete suggestions as you type; hit =TAB= to complete, or
+   choose from the menu of options.
 
 #+source: auto-complete
 #+begin_src emacs-lisp
@@ -504,6 +496,8 @@ Sometimes useful for getting help on R or Emacs.
 
 
 ** Final Custom elements
+Some local tweaks. 
+
 #+srcname: final-custom
 #+begin_src emacs-lisp
   ;; Line-spacing tweak (Optimized for PragmataPro)
