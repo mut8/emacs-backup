@@ -121,6 +121,21 @@ Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized."
        ;; info
        (info-xref ((t (:foreground ,blue :underline t))))
        (info-xref-visited ((t (:inherit info-xref :foreground ,magenta))))
+
+       ;; ido
+       (ido-incomplete-regexp ((t (:foreground ,base01))))
+       (ido-subdir ((t (:foreground ,cyan))))
+       (ido-first-match ((t (:foreground ,yellow))))
+       (ido-only-match ((t (:foreground ,green))))
+
+       ;; latex
+       (font-latex-sectioning-0-face ((t (:foreground ,blue :height 4))))
+       (font-latex-sectioning-1-face ((t (:foreground ,blue  :height 2.5))))
+       (font-latex-sectioning-2-face ((t (:foreground ,yellow :height 1.5))))
+       (font-latex-sectioning-3-face ((t (:foreground ,green :height 1.2))))
+       (font-latex-sectioning-4-face ((t (:foreground ,orange :height 1.0))))
+       (font-latex-bold ((t (:inherit bold))))
+
        ;; org
        (org-hide ((t (:foreground ,base03))))
        (org-todo ((t (:foreground ,red :bold t))))
@@ -130,14 +145,6 @@ Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized."
        (org-level-3 ((t (:foreground ,orange :height 1.1))))
        (org-level-4 ((t (:foreground ,green :height 1.1))))
        (org-level-5 ((t (:height 1.1))))
-
-       ;; latex
-       (font-latex-sectioning-0-face ((t (:foreground ,blue :height 4))))
-       (font-latex-sectioning-1-face ((t (:foreground ,blue  :height 2.5))))
-       (font-latex-sectioning-2-face ((t (:foreground ,yellow :height 1.5))))
-       (font-latex-sectioning-3-face ((t (:foreground ,green :height 1.2))))
-       (font-latex-sectioning-4-face ((t (:foreground ,orange :height 1.0))))
-       (font-latex-bold ((t (:inherit bold))))
 
        ;; show-paren
        (show-paren-match-face ((t (:background ,cyan :foreground ,base3))))
