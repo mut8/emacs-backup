@@ -1,4 +1,5 @@
-;;; Author: Ethan Schoonover, Solarized; Greg Pfeil, Emacs adaptation
+;;; Author: Ethan Schoonover, Solarized; Greg Pfeil, Emacs adaptation;
+;;; Kieran Healy, further tweaks/fixes
 ;;; URL: http://ethanschoonover.com/solarized
 
 ;;; This file is not (YET) part of GNU Emacs.
