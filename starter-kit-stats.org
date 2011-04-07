@@ -116,7 +116,8 @@ How this works:
 #+end_src
 
 ** R-object tooltips
- from: http://blogisticreflections.wordpress.com/2009/10/01/r-object-tooltips-in-ess/
+Taken from http://blogisticreflections.wordpress.com/2009/10/01/r-object-tooltips-in-ess/
+#+begin_quote 
  I have defined a function, ess-R-object-tooltip, that when
  invoked, will return a tooltip with some information about
  the object at point.  The information returned is
@@ -131,8 +132,8 @@ How this works:
  to call when the class is not mached in the alist.  By default,
  the str function is called, which is actually a fairly useful
  default for data.frame and function objects.
- 
- The last line of this file shows my default keybinding.
+#+end_quote
+
 
 #+srcname: r-object-tooltips
 #+begin_src emacs-lisp
