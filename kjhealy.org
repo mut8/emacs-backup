@@ -38,13 +38,17 @@ The Starter Kit uses Ethan Schoonover's /Solarized/ color theme. You can easily 
 #+begin_src emacs-lisp
   ;; Color Theme from vendor directory
   (require 'color-theme-solarized)
-  (color-theme-solarized 'dark)
-  ;; or if you prefer ...
-  ;; (color-theme-solarized 'light)
+  (load-file "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el")
+  (if window-system
+      (color-theme-solarized 'dark)
+    ;; or if you prefer ...
+    ;; (color-theme-solarized 'light)
+    (color-theme-tangosoft) ;; Emacs started in tty
+      )
   
   ;; Define a shortcut to switch between dark and light versions of solarized
   (global-set-key (kbd "C-c l") 'color-theme-solarized)
-
+  
 #+end_src
 
 *** Run Emacs in Full Screen
