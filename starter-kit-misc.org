@@ -95,13 +95,16 @@ Set this to whatever browser you use e.g...
 (global-font-lock-mode t)
 #+end_src
 
-** No Menu Bar
-Activate this segment if you want to turn the menu off in normal
-windows. 
-#+srcname: starter-kit-no-menu
-#+begin_src emacs-lisp :tangle no
- (menu-bar-mode -1)
+** Show Menu Bar in Window but not in tty
+If launching Emacs as in windowing system, show the menu. If launching in a tty/terminal window, don't display the menu.
+#+source: starter-kit-no-menu-in-tty
+#+begin_src emacs-lisp
+  (if window-system
+      (menu-bar-mode t)
+      (menu-bar-mode -1)
+      )
 #+end_src
+
 
 ** Save a list of recent files visited.
 #+begin_emacs-lisp 
