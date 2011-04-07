@@ -12,8 +12,9 @@ Mardown and Pandoc, as well as spellchecking and line-wrapping.
     to be a bug -- it interacts badly with the smooth scrolling: when
     you get to the bottom of the buffer it wraps the pointer up to the
     middle of the screen without moving the text with it, so you end
-    up typing inside the text that's already there. Replaced with a
-    simpler version instead, which gives you a straight count via M-x wc.
+    up typing inside the text that's already there. As a result, it is
+    turned off and has been replaced with a simpler version instead,
+    which gives you a straight count via M-x wc.
 
 #+srcname: word-count
 #+begin_src emacs-lisp
@@ -117,7 +118,7 @@ Mardown and Pandoc, as well as spellchecking and line-wrapping.
 #+end_src
 
 ** Skeleton mode
-   TURNED OFF. Enable skeleton mode in ESS for paired insertion
+   Turned off by default. Enable skeleton mode in ESS for paired insertion
 #+srcname: skeleton-mode
 #+begin_src emacs-lisp :tangle no
     (require 'skeleton)
@@ -148,6 +149,8 @@ Mardown and Pandoc, as well as spellchecking and line-wrapping.
 
 
 ** Markdown 
+Markdown mode support. 
+
 #+srcname: markdown-mode
 #+begin_src emacs-lisp
    (autoload 'markdown-mode "markdown-mode.el"
