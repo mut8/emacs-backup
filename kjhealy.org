@@ -245,7 +245,6 @@ Tell RefTeX where the bibliography files are.
 
 #+end_src
 
-
 ** Local Pandoc Support 
  Make Emacs see where pandoc is installed. (Emacs can't access the bash
  $PATH directly.)
@@ -290,7 +289,7 @@ Tell RefTeX where the bibliography files are.
 #+end_src
 
 ** Local Org-mode Settings
-*** Local Org-mode Smart-quote binding
+*** Smart-quote binding
 When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by default. 
 
 #+source: org-mode-smartquote-key
@@ -308,14 +307,14 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by defa
   
 #+end_src
 
-*** Local Org-mode Archive Settings
+*** Archive Settings
     Where archived projects and tasks go.
 #+source: orgmode-archive
 #+begin_src emacs-lisp
   (setq org-archive-location "~/Dropbox/Org/archive.org::From %s")
 #+end_src
 
-*** Local Org-mode Mobile Settings
+*** Mobile Settings
    Sync orgmode files with Dropbox and iPhone. 
 #+src-name: orgmode-mobile
 #+begin_src emacs-lisp
@@ -331,7 +330,7 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by defa
 
 #+end_src
 
-*** Local Org-mode Babel Settings
+*** Babel Settings
    Configure org-mode so that when you edit source code in an indirect buffer (with C-c '), the buffer is opened in the current window. That way, your window organization isn't broken when switching.
 
 #+source: orgmode-indirect-buffer-settings
@@ -339,7 +338,7 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by defa
   (setq org-src-window-setup 'current-window)
 #+end_src
 
-*** Local Org-mode XeLaTeX and pdfLaTeX Export Settings
+*** XeLaTeX and pdfLaTeX Export Settings
    Configure org-mode to export directly to PDF using pdflatex or
    xelatex, compiling the bibliography as it goes, with my preferred
    setup in each case. There is a good deal of local stuff in this section. The required style files used below are available at https://github.com/kjhealy/latex-custom-kjh. You may need to adjust or remove some of these settings depending on your
@@ -428,7 +427,105 @@ When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by defa
             (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
 #+end_src
 
-*** Local Org-mode HTML export Settings
+*** ebib and citation settings
+    ebib is a bibtex database manager that works inside emacs. It can
+    talk to org-mode. See [[http://orgmode.org/worg/org-tutorials/org-latex-export.html#sec-17_2][this Worg tutorial]] for details. 
+#+source: ebib-setup
+#+begin_src emacs-lisp
+    (org-add-link-type "ebib" 'ebib)
+  
+   (org-add-link-type 
+     "cite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "cite:" desc)))
+               (format "\\cite{%s}" path)
+               (format "\\cite[%s]{%s}" desc path)
+               )))))
+  
+   (org-add-link-type 
+     "parencite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "parencite:" desc)))
+               (format "\\parencite{%s}" path)
+               (format "\\parencite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+     "textcite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "textcite:" desc)))
+               (format "\\textcite{%s}" path)
+               (format "\\textcite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+     "autocite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "autocite:" desc)))
+               (format "\\autocite{%s}" path)
+           (format "\\autocite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+   "footcite" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "footcite:" desc)))
+           (format "\\footcite{%s}" path)
+         (format "\\footcite[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "fullcite" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "fullcite:" desc)))
+           (format "\\fullcite{%s}" path)
+         (format "\\fullcite[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "citetitle" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "citetitle:" desc)))
+           (format "\\citetitle{%s}" path)
+         (format "\\citetitle[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "citetitles" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "citetitles:" desc)))
+           (format "\\citetitles{%s}" path)
+         (format "\\citetitles[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+     "headlessfullcite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "headlessfullcite:" desc)))
+               (format "\\headlessfullcite{%s}" path)
+               (format "\\headlessfullcite[%s]{%s}" desc path)
+  )))))   
+#+end_src
+
+*** HTML export Settings
 Create =html= files form the =org= sources, to help with documentation. To set up org-mode for publishing projects to HTML you will need to change these settings, as they apply only to the Starter Kit. 
 
 #+source: html-export-settings
@@ -496,7 +593,6 @@ Sometimes useful for getting help on R or Emacs.
   (add-to-list 'rcirc-server-alist
                        '("irc.freenode.net"))
 #+end_src
-
 
 ** Final Custom elements
 Some local tweaks. 

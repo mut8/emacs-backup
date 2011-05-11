@@ -76,6 +76,21 @@ This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
   
 #+end_src
 
+*** Load ebib
+    ebib is a bibtex database manager that works inside emacs. It can
+    talk to org-mode. See [[http://ebib.sourceforge.net/][the ebib project page]] for more. When Ebib is
+    loaded, you can run it with =M-x ebib=.
+  
+#+source: ebib-load
+#+begin_src emacs-lisp
+  (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t)
+  (setq ebib-preload-bib-files 
+        '("/Users/kjhealy/Documents/bibs/socbib.bib"))
+  (add-hook 'LaTeX-mode-hook #'(lambda ()
+          (local-set-key "\C-cb" 'ebib-insert-bibtex-key)))
+#+end_src
+
+
 ** Configure AucTeX 
 *** Use pdfLaTeX
     - Take this out to compile to DVI, instead.
