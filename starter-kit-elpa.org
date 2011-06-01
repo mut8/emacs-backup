@@ -22,7 +22,7 @@ The following packages should always be installed
                                      'highline
                                      'textmate
                                      'smex
-                                     'ess
+                                     'ess ;; from http://kieranhealy.org/packages
                                      )
     "Libraries that should be installed by default.")
 #+end_src
