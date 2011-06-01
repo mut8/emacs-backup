@@ -35,7 +35,7 @@
 
 ;;; Code:
 
-(defvar minimal-zap-mode-line t
+(defvar minimal-zap-mode-line nil
   "Should the mode line be shrunk to half-size?")
 
 (defvar minimal-zap-scroll-bar t
@@ -69,19 +69,19 @@
     (when minimal-zap-mode-line
       (minimal-save-and-zap-mode-line)
       (unless (facep 'minimal-mode-line)
-	(copy-face 'mode-line 'minimal-mode-line))
+        (copy-face 'mode-line 'minimal-mode-line))
       (set-face-attribute 'minimal-mode-line nil
-			  :height minimal-mode-line-height)
+                          :height minimal-mode-line-height)
       (setq face-remapping-alist
-	    (cons '(mode-line minimal-mode-line)
-		  (assq-delete-all 'mode-line face-remapping-alist)))
+            (cons '(mode-line minimal-mode-line)
+                  (assq-delete-all 'mode-line face-remapping-alist)))
       (unless (facep 'minimal-mode-line-inactive)
-	(copy-face 'mode-line-inactive 'minimal-mode-line-inactive))
+        (copy-face 'mode-line-inactive 'minimal-mode-line-inactive))
       (set-face-attribute 'minimal-mode-line-inactive nil
-			  :height minimal-mode-line-height)
+                          :height minimal-mode-line-height)
       (setq face-remapping-alist
-	    (cons '(mode-line-inactive minimal-mode-line-inactive)
-		  (assq-delete-all 'mode-line-inactive face-remapping-alist))))
+            (cons '(mode-line-inactive minimal-mode-line-inactive)
+                  (assq-delete-all 'mode-line-inactive face-remapping-alist))))
     (when (and scroll-bar-mode minimal-zap-scroll-bar)
       (setq minimal-zapped-scroll-bar t)
       (scroll-bar-mode -1))
@@ -97,12 +97,12 @@
     ;; TODO: This turns off on a per-buffer basis.
     ;; how to turn off for all buffers?
     (when minimal-zap-mode-line
-       (setq face-remapping-alist
-	    (assq-delete-all 'mode-line
-			     (assq-delete-all 'mode-line-inactive
-					      face-remapping-alist))))
+      (setq face-remapping-alist
+            (assq-delete-all 'mode-line
+                             (assq-delete-all 'mode-line-inactive
+                                              face-remapping-alist))))
     (minimal-restore-mode-line)
-   (when (and (not scroll-bar-mode) minimal-zapped-scroll-bar)
+    (when (and (not scroll-bar-mode) minimal-zapped-scroll-bar)
       (scroll-bar-mode +1))
     (when (and (not menu-bar-mode) minimal-zapped-menu-bar)
       (menu-bar-mode +1))
@@ -111,11 +111,11 @@
    (remove-hook 'after-change-major-mode-hook 'minimal-mode)))
 
 (defun minimal-save-and-zap-mode-line (&optional buffer)
-  ;; Save buffer's `mode-line-format' 
+  ;; Save buffer's `mode-line-format'
   (interactive)
   (when buffer (set-buffer buffer))
   (unless (and (stringp mode-line-format) (string= mode-line-format "")
-	       (not (minibufferp)))
+               (not (minibufferp)))
     (set (make-local-variable 'minimal-saved-mode-line-format) mode-line-format)))
 
 (defun minimal-restore-mode-line (&optional buffer)
@@ -123,10 +123,10 @@
   (interactive)
   (when buffer (set-buffer buffer))
   (if (and (stringp mode-line-format) (string= mode-line-format "")
-	   (not (minibufferp)))
+           (not (minibufferp)))
       (if (boundp 'minimal-saved-mode-line-format)
-	  (setq mode-line-format minimal-saved-mode-line-format)
-	(message "Failed to restore `mode-line-format' in buffer %s" (buffer-name)))))
+          (setq mode-line-format minimal-saved-mode-line-format)
+        (message "Failed to restore `mode-line-format' in buffer %s" (buffer-name)))))
 
 (provide 'minimal)
 ;; minimal.el ends here
