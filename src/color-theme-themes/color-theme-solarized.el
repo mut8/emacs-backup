@@ -1,5 +1,7 @@
 ;;; Author: Ethan Schoonover, Solarized; Greg Pfeil, Emacs adaptation;
-;;; Kieran Healy, further tweaks/fixes
+;;; Kieran Healy, further tweaks/fixes: repair highlighting errors;
+;;; add support for ido and org modes; I prefer large fonts for
+;;; headers (delete height variables if you don't).
 ;;; URL: http://ethanschoonover.com/solarized
 
 ;;; This file is not (YET) part of GNU Emacs.
@@ -13,23 +15,6 @@
 
 (eval-when-compile
   (require 'color-theme))
-
-;; `((normal (:foreground ,base0 :background ,base03))
-;;   (comment (:foreground ,base01 :italic t))
-;;   ((constant string character number boolean float) (:foreground ,cyan))
-;;   ((identifier function directory) (:foreground ,blue))
-;;   ((statement conditional repeat label operator keyword exception)
-;;    (:foreground ,green))
-;;   ((pre-proc include define macro pre-condit) (:foreground orange))
-;;   ((type storage-class structure typedef (:foreground yellow)))
-;;   ((special special-char tag delimiter special-comment debug)
-;;    (:foreground ,red))
-;;   (underlined (:foreground ,violet))
-;;   (error (:foreground ,red :bold t))
-;;   (todo (:foreground ,magenta :bold t))
-;;   (special-key (:foreground ,base02))
-;;   (non-text (:foreground ,base02 :bold t))
-;;   ())
 
 (defun color-theme-solarized (mode)
   "Color theme by Ethan Schoonover, created 2011-03-24.
