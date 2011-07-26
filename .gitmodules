@@ -9,4 +9,4 @@
 	url = http://orgmode.org/org-mode.git
 [submodule "src/ebib"]
 	path = src/ebib
-	url = http://repo.or.cz/w/ebib.git
+	url = http://repo.or.cz/r/ebib.git
