@@ -6,7 +6,7 @@
 	url = http://github.com/eschulte/yasnippet-org-mode.git
 [submodule "src/org"]
 	path = src/org
-	url = http://orgmode.org/org-mode.git
+	url = git://orgmode.org/org-mode.git
 [submodule "src/ebib"]
 	path = src/ebib
 	url = http://repo.or.cz/r/ebib.git
