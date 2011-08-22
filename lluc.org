@@ -1,0 +1,669 @@
+#+srcname: toggle colors
+#+begin_src emacs-lisp
+(defun toggle-colors ()
+ (interactive)
+ (if (eq (frame-parameter (next-frame) 'background-mode) 'dark)
+     (color-theme-solarized-light)
+   (color-theme-solarized-dark)))
+
+(global-set-key [f9] 'toggle-colors)
+#+end_src
+
+#+srcname: toggle spell checking
+#+begin_src emacs-lisp
+(global-set-key [f10] 'flyspell-mode)
+#+end_src
+
+
+#+srcname: toggle line number
+#+begin_src emacs-lisp
+(global-set-key [f11] 'linum-mode)
+#+end_src
+
+#+srcname: toggle line number
+#+begin_src emacs-lisp
+  (add-hook 'ess-mode-hook
+            '(lambda ()
+               (outline-minor-mode)
+               (setq outline-regexp "\\(^#\\{4,5\\} \\)\\|\\(^[a-zA-Z0-9_\.]+ ?<- ?function(.*{\\)")
+               (defun outline-level
+                 (lambda () (interactive) (cond ((looking-at "^##### ") 1)((looking-at "^#### ") 2)((looking-at "^[a-zA-Z0-9_\.]+ ?<- ?function(.*{") 3) (t 1000)))
+               )))
+#+end_src
+
+
+#+TITLE: Local User Customizations
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* Starter Kit kjhealy
+/You must change the name of this file/ to the value of the Emacs
+ variable =user-login-name= OR =system-name=, so that it will be
+ picked up by =init.el= when Emacs starts up, and be loaded
+ properly. To find the current value of these variables on your
+ system, do =C-h-v system-name [RET]= and =C-h-v user-login-name
+ [RET]=. For example, on my system =user-login-name= is 'kjhealy', so
+ this file is named =kjhealy.org=, and when Emacs starts up with the
+ starter kit it creates the file =kjhealy.el=.
+ 
+You will also need to change the values for the location of bibtex
+ databases, pandoc and orgmode-mobile specified below, and some other
+ settings. *Search for 'kjhealy' in this file* to find the paths that
+ need to be updated. Change them as needed or comment them out if you
+ don't use these features. Finally, the [[*Local%20Org-mode%20XeLaTeX%20Export%20Settings][Local Org-mode XeLaTeX Export
+ Settings]] section below has references to fonts that you may not have
+ available on your system. Change the references as appropriate or
+ simply comment out the lines.
+
+** Miscellaneous Settings and starter-kit overrides
+*** Recent File Menu
+Turn on the recent file menu. 
+
+#+srcname: local-loadpath
+#+begin_src emacs-lisp
+    ;; recent file menu
+    (require 'recentf)
+    (recentf-mode 1)
+#+end_src
+
+*** Color Theme and Line Highlighting
+The Starter Kit uses Ethan Schoonover's /Solarized/ color theme. You can easily switch between light and dark versions of the theme. Some other useful themes are included in the =src/color-theme-themes/= directory of the kit. 
+
+#+srcname: local-settings
+#+begin_src emacs-lisp
+  ;; Color Theme from vendor directory
+  (require 'color-theme-solarized)
+  (load-file "~/.emacs.d/src/color-theme-themes/color-theme-tangosoft.el")
+  (if window-system
+      (color-theme-solarized 'dark)
+    ;; or if you prefer ...
+    ;; (color-theme-solarized 'light)
+    (color-theme-tangosoft) ;; Emacs started in tty
+      )
+  
+  ;; Define a shortcut to switch between dark and light versions of solarized
+  (global-set-key (kbd "C-c l") 'color-theme-solarized)
+  
+#+end_src
+
+*** Run Emacs in Full Screen
+  I find it very useful to run Emacs in full-screen mode. There is no
+    completely satisfactory way to accomplish this on Mac OS X. What
+    works depends on the flavor of emacs you are using,
+    unfortunately. Choose as appropriate from the following options:
+
+**** Option 1
+Require maxframe package to conveniently maxmimize the window. Doesn't work with Emacs 23 on Mac.
+
+#+srcname: fullscreen-1
+#+begin_src emacs-lisp :tangle no
+  (require 'maxframe)
+  (global-set-key (kbd "C-c m") 'x-maximize-frame)  
+#+end_src
+
+**** Option 2
+Fullscreen toggle -- Only works with the (now slightly out-of-date)
+patched emacs build at =git://github.com/typester/emacs.git=.
+
+#+source: fullscreen-2
+#+begin_src emacs-lisp :tangle no
+  (global-set-key (kbd "C-c m") 'ns-toggle-fullscreen)
+#+end_src
+
+**** Option 3  
+Fullscreen toggle using maxframe.el. 
+#+source: fullscreen-3
+#+begin_src emacs-lisp :tangle no
+  
+ (require 'maxframe)
+ (defvar my-fullscreen-p t "Check if fullscreen is on or off")
+ (defun my-toggle-fullscreen ()
+ (interactive)
+ (setq my-fullscreen-p (not my-fullscreen-p))
+ (if my-fullscreen-p
+ (restore-frame)
+ (maximize-frame)))
+ (global-set-key (kbd "C-c f") 'my-toggle-fullscreen)    
+#+end_src
+
+**** Option 4
+For use with Yamamoto Mitsuharu's Carbon-patched Emacs 23. (This is
+    what I use, but it requires you compile a custom Emacs.)
+
+#+source: fullscreen-4
+#+begin_src emacs-lisp
+    (defun fullscreen (&optional f)
+      (interactive)
+      (set-frame-parameter f 'fullscreen
+                           (if (frame-parameter f 'fullscreen) nil 'fullboth)))
+    (global-set-key (kbd "C-c f") 'fullscreen)
+    (add-hook 'after-make-frame-functions 'fullscreen)
+#+end_src
+
+**** Option 5  
+Internal to emacs; also seems not to work on OS X.
+#+source: fullscreen-5
+#+begin_src emacs-lisp :tangle no
+ (defun toggle-fullscreen (&optional f)
+    (interactive)
+    (let ((current-value (frame-parameter nil 'fullscreen)))
+         (set-frame-parameter nil 'fullscreen
+                              (if (equal 'fullboth current-value)
+                                  (if (boundp 'old-fullscreen) old-fullscreen nil)
+                                  (progn (setq old-fullscreen current-value)
+                                         'fullboth)))))
+  (global-set-key (kbd "C-c f") 'toggle-fullscreen)  
+#+end_src
+
+*** Windmove
+    Tweak to Windmove setup. Without this, you keep getting elisp
+    errors when you try to wrap around.
+#+srcname: local-windmove
+#+begin_src emacs-lisp
+(setq windmove-wrap-around t)
+#+end_src
+
+*** Resizing inside the frame
+When your frame (i.e., the main Emacs window) is split into different parts (e.g. using =C-x 2= or =C-x 3=) we sometimes want to resize these parts dynamically. This defines =Shift-C-[arrow keys]= so you can do this. 
+ 
+#+srcname: resize-splits
+#+begin_src emacs-lisp
+  ;; resizing 'windows' (i.e., inside the frame)
+  (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "S-C-<down>") 'shrink-window)
+  (global-set-key (kbd "S-C-<up>") 'enlarge-window)  
+#+end_src
+
+*** Mac Key mode
+    Used with Mitsuharu Yamamoto's carbon-patched Emacs, which turns
+    off support for default mac bindings. Turned off by default.
+#+srcname: mac-keys
+#+begin_src emacs-lisp tangle: no
+   (setq mac-command-modifier 'alt mac-option-modifier 'meta)
+   (require 'redo+)
+   (require 'mac-key-mode)
+   (mac-key-mode 1)
+   (add-hook 'mac-key-mode-hook
+       (lambda()
+         (interactive)
+         (if mac-key-mode
+             (setq mac-option-modifier 'meta)
+             (setq mac-option-modifier nil)
+             )))
+#+end_src
+
+** Local LaTeX settings
+*** In-text Smart Quotes (XeLaTeX only)
+    Redefine TeX-open-quote and TeX-close-quote to be smart quotes by default. Below, in the local org-mode settings, we'll also map the relevant function to a key we can use in org-mode, too. If you don't use XeLaTeX for processing all your =.tex= files, you should disable this option.
+
+#+source: smart-quotes
+#+begin_src emacs-lisp
+  (setq TeX-open-quote "“")
+  (setq TeX-close-quote "”")
+#+end_src
+
+*** SyncTeX, PDF mode, Skim
+Set up AUCTeX to work with the Skim PDF viewer.
+
+#+srcname: local-loadpath
+#+begin_src emacs-lisp
+   ;; Synctex with Skim
+   ;;(add-hook 'TeX-mode-hook
+   ;;(lambda ()
+   ;;(add-to-list 'TeX-output-view-style
+   ;;'("^pdf$" "."
+   ;; "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
+   ;; )
+
+   ;; Make emacs aware of multi-file projects
+   ;; (setq-default TeX-master nil)
+
+   ;; Auto-raise Emacs on activation (from Skim, usually)
+   (defun raise-emacs-on-aqua()
+   (shell-command "osascript -e 'tell application \"Emacs\" to activate' &"))
+   (add-hook 'server-switch-hook 'raise-emacs-on-aqua)
+#+end_src
+
+*** Local RefTeX Settings
+Tell RefTeX where the bibliography files are. 
+
+#+srcname: local-reftex
+#+begin_src emacs-lisp    
+    ;; Make RefTex able to find my local bib files
+    (setq reftex-bibpath-environment-variables
+    '("/home/lluc/Documents/git/tex/dip/"))
+
+    ;; Default bibliography
+    (setq reftex-default-bibliography
+    '("/home/lluc/Documents/git/tex/dip/library.bib"))
+
+
+    ;; CDLaTex minor mode: tab-trigger environments, paired paren
+    ;; insertion, etc
+    ;; (autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
+    ;; (autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
+    ;; (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)   ; with AUCTeX LaTeX
+    ;;                                         ; mode
+
+    ;; set which characters are autopaired // Doesn't work. Set in custom, below.
+    ;; (add-hook 'cdlatex-mode-hook
+    ;;   (function (lambda ()
+    ;;               (setq cdlatex-paired-parens
+    ;;                     '("$[{("))
+    ;;             )))
+#+end_src
+
+*** Local vc commands
+    Run the vc shellscript before running xelatex with C-c c (instead of
+    C-c C-c for regular compile).
+
+#+srcname: vc-command
+#+begin_src emacs-lisp
+    (fset 'run-vc-then-xelatex
+    [?\M-! ?v ?c return ?\C-c ?\C-c return])
+    (global-set-key (kbd "C-c c") 'run-vc-then-xelatex);; Run the VC command before running xelatex
+    (fset 'run-vc-then-xelatex
+    [?\M-! ?v ?c return ?\C-c ?\C-c return])
+    (global-set-key (kbd "C-c c") 'run-vc-then-xelatex)
+#+end_src
+
+    Or just run vc alone --- this is useful when writing LaTeX files
+    using org-mode. (See the org-mode customizations below).
+
+#+source: vc-alone
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c v")
+                      (lambda ()
+                        (interactive)
+                        (shell-command "vc")))
+
+#+end_src
+
+** Local Pandoc Support 
+ Make Emacs see where pandoc is installed. (Emacs can't access the bash
+ $PATH directly.)
+#+src-name: pandoc_mode
+#+begin_src emacs-lisp
+ (setenv "PATH" (concat "/Users/kjhealy/.cabal/bin:" (getenv "PATH")))
+ (load "pandoc-mode")
+ (add-hook 'markdown-mode-hook 'turn-on-pandoc)
+ (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+#+end_src
+
+** Local iBuffer Settings
+   Manage a lot of buffers easily with C-x C-b. Already set up
+   elsewhere in the starter kit. Add local configuration here, e.g.,
+   display categories.
+#+srcname: iBuffer-custom
+#+begin_src emacs-lisp 
+  (setq ibuffer-saved-filter-groups
+      '(("home"
+	 ("emacs-config" (or (filename . ".emacs.d")
+			     (filename . "emacs-config")))
+	 ("Org" (or (mode . org-mode)
+		    (filename . "OrgMode")))
+	 ("Web Dev" (or (mode . html-mode)
+			(mode . css-mode)))
+	 ("Magit" (name . "\*magit"))
+	 ("ESS" (mode . ess-mode))
+         ("LaTeX" (mode . latex-mode))
+	 ("Help" (or (name . "\*Help\*")
+		     (name . "\*Apropos\*")
+		     (name . "\*info\*"))))))
+
+        (add-hook 'ibuffer-mode-hook 
+	             '(lambda ()
+	             (ibuffer-switch-to-saved-filter-groups "home")))
+       (setq ibuffer-show-empty-filter-groups nil)                     
+       (setq ibuffer-expert t)
+       (add-hook 'ibuffer-mode-hook 
+       '(lambda ()
+       (ibuffer-auto-mode 1)
+       (ibuffer-switch-to-saved-filter-groups "home")))
+#+end_src
+
+** Local Org-mode Settings
+*** Smart-quote binding
+When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by default. 
+
+#+source: org-mode-smartquote-key
+#+begin_src emacs-lisp :tangle no
+  (add-hook 'org-mode-hook 'smart-quote-keys)
+  
+  (defun smart-quote-keys ()
+    (require 'typopunct)
+    (typopunct-change-language 'english)
+    (local-set-key (kbd "C-c \'") 'typopunct-insert-single-quotation-mark)
+    (local-set-key (kbd "C-c \"") 'typopunct-insert-quotation-mark)
+    )
+    
+  
+  
+#+end_src
+
+*** Archive Settings
+    Where archived projects and tasks go.
+#+source: orgmode-archive
+#+begin_src emacs-lisp
+  (setq org-archive-location "~/Dropbox/Org/archive.org::From %s")
+#+end_src
+
+*** Mobile Settings
+   Sync orgmode files with Dropbox and iPhone. 
+#+src-name: orgmode-mobile
+#+begin_src emacs-lisp
+   ;; Set to the location of your Org files on your local system
+   (setq org-directory "~/Dropbox/Org")
+   ;; Set to <your Dropbox root directory>/MobileOrg.
+   (setq org-mobile-directory "~/Dropbox/MobileOrg")
+   ;; Set to the files (or directory of files) you want sync'd
+   (setq org-agenda-files (quote ("~/Dropbox/Org")))
+   ;; Set to the name of the file where new notes will be stored
+   (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+   
+
+#+end_src
+
+*** Babel Settings
+   Configure org-mode so that when you edit source code in an indirect buffer (with C-c '), the buffer is opened in the current window. That way, your window organization isn't broken when switching.
+
+#+source: orgmode-indirect-buffer-settings
+#+begin_src emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+end_src
+
+*** XeLaTeX and pdfLaTeX Export Settings
+   Configure org-mode to export directly to PDF using pdflatex or
+   xelatex, compiling the bibliography as it goes, with my preferred
+   setup in each case. There is a good deal of local stuff in this section. The required style files used below are available at https://github.com/kjhealy/latex-custom-kjh. You may need to adjust or remove some of these settings depending on your
+   preferences and local configuration.
+
+#+source: orgmode-xelatex-export
+#+begin_src emacs-lisp
+  (require 'org-latex)   
+  ;; Choose either listings or minted for exporting source code blocks.
+  ;; Using minted (as here) requires pygments be installed. To use the
+  ;; default listings package instead, use
+  ;; (setq org-export-latex-listings t)
+  ;; and change references to "minted" below to "listings"
+  (setq org-export-latex-listings 'minted)
+          
+  ;; default settings for minted code blocks
+  (setq org-export-latex-minted-options
+        '(;("frame" "single")
+          ("bgcolor" "bg") ; bg will need to be defined in the preamble of your document. It's defined in org-preamble-pdflatex.sty and org-preamble-xelatex.sty below.
+          ("fontsize" "\\small")
+          ))
+          
+            
+  ;; Originally taken from Bruno Tavernier: http://thread.gmane.org/gmane.emacs.orgmode/31150/focus=31432
+  ;; but adapted to use latexmk 4.22 or higher.  
+  (defun my-auto-tex-cmd ()
+    "When exporting from .org with latex, automatically run latex,
+                 pdflatex, or xelatex as appropriate, using latexmk."
+    (let ((texcmd)))
+    ;; default command: pdflatex 
+    (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f")        
+    ;; pdflatex -> .pdf
+    (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+        (setq texcmd "latexmk -pdflatex='pdflatex --shell-escape' -pdf %f"))
+    ;; xelatex -> .pdf
+              (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                  (setq texcmd "latexmk -pdflatex='xelatex --shell-escape' -pdf %f"))
+              ;; LaTeX compilation command
+              (setq org-latex-to-pdf-process (list texcmd)))
+            
+  (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-cmd)
+            
+  ;; Default packages included in /every/ tex file, latex, pdflatex or xelatex
+  (setq org-export-latex-packages-alist
+                  '(("" "graphicx" t)
+                        ("" "longtable" nil)
+                        ("" "float" )))
+              
+  ;; Custom packages
+  (defun my-auto-tex-parameters ()
+    "Automatically select the tex packages to include. See https://github.com/kjhealy/latex-custom-kjh for the support files included here."
+    ;; default packages for ordinary latex or pdflatex export
+    (setq org-export-latex-default-packages-alist
+          '(("AUTO" "inputenc" t)
+            ("minted,minion" "org-preamble-pdflatex" t)))        
+    ;; Packages to include when xelatex is used
+                  (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                      (setq org-export-latex-default-packages-alist
+                            '(("minted" "org-preamble-xelatex" t) )))
+                  
+      
+                  (if (string-match "LATEX_CMD: pdflatex" (buffer-string))
+                      (setq org-export-latex-classes
+                            (cons '("article"
+                                    "\\documentclass[11pt,article,oneside]{memoir}
+    \\input{vc} % vc package"
+                                    ("\\section{%s}" . "\\section*{%s}")
+                                    ("\\subsection{%s}" . "\\subsection*{%s}")
+                                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                                  org-export-latex-classes)))
+      
+                  (if (string-match "LATEX_CMD: xelatex" (buffer-string))
+                      (setq org-export-latex-classes
+                            (cons '("article"
+                                    "\\documentclass[11pt,article,oneside]{memoir}
+  \\input{vc} % vc package"
+                                    ("\\section{%s}" . "\\section*{%s}")
+                                    ("\\subsection{%s}" . "\\subsection*{%s}")
+                                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                                  org-export-latex-classes))))  
+                
+            (add-hook 'org-export-latex-after-initial-vars-hook 'my-auto-tex-parameters)      
+#+end_src
+
+*** ebib and citation settings
+    ebib is a bibtex database manager that works inside emacs. It can
+    talk to org-mode. See [[http://orgmode.org/worg/org-tutorials/org-latex-export.html#sec-17_2][this Worg tutorial]] for details. 
+#+source: ebib-setup
+#+begin_src emacs-lisp
+    (org-add-link-type "ebib" 'ebib)
+  
+   (org-add-link-type 
+     "cite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "cite:" desc)))
+               (format "\\cite{%s}" path)
+               (format "\\cite[%s]{%s}" desc path)
+               )))))
+  
+   (org-add-link-type 
+     "parencite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "parencite:" desc)))
+               (format "\\parencite{%s}" path)
+               (format "\\parencite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+     "textcite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "textcite:" desc)))
+               (format "\\textcite{%s}" path)
+               (format "\\textcite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+     "autocite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "autocite:" desc)))
+               (format "\\autocite{%s}" path)
+           (format "\\autocite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+   "footcite" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "footcite:" desc)))
+           (format "\\footcite{%s}" path)
+         (format "\\footcite[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "fullcite" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "fullcite:" desc)))
+           (format "\\fullcite{%s}" path)
+         (format "\\fullcite[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "citetitle" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "citetitle:" desc)))
+           (format "\\citetitle{%s}" path)
+         (format "\\citetitle[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "citetitles" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "citetitles:" desc)))
+           (format "\\citetitles{%s}" path)
+         (format "\\citetitles[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+     "headlessfullcite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "headlessfullcite:" desc)))
+               (format "\\headlessfullcite{%s}" path)
+               (format "\\headlessfullcite[%s]{%s}" desc path)
+  )))))   
+#+end_src
+
+*** HTML export Settings
+Create =html= files form the =org= sources, to help with documentation. To set up org-mode for publishing projects to HTML you will need to change these settings, as they apply only to the Starter Kit. 
+
+#+source: html-export-settings
+#+begin_src emacs-lisp
+  (setq org-publish-project-alist
+         '(("org"
+            :base-directory "~/.emacs.d/"
+            :publishing-directory "~/Documents/websites/kjhhome/esk/"
+            :auto-sitemap t
+            :sitemap-filename "index.org"
+            :sitemap-title "Emacs Starter Kit for the Social Sciences: Documentation"
+            :section-numbers t
+            :table-of-contents nil
+            :style "<link rel=\"stylesheet\"
+                   href=\"http://kieranhealy.org/css/blueprint/org-screen.css\"
+                   type=\"text/css\"/>")))
+  
+    (setq org-export-html-style-extra "<link rel=\"stylesheet\" href=\"http://kieranhealy.org/css/kjh-org-custom.css\" type=\"text/css\"><link rel=\"stylesheet\" href=\"http://kieranhealy.org/css/blueprint/print.css\" type=\"text/css\" media=\"print\"> <!--[if IE]><link rel=\"stylesheet\" href=\"http://kieranhealy.org/css/blueprint/ie.css\" type=\"text/css\" media=\"screen,projection\"><![endif]-->")    
+  
+#+end_src
+
+** Minimal mode
+   A nice clutter-free appearance with a reduced-size modeline, no
+   scroll bars, and no fringe indicators. Useful in conjunction with running Emacs full-screen. 
+
+#+source: minimal-mode
+#+begin_src emacs-lisp
+  (require 'minimal)
+  (global-set-key (kbd "C-c s") 'minimal-mode)
+#+end_src
+
+** Auto-complete mode
+   Powerful autocompletion; experimentally added. Will pop-up
+   autocomplete suggestions as you type; hit =TAB= to complete, or
+   choose from the menu of options.
+
+#+source: auto-complete
+#+begin_src emacs-lisp
+  ;; compile it if the .el file is newer 
+  (byte-recompile-directory "~/.emacs.d/src/auto-complete")
+  (byte-recompile-directory "~/.emacs.d/src/auto-complete/dict/ess")
+  (require 'auto-complete-config)
+  (add-to-list 'ac-dictionary-directories "~/.emacs.d/src/auto-complete/dict")
+  (setq ac-modes (append ac-modes '(org-mode))) 
+  (ac-config-default)
+  (define-key ac-complete-mode-map [tab] 'ac-expand)
+  (require 'ac-R)
+  (setq ac-auto-start 4)
+  (ac-flyspell-workaround)
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (setq ac-auto-show-menu 0.8)
+  ;; consistent  with zenburnish theme
+  (set-face-background 'ac-candidate-face "#366060")
+  (set-face-background 'ac-selection-face "#8cd0d3")
+  (set-face-foreground 'ac-selection-face "#1f1f1f")
+  
+#+end_src
+
+** IRC
+Sometimes useful for getting help on R or Emacs. 
+#+source: rirc-configuration
+#+begin_src emacs-lisp
+  ;; connect to irc on invocation but don't autojoin any channels
+  (require 'rcirc)
+  (add-to-list 'rcirc-server-alist
+                       '("irc.freenode.net"))
+#+end_src
+
+** Final Custom elements
+Some local tweaks. 
+
+#+srcname: final-custom
+#+begin_src emacs-lisp
+  ;; Line-spacing tweak (Optimized for PragmataPro)
+  (setq-default line-spacing 5)
+  
+  ;; minimize fringe
+  (setq-default indicate-empty-lines nil)
+  
+  ;; Add keybindings for commenting regions of text
+  (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
+  (global-set-key (kbd "M-'") 'comment-or-uncomment-region)
+  
+  ;; Base dir
+  (cd "~/")
+  
+  ;; custom variables kludge. Why can't I get these to work via setq?
+  (custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+  '(LaTeX-XeTeX-command "xelatex -synctex=1")
+  '(TeX-engine (quote xetex))
+  '(TeX-view-program-list (quote (("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b"))))
+  '(TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "Skim") (output-html "xdg-open"))))
+  '(show-paren-mode t)
+  '(blink-cursor-mode nil)
+  '(text-mode-hook (quote (text-mode-hook-identify)))
+  )
+#+end_src
+   
+   
+   
+   
+   
+   
